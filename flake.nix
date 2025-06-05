@@ -1,5 +1,5 @@
 {
-  description = "florisboard build environment";
+  description = "neuboard build environment";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";

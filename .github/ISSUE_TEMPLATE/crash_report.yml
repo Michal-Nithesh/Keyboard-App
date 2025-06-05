@@ -1,16 +1,16 @@
-name: 💥 Crash report
-description: Create a report with a generated crash log attached to help FlorisBoard improve
+name: 4a5 Crash report
+description: Create a report with a generated crash log attached to help Neuboard improve
 labels:
   - "bug"
 body:
   - type: markdown
     attributes:
       value: |
-        Thank you for your help in making FlorisBoard better!
+        Thank you for your help in making Neuboard better!
         Guide to a good crash-report:
-        • Please search existing bug/crash reports to avoid creating duplicates.
-        • Give your crash report a good name (no generics like "Error" or "Crash"), so others can easily identify the topic of your issue.
-        • Describe what you were doing what could've led to the crash and whether the crash is random or reproducible.
+        539 Please search existing bug/crash reports to avoid creating duplicates.
+        539 Give your crash report a good name (no generics like "Error" or "Crash"), so others can easily identify the topic of your issue.
+        539 Describe what you were doing what could've led to the crash and whether the crash is random or reproducible.
   - type: textarea
     id: description
     attributes:
@@ -23,9 +23,9 @@ body:
     attributes:
       label: Steps to reproduce
       value: |
-        1. Go to '…'
-        2. Click on '…'
-        3. Scroll down to '…'
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
         4. See crash
     validations:
       required: true
@@ -41,9 +41,9 @@ body:
     attributes:
       label: "Checklist"
       options:
-        - label: "I made sure that there are *no existing issues* - [open](https://github.com/florisboard/florisboard/issues) or [closed](https://github.com/florisboard/florisboard/issues?q=is%3Aissue+is%3Aclosed) - which I could contribute my information to."
+        - label: "I made sure that there are *no existing issues* - [open](https://github.com/neuboard/neuboard/issues) or [closed](https://github.com/neuboard/neuboard/issues?q=is%3Aissue+is%3Aclosed) - which I could contribute my information to."
           required: true
-        - label: "I have read and understood the [contribution guidelines](https://github.com/florisboard/florisboard/blob/main/CONTRIBUTING.md)."
+        - label: "I have read and understood the [contribution guidelines](https://github.com/neuboard/neuboard/blob/main/CONTRIBUTING.md)."
           required: true
         - label: "I have taken the time to fill in all the required details. I understand that the crash report will be dismissed otherwise."
           required: true

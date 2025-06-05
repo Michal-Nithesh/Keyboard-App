@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022-2025 The FlorisBoard Contributors
+ * Copyright (C) 2022-2025 The Neuboard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ val projectVersionNameSuffix = projectVersionName.substringAfter("-", "").let { 
 }
 
 android {
-    namespace = "dev.patrickgold.florisboard"
+    namespace = "dev.patrickgold.neuboard"
     compileSdk = projectCompileSdk.toInt()
     buildToolsVersion = projectBuildToolsVersion
     ndkVersion = projectNdkVersion
@@ -61,7 +61,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "dev.patrickgold.florisboard"
+        applicationId = "dev.patrickgold.neuboard"
         minSdk = projectMinSdk.toInt()
         targetSdk = projectTargetSdk.toInt()
         versionCode = projectVersionCode.toInt()
@@ -71,7 +71,7 @@ android {
 
         buildConfigField("String", "BUILD_COMMIT_HASH", "\"${getGitCommitHash()}\"")
         buildConfigField("String", "FLADDONS_API_VERSION", "\"v~draft2\"")
-        buildConfigField("String", "FLADDONS_STORE_URL", "\"beta.addons.florisboard.org\"")
+        buildConfigField("String", "FLADDONS_STORE_URL", "\"beta.addons.neuboard.org\"")
 
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
@@ -93,7 +93,7 @@ android {
 
     bundle {
         language {
-            // We disable language split because FlorisBoard does not use
+            // We disable language split because Neuboard does not use
             // runtime Google Play Service APIs and thus cannot dynamically
             // request to download the language resources for a specific locale.
             enableSplit = false

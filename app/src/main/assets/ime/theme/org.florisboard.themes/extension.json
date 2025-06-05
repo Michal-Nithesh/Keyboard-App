@@ -1,47 +1,47 @@
 {
   "$": "ime.extension.theme",
   "meta": {
-    "id": "org.florisboard.themes",
+    "id": "org.neuboard.themes",
     "version": "0.2.0",
-    "title": "FlorisBoard default themes",
+    "title": "Neuboard default themes",
     "description": "Default themes (both day and night) for the keyboard UI",
     "maintainers": [ "patrickgold <patrick@patrickgold.dev>", "lm41 <lm41@lm41.xyz>" ],
     "license": "apache-2.0"
   },
   "themes": [
     {
-      "id": "floris_day",
-      "label": "Floris Day",
+      "id": "neuboard_day",
+      "label": "Neuboard Day",
       "authors": [ "patrickgold" ],
       "isNight": false
     },
     {
-      "id": "floris_day_borderless",
-      "label": "Floris Day (Borderless)",
+      "id": "neuboard_day_borderless",
+      "label": "Neuboard Day (Borderless)",
       "authors": [ "patrickgold" ],
       "isNight": false
     },
     {
-      "id": "floris_night",
-      "label": "Floris Night",
+      "id": "neuboard_night",
+      "label": "Neuboard Night",
       "authors": [ "patrickgold" ],
       "isNight": true
     },
     {
-      "id": "floris_night_borderless",
-      "label": "Floris Night (Borderless)",
+      "id": "neuboard_night_borderless",
+      "label": "Neuboard Night (Borderless)",
       "authors": [ "patrickgold" ],
       "isNight": true
     },
     {
-      "id": "floris_pure_night",
-      "label": "Floris Pure Night",
+      "id": "neuboard_pure_night",
+      "label": "Neuboard Pure Night",
       "authors": [ "serebit" ],
       "isNight": true
     },
     {
-      "id": "floris_pure_night_borderless",
-      "label": "Floris Pure Night (Borderless)",
+      "id": "neuboard_pure_night_borderless",
+      "label": "Neuboard Pure Night (Borderless)",
       "authors": [ "serebit" ],
       "isNight": true
     }

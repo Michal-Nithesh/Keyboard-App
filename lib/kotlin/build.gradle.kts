@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024-2025 The FlorisBoard Contributors
+ * Copyright (C) 2024-2025 The Neuboard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ plugins {
 }
 
 val projectGroupId: String by project
-val artifactId = "florisboard-lib-kotlin"
+val artifactId = "neuboard-lib-kotlin"
 val projectVersion: String by project
 
 java {

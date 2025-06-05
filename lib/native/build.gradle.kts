@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 The FlorisBoard Contributors
+ * Copyright (C) 2025 The Neuboard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ val projectCompileSdk: String by project
 val projectNdkVersion: String by project
 
 android {
-    namespace = "org.florisboard.libnative"
+    namespace = "org.neuboard.libnative"
     compileSdk = projectCompileSdk.toInt()
     ndkVersion = projectNdkVersion
 

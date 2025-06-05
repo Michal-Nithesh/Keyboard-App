@@ -24,7 +24,7 @@ val projectMinSdk: String by project
 val projectCompileSdk: String by project
 
 android {
-    namespace = "org.florisboard.lib.android"
+    namespace = "org.neuboard.lib.android"
     compileSdk = projectCompileSdk.toInt()
 
     defaultConfig {

@@ -1,0 +1,13 @@
+<!-- Placeholder for Neuboard app icon foreground. Replace with actual vector asset as needed. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M54,4C27.4,4 6,25.4 6,52c0,26.6 21.4,48 48,48s48,-21.4 48,-48C102,25.4 80.6,4 54,4zM54,92c-22.1,0 -40,-17.9 -40,-40s17.9,-40 40,-40 40,17.9 40,40 -17.9,40 -40,40z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,24a28,28 0 1,0 0,56a28,28 0 1,0 0,-56zM54,72a18,18 0 1,1 0,-36a18,18 0 1,1 0,36z"/>
+</vector>

@@ -23,4 +23,5 @@
     <color name="windowBackground">#FAFAFA</color><!-- Gray 50 -->
 
     <color name="florisApp_windowBackground">#FFFFFFFF</color>
+    <color name="neuboardApp_windowBackground">#FFFFFFFF</color>
 </resources>

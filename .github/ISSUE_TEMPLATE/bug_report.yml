@@ -1,14 +1,14 @@
-name: 🐛 Bug Report
-description: Create a report to help FlorisBoard improve
+name: 41b Bug Report
+description: Create a report to help Neuboard improve
 labels:
   - "bug"
 body:
   - type: markdown
     attributes:
       value: |
-        Thank you for your help in making FlorisBoard better!
+        Thank you for your help in making Neuboard better!
         Guide to a good bug-report:
-        • Please search existing bug/crash reports reports to avoid creating duplicates.
+        • Please search existing bug/crash reports to avoid creating duplicates.
         • Give your bug report a good name (no generics like "Error" or "Crash"), so others can easily identify the topic of your issue.
         • Describe the bug in a short but concise way.
         • If you have a screenshot or screen recording of the bug, link them at the end of this issue.
@@ -25,17 +25,17 @@ body:
     attributes:
       label: Steps to reproduce
       value: |
-        1. Go to '…'
-        2. Click on '…'
-        3. Scroll down to '…'
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
         4. See error
     validations:
       required: true
   - type: input
-    id: florisversion
+    id: neuboardversion
     attributes:
-      label: FlorisBoard Version
-      placeholder: e.g. 0.X.X
+      label: Neuboard Version
+      placeholder: e.g. 1.X.X
     validations:
       required: true
   - type: dropdown
@@ -67,9 +67,9 @@ body:
     attributes:
       label: "Checklist"
       options:
-        - label: "I made sure that there are *no existing issues* - [open](https://github.com/florisboard/florisboard/issues) or [closed](https://github.com/florisboard/florisboard/issues?q=is%3Aissue+is%3Aclosed) - which I could contribute my information to."
+        - label: "I made sure that there are *no existing issues* - [open](https://github.com/neuboard/neuboard/issues) or [closed](https://github.com/neuboard/neuboard/issues?q=is%3Aissue+is%3Aclosed) - which I could contribute my information to."
           required: true
-        - label: "I have read and understood the [contribution guidelines](https://github.com/florisboard/florisboard/blob/main/CONTRIBUTING.md)."
+        - label: "I have read and understood the [contribution guidelines](https://github.com/neuboard/neuboard/blob/main/CONTRIBUTING.md)."
           required: true
         - label: "I have taken the time to fill in all the required details. I understand that the bug report will be dismissed otherwise."
           required: true

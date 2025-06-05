@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: 💬 Matrix
-    url: https://matrix.to/#/#florisboard:matrix.org
-    about: General chat about FlorisBoard and quick Q/A
-  - name: ❓ Questions / Feedback
-    url: https://github.com/florisboard/florisboard/discussions/new/choose
+  - name: 4ac Matrix
+    url: https://matrix.to/#/#neuboard:matrix.org
+    about: General chat about Neuboard and quick Q/A
+  - name: 4a9 Questions / Feedback
+    url: https://github.com/neuboard/neuboard/discussions/new/choose
     about: Post your questions or feedback in the discussions panel

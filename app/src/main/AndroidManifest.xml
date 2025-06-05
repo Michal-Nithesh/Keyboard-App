@@ -8,9 +8,9 @@
     <!-- Permission needed to create notifications on devices running Android 13+ -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
-    <!-- Android 11+ only: Define that FlorisBoard requests to see all apps that
+    <!-- Android 11+ only: Define that Neuboard requests to see all apps that
           ship with an IME or Spell Check service. This is used to guide the user
-          in the Settings Ui why FlorisBoard may not be working.
+          in the Settings Ui why Neuboard may not be working.
      -->
     <queries>
         <intent>
@@ -22,7 +22,7 @@
     </queries>
 
     <application
-        android:name="dev.patrickgold.florisboard.FlorisApplication"
+        android:name="dev.patrickgold.neuboard.NeuboardApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/backup_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -31,7 +31,7 @@
         android:enableOnBackInvokedCallback="true"
         android:roundIcon="@mipmap/floris_app_icon_round"
         android:supportsRtl="true"
-        android:theme="@style/FlorisAppTheme"
+        android:theme="@style/NeuboardAppTheme"
         tools:targetApi="tiramisu">
 
         <!-- Allow app to be profiled for benchmarking and baseline profile generation -->
@@ -39,7 +39,7 @@
 
         <!-- IME service -->
         <service
-            android:name="dev.patrickgold.florisboard.FlorisImeService"
+            android:name="dev.patrickgold.neuboard.NeuboardImeService"
             android:label="@string/floris_app_name"
             android:permission="android.permission.BIND_INPUT_METHOD"
             android:directBootAware="true"
@@ -52,7 +52,7 @@
 
         <!-- Spellchecker service -->
         <service
-            android:name="dev.patrickgold.florisboard.FlorisSpellCheckerService"
+            android:name="dev.patrickgold.neuboard.NeuboardSpellCheckerService"
             android:label="@string/floris_app_name"
             android:permission="android.permission.BIND_TEXT_SERVICE"
             android:exported="true">
@@ -64,44 +64,44 @@
 
         <!-- Main App Activity -->
         <activity
-            android:name="dev.patrickgold.florisboard.app.FlorisAppActivity"
+            android:name="dev.patrickgold.neuboard.app.NeuboardAppActivity"
             android:icon="@mipmap/floris_app_icon"
             android:label="@string/settings__title"
             android:launchMode="singleTask"
             android:roundIcon="@mipmap/floris_app_icon_round"
             android:windowSoftInputMode="adjustResize"
-            android:theme="@style/FlorisAppTheme.Splash"
+            android:theme="@style/NeuboardAppTheme.Splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="ui" android:host="florisboard" android:pathPrefix="/" />
+                <data android:scheme="ui" android:host="neuboard" android:pathPrefix="/" />
             </intent-filter>
             <intent-filter android:label="Import Extension">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data android:scheme="content"/>
-                <data android:mimeType="application/vnd.florisboard.extension+zip"/>
+                <data android:mimeType="application/vnd.neuboard.extension+zip"/>
                 <data android:mimeType="application/octet-stream"/><!-- Firefox looking at you :eyes: -->
             </intent-filter>
             <intent-filter android:label="Import Extension">
                 <action android:name="android.intent.action.SEND"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="application/vnd.florisboard.extension+zip"/>
+                <data android:mimeType="application/vnd.neuboard.extension+zip"/>
                 <data android:mimeType="application/octet-stream"/><!-- Firefox looking at you :eyes: -->
             </intent-filter>
         </activity>
 
         <!-- Using an activity alias to disable/enable the app icon in the launcher -->
         <activity-alias
-            android:name="dev.patrickgold.florisboard.SettingsLauncherAlias"
+            android:name="dev.patrickgold.neuboard.SettingsLauncherAlias"
             android:icon="@mipmap/floris_app_icon"
             android:label="@string/floris_app_name"
             android:launchMode="singleTask"
             android:roundIcon="@mipmap/floris_app_icon_round"
-            android:targetActivity="dev.patrickgold.florisboard.app.FlorisAppActivity"
-            android:theme="@style/FlorisAppTheme.Splash"
+            android:targetActivity="dev.patrickgold.neuboard.app.NeuboardAppActivity"
+            android:theme="@style/NeuboardAppTheme.Splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -111,7 +111,7 @@
 
         <!-- Crash Dialog Activity -->
         <activity
-            android:name="dev.patrickgold.florisboard.lib.crashutility.CrashDialogActivity"
+            android:name="dev.patrickgold.neuboard.lib.crashutility.CrashDialogActivity"
             android:icon="@mipmap/floris_app_icon"
             android:label="@string/crash_dialog__title"
             android:configChanges="orientation|screenSize"
@@ -119,8 +119,8 @@
 
         <!-- Copy to Clipboard Activity -->
         <activity
-            android:name="dev.patrickgold.florisboard.ime.clipboard.FlorisCopyToClipboardActivity"
-            android:theme="@style/FlorisAppTheme.Transparent"
+            android:name="dev.patrickgold.neuboard.ime.clipboard.NeuboardCopyToClipboardActivity"
+            android:theme="@style/NeuboardAppTheme.Transparent"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
@@ -131,7 +131,7 @@
 
         <!-- Clipboard Media File Provider -->
         <provider
-            android:name="dev.patrickgold.florisboard.ime.clipboard.provider.ClipboardMediaProvider"
+            android:name="dev.patrickgold.neuboard.ime.clipboard.provider.ClipboardMediaProvider"
             android:authorities="${applicationId}.provider.clipboard"
             android:grantUriPermissions="true"
             android:exported="false">
