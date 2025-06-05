@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import dev.patrickgold.neuboard.app.ext.ExtensionListScreenType
 import dev.patrickgold.neuboard.ime.theme.ThemeManager
 import dev.patrickgold.neuboard.ime.theme.ThemeMode
 import dev.patrickgold.neuboard.lib.compose.FlorisInfoCard
-import dev.patrickgold.neuboard.lib.compose.FlorisScreen
+import dev.patrickgold.neuboard.lib.compose.NeuScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.ext.ExtensionComponentName
 import dev.patrickgold.neuboard.themeManager
@@ -50,7 +50,7 @@ import dev.patrickgold.jetpref.datastore.ui.isMaterialYou
 import org.neuboard.lib.color.ColorMappings
 
 @Composable
-fun ThemeScreen() = FlorisScreen {
+fun ThemeScreen() = NeuScreen {
     title = stringRes(R.string.settings__theme__title)
     previewFieldVisible = true
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import dev.patrickgold.neuboard.R
-import dev.patrickgold.neuboard.app.florisPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.clipboardManager
 import dev.patrickgold.neuboard.ime.ImeUiMode
 import dev.patrickgold.neuboard.ime.clipboard.provider.ClipboardFileStorage
@@ -85,7 +85,7 @@ import dev.patrickgold.neuboard.ime.keyboard.FlorisImeSizing
 import dev.patrickgold.neuboard.ime.keyboard.NeuboardImeSizing
 import dev.patrickgold.neuboard.ime.media.KeyboardLikeButton
 import dev.patrickgold.neuboard.ime.text.keyboard.TextKeyData
-import dev.patrickgold.neuboard.ime.theme.FlorisImeUi
+import dev.patrickgold.neuboard.ime.theme.NeuboardImeUi
 import dev.patrickgold.neuboard.keyboardManager
 import dev.patrickgold.neuboard.lib.compose.autoMirrorForRtl
 import dev.patrickgold.neuboard.lib.compose.florisVerticalScroll
@@ -116,7 +116,7 @@ const val CLIPBOARD_HISTORY_NUM_GRID_COLUMNS_AUTO: Int = 0
 fun ClipboardInputLayout(
     modifier: Modifier = Modifier,
 ) {
-    val prefs by florisPreferenceModel()
+    val prefs by neuboardPreferenceModel()
     val context = LocalContext.current
     val clipboardManager by context.clipboardManager()
     val keyboardManager by context.keyboardManager()
@@ -133,7 +133,7 @@ fun ClipboardInputLayout(
 
     @Composable
     fun HeaderRow() {
-        SnyggRow(FlorisImeUi.ClipboardHeader.elementName,
+        SnyggRow(NeuboardImeUi.ClipboardHeader.elementName,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(NeuboardImeSizing.smartbarHeight),
@@ -143,7 +143,7 @@ fun ClipboardInputLayout(
                 .sizeIn(maxHeight = NeuboardImeSizing.smartbarHeight)
                 .aspectRatio(1f)
             SnyggIconButton(
-                elementName = FlorisImeUi.ClipboardHeaderButton.elementName,
+                elementName = NeuboardImeUi.ClipboardHeaderButton.elementName,
                 onClick = { keyboardManager.activeState.imeUiMode = ImeUiMode.TEXT },
                 modifier = sizeModifier,
             ) {
@@ -152,12 +152,12 @@ fun ClipboardInputLayout(
                 )
             }
             SnyggText(
-                elementName = FlorisImeUi.ClipboardHeaderText.elementName,
+                elementName = NeuboardImeUi.ClipboardHeaderText.elementName,
                 modifier = Modifier.weight(1f),
                 text = stringRes(R.string.clipboard__header_title),
             )
             SnyggIconButton(
-                elementName = FlorisImeUi.ClipboardHeaderButton.elementName,
+                elementName = NeuboardImeUi.ClipboardHeaderButton.elementName,
                 onClick = { prefs.clipboard.historyEnabled.set(!historyEnabled) },
                 modifier = sizeModifier.autoMirrorForRtl(),
                 enabled = !deviceLocked && !isPopupSurfaceActive(),
@@ -171,7 +171,7 @@ fun ClipboardInputLayout(
                 )
             }
             SnyggIconButton(
-                elementName = FlorisImeUi.ClipboardHeaderButton.elementName,
+                elementName = NeuboardImeUi.ClipboardHeaderButton.elementName,
                 onClick = { showClearAllHistory = true },
                 modifier = sizeModifier.autoMirrorForRtl(),
                 enabled = !deviceLocked && historyEnabled && history.all.isNotEmpty() && !isPopupSurfaceActive(),
@@ -181,7 +181,7 @@ fun ClipboardInputLayout(
                 )
             }
             SnyggIconButton(
-                elementName = FlorisImeUi.ClipboardHeaderButton.elementName,
+                elementName = NeuboardImeUi.ClipboardHeaderButton.elementName,
                 onClick = {
                     context.showShortToast("TODO: implement inline clip item editing")
                 },
@@ -196,7 +196,7 @@ fun ClipboardInputLayout(
                 modifier = sizeModifier,
                 inputEventDispatcher = keyboardManager.inputEventDispatcher,
                 keyData = TextKeyData.DELETE,
-                elementName = FlorisImeUi.ClipboardHeaderButton.elementName,
+                elementName = NeuboardImeUi.ClipboardHeaderButton.elementName,
             ) {
                 SnyggIcon(imageVector = Icons.AutoMirrored.Outlined.Backspace)
             }

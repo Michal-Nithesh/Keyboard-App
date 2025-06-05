@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ import dev.patrickgold.neuboard.ime.nlp.LanguagePackComponent
 import org.neuboard.lib.android.showLongToast
 import dev.patrickgold.neuboard.lib.compose.FlorisConfirmDeleteDialog
 import dev.patrickgold.neuboard.lib.compose.FlorisOutlinedBox
-import dev.patrickgold.neuboard.lib.compose.FlorisScreen
+import dev.patrickgold.neuboard.lib.compose.NeuScreen
 import dev.patrickgold.neuboard.lib.compose.FlorisTextButton
 import dev.patrickgold.neuboard.lib.compose.defaultFlorisOutlinedBox
 import dev.patrickgold.neuboard.lib.compose.rippleClickable
@@ -69,7 +69,7 @@ enum class LanguagePackManagerScreenAction(val id: String) {
 // TODO: this file is based on ThemeManagerScreen.kt and can arguably be merged.
 @OptIn(ExperimentalJetPrefDatastoreUi::class)
 @Composable
-fun LanguagePackManagerScreen(action: LanguagePackManagerScreenAction?) = FlorisScreen {
+fun LanguagePackManagerScreen(action: LanguagePackManagerScreenAction?) = NeuScreen {
     title = stringRes(when (action) {
         LanguagePackManagerScreenAction.MANAGE -> R.string.settings__localization__language_pack_title
         else -> error("LanguagePack manager screen action must not be null")

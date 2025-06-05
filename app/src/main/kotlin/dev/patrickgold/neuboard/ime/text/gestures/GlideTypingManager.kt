@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 The FlorisBoard Contributors
+ * Copyright (C) 2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package dev.patrickgold.neuboard.ime.text.gestures
 
 import android.content.Context
-import dev.patrickgold.neuboard.app.florisPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.ime.nlp.WordSuggestionCandidate
 import dev.patrickgold.neuboard.ime.text.keyboard.TextKey
 import dev.patrickgold.neuboard.keyboardManager
@@ -39,7 +39,7 @@ class GlideTypingManager(context: Context) : GlideTypingGesture.Listener {
         private const val MAX_SUGGESTION_COUNT = 8
     }
 
-    private val prefs by florisPreferenceModel()
+    private val prefs by neuboardPreferenceModel()
     private val keyboardManager by context.keyboardManager()
     private val nlpManager by context.nlpManager()
     private val subtypeManager by context.subtypeManager()

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import dev.patrickgold.neuboard.app.florisPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.appContext
 import dev.patrickgold.neuboard.editorInstance
 import dev.patrickgold.neuboard.ime.clipboard.provider.ClipboardHistoryDao
@@ -91,7 +91,7 @@ class ClipboardManager(
         }
     }
 
-    private val prefs by florisPreferenceModel()
+    private val prefs by neuboardPreferenceModel()
     private val appContext by context.appContext()
     private val editorInstance by context.editorInstance()
     private val systemClipboardManager = context.systemService(AndroidClipboardManager::class)

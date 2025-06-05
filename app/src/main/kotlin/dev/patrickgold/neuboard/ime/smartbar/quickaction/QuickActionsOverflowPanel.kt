@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022-2025 The FlorisBoard Contributors
+ * Copyright (C) 2022-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +30,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import dev.patrickgold.neuboard.R
-import dev.patrickgold.neuboard.app.florisPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.ime.keyboard.NeuboardImeSizing
-import dev.patrickgold.neuboard.ime.theme.FlorisImeUi
+import dev.patrickgold.neuboard.ime.theme.NeuboardImeUi
 import dev.patrickgold.neuboard.keyboardManager
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import org.neuboard.lib.snygg.ui.SnyggButton
@@ -42,7 +42,7 @@ import org.neuboard.lib.snygg.ui.SnyggText
 
 @Composable
 fun QuickActionsOverflowPanel() {
-    val prefs by florisPreferenceModel()
+    val prefs by neuboardPreferenceModel()
     val context = LocalContext.current
     val keyboardManager by context.keyboardManager()
 

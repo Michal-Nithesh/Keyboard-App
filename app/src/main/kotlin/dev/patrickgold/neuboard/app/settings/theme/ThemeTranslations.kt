@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022-2025 The FlorisBoard Contributors
+ * Copyright (C) 2022-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package dev.patrickgold.neuboard.app.settings.theme
 
 import android.content.Context
 import dev.patrickgold.neuboard.R
-import dev.patrickgold.neuboard.ime.theme.FlorisImeUi
+import dev.patrickgold.neuboard.ime.theme.NeuboardImeUi
 import dev.patrickgold.neuboard.lib.UnicodeCtrlChar
 import dev.patrickgold.jetpref.material.ui.ColorRepresentation
 import org.neuboard.lib.kotlin.simpleNameOrEnclosing
@@ -62,7 +62,7 @@ internal fun Context.translateElementName(rule: SnyggElementRule, level: SnyggLe
 internal fun Context.translateElementName(element: String, level: SnyggLevel): String? {
     return when (level) {
         SnyggLevel.DEVELOPER -> null
-        else -> FlorisImeUi.elementNamesToTranslation[element]?.let { getString(it) }
+        else -> NeuboardImeUi.elementNamesToTranslation[element]?.let { getString(it) }
     }
 }
 

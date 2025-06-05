@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The Neuboard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,20 +56,20 @@ sealed class SnyggPropertySet {
         val spec = SnyggSpec.propertySetSpecOf(rule)
         checkNotNull(spec) {
             "Encoder passed rule '$rule' for which no property spec is associated. Please report this bug in the " +
-                "neuboard issue tracker."
+                "florisboard issue tracker."
         }
         return when (spec.type) {
             SnyggSpecDecl.PropertySet.Type.SINGLE_SET -> {
                 check(this is SnyggSinglePropertySet) {
                     "Encoder called toJsonElement() for rule '$rule' on a MULTIPLE_SETS instance, even though the " +
-                        "spec requires a SINGLE_SET. Please report this bug in the neuboard issue tracker."
+                        "spec requires a SINGLE_SET. Please report this bug in the florisboard issue tracker."
                 }
                 this.toJsonElementSpecialized(rule, config)
             }
             SnyggSpecDecl.PropertySet.Type.MULTIPLE_SETS -> {
                 check(this is SnyggMultiplePropertySets) {
                     "Encoder called toJsonElement() for rule '$rule' on a SINGLE_SET instance, even though the " +
-                        "spec requires a MULTIPLE_SETS. Please report this bug in the neuboard issue tracker."
+                        "spec requires a MULTIPLE_SETS. Please report this bug in the florisboard issue tracker."
                 }
                 this.toJsonElementSpecialized(rule, config)
             }
@@ -85,7 +85,7 @@ sealed class SnyggPropertySet {
             val spec = SnyggSpec.propertySetSpecOf(rule)
             checkNotNull(spec) {
                 "Decoder passed rule '$rule' for which no property spec is associated. Please report this bug in the " +
-                    "neuboard issue tracker."
+                    "florisboard issue tracker."
             }
             return when (spec.type) {
                 SnyggSpecDecl.PropertySet.Type.SINGLE_SET -> {

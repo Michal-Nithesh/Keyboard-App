@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024-2025 The FlorisBoard Contributors
+ * Copyright (C) 2024-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,10 +40,10 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import dev.patrickgold.neuboard.app.florisPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.ime.nlp.ClipboardSuggestionCandidate
 import dev.patrickgold.neuboard.ime.nlp.SuggestionCandidate
-import dev.patrickgold.neuboard.ime.theme.FlorisImeUi
+import dev.patrickgold.neuboard.ime.theme.NeuboardImeUi
 import dev.patrickgold.neuboard.keyboardManager
 import dev.patrickgold.neuboard.lib.compose.conditional
 import dev.patrickgold.neuboard.lib.compose.florisHorizontalScroll
@@ -62,7 +62,7 @@ val CandidatesRowScrollbarHeight = 2.dp
 
 @Composable
 fun CandidatesRow(modifier: Modifier = Modifier) {
-    val prefs by florisPreferenceModel()
+    val prefs by neuboardPreferenceModel()
     val context = LocalContext.current
     val keyboardManager by context.keyboardManager()
     val nlpManager by context.nlpManager()

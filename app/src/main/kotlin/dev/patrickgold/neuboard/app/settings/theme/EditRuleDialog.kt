@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022-2025 The FlorisBoard Contributors
+ * Copyright (C) 2022-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,7 +82,7 @@ import dev.patrickgold.neuboard.ime.keyboard.computeImageVector
 import dev.patrickgold.neuboard.ime.keyboard.computeLabel
 import dev.patrickgold.neuboard.ime.text.key.KeyCode
 import dev.patrickgold.neuboard.ime.text.keyboard.TextKeyData
-import dev.patrickgold.neuboard.ime.theme.FlorisImeUi
+import dev.patrickgold.neuboard.ime.theme.NeuboardImeUi
 import dev.patrickgold.neuboard.keyboardManager
 import dev.patrickgold.neuboard.lib.NATIVE_NULLPTR
 import dev.patrickgold.neuboard.lib.compose.FlorisChip
@@ -130,7 +130,7 @@ internal fun EditRuleDialog(
         buildList {
             add(SnyggEmptyRuleForAdding)
             add(SnyggAnnotationRule.Font(fontName = ""))
-            FlorisImeUi.elementNames.forEach { name ->
+            NeuboardImeUi.elementNames.forEach { name ->
                 add(SnyggElementRule(name))
             }
         }
@@ -284,7 +284,7 @@ internal fun EditRuleDialog(
                 }
 
                 val codes = remember(currentRule) {
-                    attributes[FlorisImeUi.Attr.Code] ?: emptyList()
+                    attributes[NeuboardImeUi.Attr.Code] ?: emptyList()
                 }
                 var editCodeDialogValue by rememberSaveable { mutableStateOf<String?>(null) }
                 val initCodeValue = editCodeDialogValue
@@ -294,12 +294,12 @@ internal fun EditRuleDialog(
                         checkExisting = { codes.contains(it) },
                         onAdd = {
                             currentRule = copy(
-                                attributes = attributes.including(FlorisImeUi.Attr.Code to it)
+                                attributes = attributes.including(NeuboardImeUi.Attr.Code to it)
                             )
                         },
                         onDelete = {
                             currentRule = copy(
-                                attributes = attributes.excluding(FlorisImeUi.Attr.Code to it)
+                                attributes = attributes.excluding(NeuboardImeUi.Attr.Code to it)
                             )
                         },
                         onDismiss = { editCodeDialogValue = null },
@@ -336,7 +336,7 @@ internal fun EditRuleDialog(
                 EnumLikeAttributeBox(
                     text = stringRes(R.string.settings__theme_editor__rule_modes),
                     enumClass = KeyboardMode::class,
-                    attribute = FlorisImeUi.Attr.Mode,
+                    attribute = NeuboardImeUi.Attr.Mode,
                     attributes = attributes,
                     setAttributes = { currentRule = copy(attributes = it) },
                     level = level,
@@ -345,7 +345,7 @@ internal fun EditRuleDialog(
                 EnumLikeAttributeBox(
                     text = stringRes(R.string.settings__theme_editor__rule_shift_states),
                     enumClass = InputShiftState::class,
-                    attribute = FlorisImeUi.Attr.ShiftState,
+                    attribute = NeuboardImeUi.Attr.ShiftState,
                     attributes = attributes,
                     setAttributes = { currentRule = copy(attributes = it) },
                     level = level,

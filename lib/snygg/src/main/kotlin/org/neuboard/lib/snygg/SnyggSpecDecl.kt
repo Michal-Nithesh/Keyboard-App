@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 The Neuboard Contributors
+ * Copyright (C) 2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,13 @@
 package org.neuboard.lib.snygg
 
 import org.neuboard.lib.snygg.value.SnyggValueEncoder
-import org.neuboard.lib.snygg.PropertySet
-import org.neuboard.lib.snygg.Property
 
 enum class InheritBehavior {
     IMPLICITLY_OR_EXPLICITLY,
     EXPLICITLY_ONLY,
 }
 
-open class SnyggSpecDecl(configure: SnyggSpecDeclBuilder.() -> Unit) {
+open class SnyggSpecDecl internal constructor(configure: SnyggSpecDeclBuilder.() -> Unit) {
     internal val annotationSpecs: Map<RuleDecl, PropertySet>
     internal val elementsSpec: PropertySet
     internal val meta: JsonSchemaMeta
@@ -74,70 +72,72 @@ open class SnyggSpecDecl(configure: SnyggSpecDeclBuilder.() -> Unit) {
         val pattern: Regex
     }
 
-    // --- Public top-level SnyggSpecDeclBuilder ---
-    public class SnyggSpecDeclBuilder(
-        private val _allEncoders: MutableSet<SnyggValueEncoder> = mutableSetOf()
-    ) {
-        private val annotationSpecs = mutableMapOf<SnyggSpecDecl.RuleDecl, PropertySetBuilder>()
-        private val elementsSpec = PropertySetBuilder(type = SnyggSpecDecl.PropertySet.Type.SINGLE_SET, _allEncoders)
+    internal inner class SnyggSpecDeclBuilder {
+        private val annotationSpecs = mutableMapOf<RuleDecl, PropertySetBuilder>()
+        private val elementsSpec = PropertySetBuilder(type = PropertySet.Type.SINGLE_SET)
         val meta = JsonSchemaMetaBuilder()
 
-        fun annotation(ruleDecl: SnyggSpecDecl.RuleDecl) = SingleOrMultiple(ruleDecl, annotationSpecs, _allEncoders)
+        fun annotation(ruleDecl: RuleDecl) = SingleOrMultiple(ruleDecl)
 
         fun elements(configure: PropertySetBuilder.() -> Unit) {
             elementsSpec.configure()
         }
 
-        fun build(): Triple<Map<SnyggSpecDecl.RuleDecl, SnyggSpecDecl.PropertySet>, SnyggSpecDecl.PropertySet, JsonSchemaMeta> {
+        fun build(): Triple<Map<RuleDecl, PropertySet>, PropertySet, JsonSchemaMeta> {
             val annotationSpecs = annotationSpecs.mapValues { (_, builder) ->
                 builder.build()
             }
             val elementsSpec = elementsSpec.build()
             return Triple(annotationSpecs, elementsSpec, meta.build())
         }
-    }
 
-    public class SingleOrMultiple(
-        private val ruleDecl: SnyggSpecDecl.RuleDecl,
-        private val annotationSpecs: MutableMap<SnyggSpecDecl.RuleDecl, PropertySetBuilder>,
-        private val _allEncoders: MutableSet<SnyggValueEncoder>
-    ) {
-        init {
-            check(!annotationSpecs.containsKey(ruleDecl)) {
-                "Duplicate definition of $ruleDecl"
+        internal inner class SingleOrMultiple(private val ruleDecl: RuleDecl) {
+            init {
+                check(!annotationSpecs.containsKey(ruleDecl)) {
+                    "Duplicate definition of $ruleDecl"
+                }
+            }
+
+            fun singleSet(configure: PropertySetBuilder.() -> Unit) {
+                val annotationSpec = PropertySetBuilder(type = PropertySet.Type.SINGLE_SET)
+                annotationSpec.configure()
+                annotationSpecs[ruleDecl] = annotationSpec
+            }
+
+            fun multipleSets(configure: PropertySetBuilder.() -> Unit) {
+                val annotationSpec = PropertySetBuilder(type = PropertySet.Type.MULTIPLE_SETS)
+                annotationSpec.configure()
+                annotationSpecs[ruleDecl] = annotationSpec
             }
         }
+    }
 
-        fun singleSet(configure: PropertySetBuilder.() -> Unit) {
-            val annotationSpec = PropertySetBuilder(type = SnyggSpecDecl.PropertySet.Type.SINGLE_SET, _allEncoders)
-            annotationSpec.configure()
-            annotationSpecs[ruleDecl] = annotationSpec
-        }
-
-        fun multipleSets(configure: PropertySetBuilder.() -> Unit) {
-            val annotationSpec = PropertySetBuilder(type = SnyggSpecDecl.PropertySet.Type.MULTIPLE_SETS, _allEncoders)
-            annotationSpec.configure()
-            annotationSpecs[ruleDecl] = annotationSpec
+    data class PropertySet(
+        val type: Type,
+        val patternProperties: Map<Regex, Property>,
+        val properties: Map<String, Property>,
+        val meta: JsonSchemaMeta,
+    ) {
+        enum class Type {
+            SINGLE_SET,
+            MULTIPLE_SETS;
         }
     }
 
-    public class PropertySetBuilder(
-        private val type: SnyggSpecDecl.PropertySet.Type,
-        private val _allEncoders: MutableSet<SnyggValueEncoder> = mutableSetOf()
-    ) {
+    internal inner class PropertySetBuilder(private val type: PropertySet.Type) {
         private val patternProperties = mutableMapOf<Regex, PropertyBuilder>()
         private val properties = mutableMapOf<String, PropertyBuilder>()
         val meta = JsonSchemaMetaBuilder()
         private val implicitEncoders = mutableSetOf<SnyggValueEncoder>()
 
         fun pattern(regex: Regex, configure: PropertyBuilder.() -> Unit) {
-            val builder = patternProperties.getOrDefault(regex, PropertyBuilder(_allEncoders))
+            val builder = patternProperties.getOrDefault(regex, PropertyBuilder())
             builder.configure()
             patternProperties[regex] = builder
         }
 
         operator fun String.invoke(configure: PropertyBuilder.() -> Unit) {
-            val builder = properties.getOrDefault(this, PropertyBuilder(_allEncoders))
+            val builder = properties.getOrDefault(this, PropertyBuilder())
             builder.configure()
             properties[this] = builder
         }
@@ -146,7 +146,7 @@ open class SnyggSpecDecl(configure: SnyggSpecDeclBuilder.() -> Unit) {
             implicitEncoders.configure()
         }
 
-        fun build(): SnyggSpecDecl.PropertySet {
+        fun build(): PropertySet {
             _allEncoders.addAll(implicitEncoders)
             val patternPropertySpecs = patternProperties.mapValues { (_, builder) ->
                 builder.build(implicitEncoders)
@@ -154,7 +154,7 @@ open class SnyggSpecDecl(configure: SnyggSpecDeclBuilder.() -> Unit) {
             val propertySpecs = properties.mapValues { (_, builder) ->
                 builder.build(implicitEncoders)
             }
-            return SnyggSpecDecl.PropertySet(
+            return PropertySet(
                 type = type,
                 patternProperties = patternPropertySpecs,
                 properties = propertySpecs,
@@ -163,9 +163,18 @@ open class SnyggSpecDecl(configure: SnyggSpecDeclBuilder.() -> Unit) {
         }
     }
 
-    public class PropertyBuilder(
-        private val _allEncoders: MutableSet<SnyggValueEncoder> = mutableSetOf()
+    data class Property(
+        val encoders: Set<SnyggValueEncoder>,
+        val inheritBehavior: InheritBehavior,
+        val required: Boolean,
+        val meta: JsonSchemaMeta,
     ) {
+        fun inheritsImplicitly(): Boolean {
+            return inheritBehavior == InheritBehavior.IMPLICITLY_OR_EXPLICITLY
+        }
+    }
+
+    internal inner class PropertyBuilder {
         private val encoders: MutableSet<SnyggValueEncoder> = mutableSetOf()
         private var inheritBehavior: InheritBehavior = InheritBehavior.EXPLICITLY_ONLY
         private var required = false
@@ -189,41 +198,17 @@ open class SnyggSpecDecl(configure: SnyggSpecDeclBuilder.() -> Unit) {
             required = true
         }
 
-        fun build(implicitEncoders: Set<SnyggValueEncoder>): SnyggSpecDecl.Property {
+        fun build(implicitEncoders: Set<SnyggValueEncoder>): Property {
             val encoders = if (isAny) {
                 _allEncoders
             } else {
                 buildSet {
                     addAll(implicitEncoders)
-                    addAll(this@PropertyBuilder.encoders)
+                    addAll(encoders)
                 }
             }
-            return SnyggSpecDecl.Property(encoders, inheritBehavior, required, meta.build())
+            return Property(encoders, inheritBehavior, required, meta.build())
         }
-    }
-}
-
-// --- Public top-level PropertySet and Property ---
-public data class PropertySet(
-    val type: PropertySet.Type,
-    val patternProperties: Map<Regex, Property>,
-    val properties: Map<String, Property>,
-    val meta: JsonSchemaMeta,
-) {
-    public enum class Type {
-        SINGLE_SET,
-        MULTIPLE_SETS;
-    }
-}
-
-public data class Property(
-    val encoders: Set<SnyggValueEncoder>,
-    val inheritBehavior: InheritBehavior,
-    val required: Boolean,
-    val meta: JsonSchemaMeta,
-) {
-    fun inheritsImplicitly(): Boolean {
-        return inheritBehavior == InheritBehavior.IMPLICITLY_OR_EXPLICITLY
     }
 }
 

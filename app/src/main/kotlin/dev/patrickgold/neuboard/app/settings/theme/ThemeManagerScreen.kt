@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.extensionManager
 import dev.patrickgold.neuboard.ime.theme.ThemeExtensionComponent
 import dev.patrickgold.neuboard.lib.compose.FlorisOutlinedBox
-import dev.patrickgold.neuboard.lib.compose.FlorisScreen
+import dev.patrickgold.neuboard.lib.compose.NeuScreen
 import dev.patrickgold.neuboard.lib.compose.defaultFlorisOutlinedBox
 import dev.patrickgold.neuboard.lib.compose.rippleClickable
 import dev.patrickgold.neuboard.lib.compose.stringRes
@@ -52,7 +52,7 @@ enum class ThemeManagerScreenAction(val id: String) {
 }
 
 @Composable
-fun ThemeManagerScreen(action: ThemeManagerScreenAction?) = FlorisScreen {
+fun ThemeManagerScreen(action: ThemeManagerScreenAction?) = NeuScreen {
     title = stringRes(when (action) {
         ThemeManagerScreenAction.SELECT_DAY -> R.string.settings__theme_manager__title_day
         ThemeManagerScreenAction.SELECT_NIGHT -> R.string.settings__theme_manager__title_night

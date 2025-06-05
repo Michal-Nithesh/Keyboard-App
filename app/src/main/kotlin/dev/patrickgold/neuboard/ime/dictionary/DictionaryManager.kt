@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package dev.patrickgold.neuboard.ime.dictionary
 
 import android.content.Context
 import androidx.room.Room
-import dev.patrickgold.neuboard.app.florisPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.ime.nlp.SuggestionCandidate
 import dev.patrickgold.neuboard.ime.nlp.WordSuggestionCandidate
 import dev.patrickgold.neuboard.lib.FlorisLocale
@@ -29,7 +29,7 @@ import java.lang.ref.WeakReference
  */
 class DictionaryManager private constructor(context: Context) {
     private val applicationContext: WeakReference<Context> = WeakReference(context.applicationContext ?: context)
-    private val prefs by florisPreferenceModel()
+    private val prefs by neuboardPreferenceModel()
 
     private var florisUserDictionaryDatabase: FlorisUserDictionaryDatabase? = null
     private var systemUserDictionaryDatabase: SystemUserDictionaryDatabase? = null

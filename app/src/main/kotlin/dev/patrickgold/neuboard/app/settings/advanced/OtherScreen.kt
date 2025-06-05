@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ import dev.patrickgold.neuboard.app.Routes
 import dev.patrickgold.neuboard.app.enumDisplayEntriesOf
 import dev.patrickgold.neuboard.ime.core.DisplayLanguageNamesIn
 import dev.patrickgold.neuboard.lib.FlorisLocale
-import dev.patrickgold.neuboard.lib.compose.FlorisScreen
+import dev.patrickgold.neuboard.lib.compose.NeuScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.model.observeAsState
 import dev.patrickgold.jetpref.datastore.ui.ColorPickerPreference
@@ -50,7 +50,7 @@ import org.neuboard.lib.color.ColorMappings
 
 
 @Composable
-fun OtherScreen() = FlorisScreen {
+fun OtherScreen() = NeuScreen {
     title = stringRes(R.string.settings__other__title)
     previewFieldVisible = false
 

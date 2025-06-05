@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import android.content.Context
 import android.os.SystemClock
 import android.util.LruCache
 import androidx.lifecycle.MutableLiveData
-import dev.patrickgold.neuboard.app.florisPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.clipboardManager
 import dev.patrickgold.neuboard.editorInstance
 import dev.patrickgold.neuboard.ime.clipboard.provider.ClipboardItem
@@ -54,7 +54,7 @@ private const val BLANK_STR_PATTERN = "^\\s*$"
 class NlpManager(context: Context) {
     private val blankStrRegex = Regex(BLANK_STR_PATTERN)
 
-    private val prefs by florisPreferenceModel()
+    private val prefs by neuboardPreferenceModel()
     private val clipboardManager by context.clipboardManager()
     private val editorInstance by context.editorInstance()
     private val keyboardManager by context.keyboardManager()

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package dev.patrickgold.neuboard.app.settings.clipboard
 import androidx.compose.runtime.Composable
 import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.ime.clipboard.CLIPBOARD_HISTORY_NUM_GRID_COLUMNS_AUTO
-import dev.patrickgold.neuboard.lib.compose.FlorisScreen
+import dev.patrickgold.neuboard.lib.compose.NeuScreen
 import dev.patrickgold.neuboard.lib.compose.pluralsRes
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.ui.DialogSliderPreference
@@ -30,7 +30,7 @@ import org.neuboard.lib.android.AndroidVersion
 
 @OptIn(ExperimentalJetPrefDatastoreUi::class)
 @Composable
-fun ClipboardScreen() = FlorisScreen {
+fun ClipboardScreen() = NeuScreen {
     title = stringRes(R.string.settings__clipboard__title)
     previewFieldVisible = true
 

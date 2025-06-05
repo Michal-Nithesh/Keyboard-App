@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022-2025 The FlorisBoard Contributors
+ * Copyright (C) 2022-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import dev.patrickgold.neuboard.app.florisPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.ime.smartbar.SmartbarLayout
 import dev.patrickgold.neuboard.ime.text.keyboard.TextKeyData
 import dev.patrickgold.neuboard.keyboardManager
@@ -42,7 +42,7 @@ fun QuickActionsRow(
     elementName: String,
     modifier: Modifier = Modifier,
 ) = with(LocalDensity.current) {
-    val prefs by florisPreferenceModel()
+    val prefs by neuboardPreferenceModel()
     val context = LocalContext.current
     val keyboardManager by context.keyboardManager()
 

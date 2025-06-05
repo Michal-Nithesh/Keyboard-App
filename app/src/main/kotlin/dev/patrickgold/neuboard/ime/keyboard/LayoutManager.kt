@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package dev.patrickgold.neuboard.ime.keyboard
 
 import android.content.Context
-import dev.patrickgold.neuboard.app.florisPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.appContext
 import dev.patrickgold.neuboard.extensionManager
 import dev.patrickgold.neuboard.ime.core.Subtype
@@ -78,7 +78,7 @@ data class DebugLayoutComputationResult(
  * Class which manages layout loading and caching.
  */
 class LayoutManager(context: Context) {
-    private val prefs by florisPreferenceModel()
+    private val prefs by neuboardPreferenceModel()
     private val appContext by context.appContext()
     private val extensionManager by context.extensionManager()
     private val keyboardManager by context.keyboardManager()

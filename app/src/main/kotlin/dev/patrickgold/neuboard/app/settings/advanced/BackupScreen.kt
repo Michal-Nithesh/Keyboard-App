@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ import dev.patrickgold.neuboard.ime.clipboard.provider.ItemType
 import dev.patrickgold.neuboard.lib.cache.CacheManager
 import dev.patrickgold.neuboard.lib.compose.FlorisButtonBar
 import dev.patrickgold.neuboard.lib.compose.FlorisOutlinedBox
-import dev.patrickgold.neuboard.lib.compose.FlorisScreen
+import dev.patrickgold.neuboard.lib.compose.NeuScreen
 import dev.patrickgold.neuboard.lib.compose.defaultFlorisOutlinedBox
 import dev.patrickgold.neuboard.lib.compose.rippleClickable
 import dev.patrickgold.neuboard.lib.compose.stringRes
@@ -129,7 +129,7 @@ object Backup {
 }
 
 @Composable
-fun BackupScreen() = FlorisScreen {
+fun BackupScreen() = NeuScreen {
     title = stringRes(R.string.backup_and_restore__back_up__title)
     previewFieldVisible = false
 

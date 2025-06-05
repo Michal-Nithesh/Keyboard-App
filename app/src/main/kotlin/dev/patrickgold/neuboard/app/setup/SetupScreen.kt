@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,8 +46,8 @@ import dev.patrickgold.neuboard.app.LocalNavController
 import dev.patrickgold.neuboard.app.Routes
 import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.lib.compose.FlorisBulletSpacer
-import dev.patrickgold.neuboard.lib.compose.FlorisScreen
-import dev.patrickgold.neuboard.lib.compose.FlorisScreenScope
+import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuScreenScope
 import dev.patrickgold.neuboard.lib.compose.FlorisStep
 import dev.patrickgold.neuboard.lib.compose.FlorisStepLayout
 import dev.patrickgold.neuboard.lib.compose.FlorisStepState
@@ -62,7 +62,7 @@ import org.neuboard.lib.android.AndroidVersion
 
 
 @Composable
-fun SetupScreen() = FlorisScreen {
+fun SetupScreen() = NeuScreen {
     title = stringRes(R.string.setup__title)
     navigationIconVisible = false
     scrollable = false
@@ -96,7 +96,7 @@ fun SetupScreen() = FlorisScreen {
 }
 
 @Composable
-private fun FlorisScreenScope.content(
+private fun NeuScreenScope.content(
     isFlorisBoardEnabled: Boolean,
     isFlorisBoardSelected: Boolean,
     context: Context,

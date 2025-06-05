@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022-2025 The FlorisBoard Contributors
+ * Copyright (C) 2022-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.app.apptheme.Shapes
 import dev.patrickgold.neuboard.app.ext.ExtensionComponentView
 import dev.patrickgold.neuboard.app.neuboardPreferenceModel
-import dev.patrickgold.neuboard.ime.theme.FlorisImeUi
+import dev.patrickgold.neuboard.ime.theme.NeuboardImeUi
 import dev.patrickgold.neuboard.ime.theme.ThemeExtensionComponent
 import dev.patrickgold.neuboard.ime.theme.ThemeExtensionComponentEditor
 import dev.patrickgold.neuboard.ime.theme.ThemeExtensionEditor
@@ -82,7 +82,7 @@ import dev.patrickgold.neuboard.ime.theme.extPreviewTheme
 import dev.patrickgold.neuboard.lib.cache.CacheManager
 import dev.patrickgold.neuboard.lib.compose.FlorisIconButton
 import dev.patrickgold.neuboard.lib.compose.FlorisOutlinedBox
-import dev.patrickgold.neuboard.lib.compose.FlorisScreen
+import dev.patrickgold.neuboard.lib.compose.NeuScreen
 import dev.patrickgold.neuboard.lib.compose.PreviewKeyboardField
 import dev.patrickgold.neuboard.lib.compose.Validation
 import dev.patrickgold.neuboard.lib.compose.defaultFlorisOutlinedBox
@@ -141,7 +141,7 @@ private enum class StylesheetLoadingStrategy {
 fun ThemeEditorScreen(
     workspace: CacheManager.ExtEditorWorkspace<*>,
     editor: ThemeExtensionComponentEditor,
-) = FlorisScreen {
+) = NeuScreen {
     title = stringRes(R.string.ext__editor__edit_component__title_theme)
     scrollable = false
 
@@ -839,8 +839,8 @@ private object CustomRuleComparator : Comparator<SnyggRule> {
         return if (a !is SnyggElementRule || b !is SnyggElementRule || a.elementName == b.elementName) {
             a.compareTo(b)
         } else {
-            val aOrdinal = FlorisImeUi.elementNamesToOrdinals[a.elementName]
-            val bOrdinal = FlorisImeUi.elementNamesToOrdinals[b.elementName]
+            val aOrdinal = NeuboardImeUi.elementNamesToOrdinals[a.elementName]
+            val bOrdinal = NeuboardImeUi.elementNamesToOrdinals[b.elementName]
             if (aOrdinal == null && bOrdinal == null) {
                 a.elementName.compareTo(b.elementName)
             } else if (bOrdinal == null) {

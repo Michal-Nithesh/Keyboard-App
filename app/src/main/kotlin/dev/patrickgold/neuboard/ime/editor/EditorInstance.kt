@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import android.view.KeyEvent
 import androidx.core.view.inputmethod.InputConnectionCompat
 import androidx.core.view.inputmethod.InputContentInfoCompat
 import dev.patrickgold.neuboard.NeuboardImeService
-import dev.patrickgold.neuboard.app.florisPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.appContext
 import dev.patrickgold.neuboard.clipboardManager
 import dev.patrickgold.neuboard.ime.clipboard.provider.ClipboardFileStorage
@@ -51,7 +51,7 @@ class EditorInstance(context: Context) : AbstractEditorInstance(context) {
         private const val SPACE = " "
     }
 
-    private val prefs by florisPreferenceModel()
+    private val prefs by neuboardPreferenceModel()
     private val appContext by context.appContext()
     private val clipboardManager by context.clipboardManager()
     private val keyboardManager by context.keyboardManager()

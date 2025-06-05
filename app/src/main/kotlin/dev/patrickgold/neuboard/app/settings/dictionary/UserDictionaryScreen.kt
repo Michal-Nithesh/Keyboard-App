@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ import dev.patrickgold.neuboard.ime.dictionary.UserDictionaryEntry
 import dev.patrickgold.neuboard.ime.dictionary.UserDictionaryValidation
 import dev.patrickgold.neuboard.lib.FlorisLocale
 import dev.patrickgold.neuboard.lib.compose.FlorisIconButton
-import dev.patrickgold.neuboard.lib.compose.FlorisScreen
+import dev.patrickgold.neuboard.lib.compose.NeuScreen
 import dev.patrickgold.neuboard.lib.compose.Validation
 import dev.patrickgold.neuboard.lib.compose.rippleClickable
 import dev.patrickgold.neuboard.lib.compose.stringRes
@@ -80,7 +80,7 @@ enum class UserDictionaryType(val id: String) {
 }
 
 @Composable
-fun UserDictionaryScreen(type: UserDictionaryType) = FlorisScreen {
+fun UserDictionaryScreen(type: UserDictionaryType) = NeuScreen {
     title = stringRes(when (type) {
         UserDictionaryType.FLORIS -> R.string.settings__udm__title_floris
         UserDictionaryType.SYSTEM -> R.string.settings__udm__title_system

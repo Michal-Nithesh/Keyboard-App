@@ -47,8 +47,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import dev.patrickgold.neuboard.R
-import dev.patrickgold.neuboard.app.apptheme.FlorisAppTheme
-import dev.patrickgold.neuboard.app.florisPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
+import dev.patrickgold.neuboard.app.apptheme.NeuAppTheme
 import dev.patrickgold.neuboard.lib.compose.ProvideLocalizedResources
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.model.observeAsState
@@ -87,7 +87,7 @@ class NeuboardCopyToClipboardActivity : ComponentActivity() {
         val type = intent.type
         val action = intent.action
 
-        val prefs by florisPreferenceModel()
+        val prefs by neuboardPreferenceModel()
 
         if (Intent.ACTION_SEND != action || type == null) {
             error = CopyToClipboardError.UNKNOWN_ERROR
@@ -121,7 +121,7 @@ class NeuboardCopyToClipboardActivity : ComponentActivity() {
         setContent {
             ProvideLocalizedResources(this, forceLayoutDirection = LayoutDirection.Ltr) {
                 val theme by prefs.other.settingsTheme.observeAsState()
-                FlorisAppTheme(theme) {
+                NeuAppTheme(theme) {
                     BottomSheet {
                         Row {
                             Text(

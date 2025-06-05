@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowInsetsCompat
 import dev.patrickgold.neuboard.R
-import dev.patrickgold.neuboard.app.florisPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.ime.onehanded.OneHandedMode
 import dev.patrickgold.neuboard.ime.smartbar.ExtendedActionsPlacement
 import dev.patrickgold.neuboard.ime.smartbar.SmartbarLayout
@@ -80,7 +80,7 @@ object NeuboardImeSizing {
 
     @Composable
     fun smartbarUiHeight(): Dp {
-        val prefs by florisPreferenceModel()
+        val prefs by neuboardPreferenceModel()
         val smartbarEnabled by prefs.smartbar.enabled.observeAsState()
         val smartbarLayout by prefs.smartbar.layout.observeAsState()
         val extendedActionsExpanded by prefs.smartbar.extendedActionsExpanded.observeAsState()
@@ -113,7 +113,7 @@ object NeuboardImeSizing {
 
 @Composable
 fun ProvideKeyboardRowBaseHeight(content: @Composable () -> Unit) {
-    val prefs by florisPreferenceModel()
+    val prefs by neuboardPreferenceModel()
     val resources = LocalContext.current.resources
     val configuration = LocalConfiguration.current
 

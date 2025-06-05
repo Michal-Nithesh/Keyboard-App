@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,7 +77,7 @@ import dev.patrickgold.neuboard.lib.FlorisLocale
 import dev.patrickgold.neuboard.lib.compose.FlorisButtonBar
 import dev.patrickgold.neuboard.lib.compose.FlorisDropdownLikeButton
 import dev.patrickgold.neuboard.lib.compose.FlorisDropdownMenu
-import dev.patrickgold.neuboard.lib.compose.FlorisScreen
+import dev.patrickgold.neuboard.lib.compose.NeuScreen
 import dev.patrickgold.neuboard.lib.compose.florisScrollbar
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.ext.ExtensionComponentName
@@ -176,7 +176,7 @@ private class SubtypeEditorState(init: Subtype?) {
 }
 
 @Composable
-fun SubtypeEditorScreen(id: Long?) = FlorisScreen {
+fun SubtypeEditorScreen(id: Long?) = NeuScreen {
     title = stringRes(if (id == null) {
         R.string.settings__localization__subtype_add_title
     } else {

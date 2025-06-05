@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import android.media.AudioManager
 import android.provider.Settings
 import android.view.HapticFeedbackConstants
 import androidx.compose.runtime.staticCompositionLocalOf
-import dev.patrickgold.neuboard.app.florisPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.ime.keyboard.KeyData
 import dev.patrickgold.neuboard.ime.text.key.KeyCode
 import dev.patrickgold.neuboard.ime.text.keyboard.TextKeyData
@@ -46,7 +46,7 @@ class InputFeedbackController private constructor(private val ims: InputMethodSe
         fun new(ims: InputMethodService) = InputFeedbackController(ims)
     }
 
-    private val prefs by florisPreferenceModel()
+    private val prefs by neuboardPreferenceModel()
 
     private val audioManager = ims.systemServiceOrNull(AudioManager::class)
     private val vibrator = ims.systemVibratorOrNull()

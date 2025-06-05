@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ import dev.patrickgold.neuboard.ime.core.DisplayLanguageNamesIn
 import dev.patrickgold.neuboard.ime.core.Subtype
 import dev.patrickgold.neuboard.ime.keyboard.LayoutType
 import dev.patrickgold.neuboard.keyboardManager
-import dev.patrickgold.neuboard.lib.compose.FlorisScreen
+import dev.patrickgold.neuboard.lib.compose.NeuScreen
 import dev.patrickgold.neuboard.lib.compose.FlorisWarningCard
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.observeAsNonNullState
@@ -69,7 +69,7 @@ internal val SubtypeSaver = Saver<MutableState<Subtype?>, String>(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun LocalizationScreen() = FlorisScreen {
+fun LocalizationScreen() = NeuScreen {
     title = stringRes(R.string.settings__localization__title)
     previewFieldVisible = true
     iconSpaceReserved = false

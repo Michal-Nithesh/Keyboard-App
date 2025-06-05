@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022-2025 The FlorisBoard Contributors
+ * Copyright (C) 2022-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import android.view.ViewConfiguration
 import androidx.collection.SparseArrayCompat
 import androidx.collection.isNotEmpty
 import androidx.collection.set
-import dev.patrickgold.neuboard.app.florisPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.ime.keyboard.KeyData
 import dev.patrickgold.neuboard.ime.text.gestures.SwipeAction
 import dev.patrickgold.neuboard.ime.text.key.KeyCode
@@ -48,7 +48,7 @@ class InputEventDispatcher private constructor(private val repeatableKeyCodes: I
         fun new(repeatableKeyCodes: IntArray = intArrayOf()) = InputEventDispatcher(repeatableKeyCodes.clone())
     }
 
-    private val prefs by florisPreferenceModel()
+    private val prefs by neuboardPreferenceModel()
     private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 
     private val pressedKeys = guardedByLock { SparseArrayCompat<PressedKeyInfo>() }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package dev.patrickgold.neuboard.ime.core
 
 import android.content.Context
-import dev.patrickgold.neuboard.app.florisPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.ime.keyboard.CurrencySet
 import dev.patrickgold.neuboard.keyboardManager
 import dev.patrickgold.neuboard.lib.FlorisLocale
@@ -38,7 +38,7 @@ val SubtypeJsonConfig = Json {
  * helper methods for the in-keyboard language switch process.
  */
 class SubtypeManager(context: Context) {
-    private val prefs by florisPreferenceModel()
+    private val prefs by neuboardPreferenceModel()
     private val keyboardManager by context.keyboardManager()
 
     private val _subtypesFlow = MutableStateFlow(listOf<Subtype>())

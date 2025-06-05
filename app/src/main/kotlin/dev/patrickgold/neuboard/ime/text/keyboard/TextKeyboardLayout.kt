@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ import dev.patrickgold.neuboard.ime.text.gestures.SwipeGesture
 import dev.patrickgold.neuboard.ime.text.key.KeyCode
 import dev.patrickgold.neuboard.ime.text.key.KeyType
 import dev.patrickgold.neuboard.ime.text.key.KeyVariation
-import dev.patrickgold.neuboard.ime.theme.FlorisImeUi
+import dev.patrickgold.neuboard.ime.theme.NeuboardImeUi
 import dev.patrickgold.neuboard.keyboardManager
 import dev.patrickgold.neuboard.lib.FlorisRect
 import dev.patrickgold.neuboard.lib.Pointer
@@ -114,7 +114,7 @@ fun TextKeyboardLayout(
     val glideEnabled = glideEnabledInternal && evaluator.editorInfo.isRichInputEditor &&
         evaluator.state.keyVariation != KeyVariation.PASSWORD
     val glideShowTrail by prefs.glide.showTrail.observeAsState()
-    val glideTrailStyle = rememberSnyggThemeQuery(FlorisImeUi.GlideTrail.elementName)
+    val glideTrailStyle = rememberSnyggThemeQuery(NeuboardImeUi.GlideTrail.elementName)
     val glideTrailColor = glideTrailStyle.foreground(default = Color.Green)
 
     val controller = remember { TextKeyboardLayoutController(context) }.also {
@@ -313,9 +313,9 @@ private fun TextKeyButton(
     debugShowTouchBoundaries: Boolean,
 ) = with(LocalDensity.current) {
     val attributes = mapOf(
-        FlorisImeUi.Attr.Code to key.computedData.code,
-        FlorisImeUi.Attr.Mode to evaluator.keyboard.mode.toString(),
-        FlorisImeUi.Attr.ShiftState to evaluator.state.inputShiftState.toString(),
+        NeuboardImeUi.Attr.Code to key.computedData.code,
+        NeuboardImeUi.Attr.Mode to evaluator.keyboard.mode.toString(),
+        NeuboardImeUi.Attr.ShiftState to evaluator.state.inputShiftState.toString(),
     )
     val selector = when {
         !key.isEnabled -> SnyggSelector.DISABLED
@@ -326,7 +326,7 @@ private fun TextKeyButton(
         key.visibleBounds.size.toDpSize()
     }
     SnyggBox(
-        FlorisImeUi.Key.elementName,
+        NeuboardImeUi.Key.elementName,
         attributes = attributes,
         selector = selector,
         modifier = Modifier
@@ -354,7 +354,7 @@ private fun TextKeyButton(
         }
         key.hintedLabel?.let { hintedLabel ->
             SnyggText(
-                elementName = FlorisImeUi.KeyHint.elementName,
+                elementName = NeuboardImeUi.KeyHint.elementName,
                 attributes = attributes,
                 selector = selector,
                 modifier = Modifier

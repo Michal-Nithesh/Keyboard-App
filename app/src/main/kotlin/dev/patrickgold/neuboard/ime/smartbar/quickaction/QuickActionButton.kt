@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022-2025 The FlorisBoard Contributors
+ * Copyright (C) 2022-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ import dev.patrickgold.neuboard.ime.keyboard.ComputingEvaluator
 import dev.patrickgold.neuboard.ime.keyboard.computeImageVector
 import dev.patrickgold.neuboard.ime.keyboard.computeLabel
 import dev.patrickgold.neuboard.ime.text.keyboard.TextKeyData
-import dev.patrickgold.neuboard.ime.theme.FlorisImeUi
+import dev.patrickgold.neuboard.ime.theme.NeuboardImeUi
 import org.neuboard.lib.snygg.SnyggSelector
 import org.neuboard.lib.snygg.ui.SnyggBox
 import org.neuboard.lib.snygg.ui.SnyggIcon
@@ -66,9 +66,9 @@ fun QuickActionButton(
     val isPressed by interactionSource.collectIsPressedAsState()
     val isEnabled = type == QuickActionBarType.EDITOR_TILE || evaluator.evaluateEnabled(action.keyData())
     val elementName = when (type) {
-        QuickActionBarType.INTERACTIVE_BUTTON -> FlorisImeUi.SmartbarActionKey
-        QuickActionBarType.INTERACTIVE_TILE -> FlorisImeUi.SmartbarActionTile
-        QuickActionBarType.EDITOR_TILE -> FlorisImeUi.SmartbarActionsEditorTile
+        QuickActionBarType.INTERACTIVE_BUTTON -> NeuboardImeUi.SmartbarActionKey
+        QuickActionBarType.INTERACTIVE_TILE -> NeuboardImeUi.SmartbarActionTile
+        QuickActionBarType.EDITOR_TILE -> NeuboardImeUi.SmartbarActionsEditorTile
     }.elementName
     val attributes = mapOf(FlorisImeUi.Attr.Code to action.keyData().code)
     val selector = when {

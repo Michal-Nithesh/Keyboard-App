@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import dev.patrickgold.neuboard.ime.keyboard.IncognitoMode
 import dev.patrickgold.neuboard.ime.nlp.SpellingLanguageMode
 import dev.patrickgold.neuboard.lib.compose.FlorisErrorCard
 import dev.patrickgold.neuboard.lib.compose.FlorisHyperlinkText
-import dev.patrickgold.neuboard.lib.compose.FlorisScreen
+import dev.patrickgold.neuboard.lib.compose.NeuScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.model.observeAsState
 import dev.patrickgold.jetpref.datastore.ui.DialogSliderPreference
@@ -53,7 +53,7 @@ import org.neuboard.lib.android.AndroidVersion
 
 @OptIn(ExperimentalJetPrefDatastoreUi::class)
 @Composable
-fun TypingScreen() = FlorisScreen {
+fun TypingScreen() = NeuScreen {
     title = stringRes(R.string.settings__typing__title)
     previewFieldVisible = true
 

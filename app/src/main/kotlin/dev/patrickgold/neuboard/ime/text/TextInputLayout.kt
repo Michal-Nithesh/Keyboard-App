@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The FlorisBoard Contributors
+ * Copyright (C) 2021-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import dev.patrickgold.neuboard.ime.smartbar.InlineSuggestionsStyleCache
 import dev.patrickgold.neuboard.ime.smartbar.Smartbar
 import dev.patrickgold.neuboard.ime.smartbar.quickaction.QuickActionsOverflowPanel
 import dev.patrickgold.neuboard.ime.text.keyboard.TextKeyboardLayout
-import dev.patrickgold.neuboard.ime.theme.FlorisImeUi
+import dev.patrickgold.neuboard.ime.theme.NeuboardImeUi
 import dev.patrickgold.neuboard.keyboardManager
 import dev.patrickgold.jetpref.datastore.model.observeAsState
 import org.neuboard.lib.snygg.ui.SnyggIcon
@@ -72,7 +72,7 @@ fun TextInputLayout(
                         incognitoDisplayMode == IncognitoDisplayMode.DISPLAY_BEHIND_KEYBOARD
                     if (showIncognitoIcon) {
                         SnyggIcon(
-                            FlorisImeUi.IncognitoModeIndicator.elementName,
+                            NeuboardImeUi.IncognitoModeIndicator.elementName,
                             modifier = Modifier
                                 .matchParentSize()
                                 .align(Alignment.Center),

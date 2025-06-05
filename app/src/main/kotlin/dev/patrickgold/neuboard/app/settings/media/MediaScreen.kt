@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024-2025 The FlorisBoard Contributors
+ * Copyright (C) 2024-2025 The NeuBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,12 +28,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.app.enumDisplayEntriesOf
-import dev.patrickgold.neuboard.app.florisPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.ime.media.emoji.EmojiHistory
 import dev.patrickgold.neuboard.ime.media.emoji.EmojiHistoryHelper
 import dev.patrickgold.neuboard.ime.media.emoji.EmojiSkinTone
 import dev.patrickgold.neuboard.ime.media.emoji.EmojiSuggestionType
-import dev.patrickgold.neuboard.lib.compose.FlorisScreen
+import dev.patrickgold.neuboard.lib.compose.NeuScreen
 import dev.patrickgold.neuboard.lib.compose.pluralsRes
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.ui.DialogSliderPreference
@@ -47,12 +47,12 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalJetPrefDatastoreUi::class)
 @Composable
-fun MediaScreen() = FlorisScreen {
+fun MediaScreen() = NeuScreen {
     title = stringRes(R.string.settings__media__title)
     previewFieldVisible = true
     iconSpaceReserved = true
 
-    val prefs by florisPreferenceModel()
+    val prefs by neuboardPreferenceModel()
 
     var shouldDelete by remember { mutableStateOf<ShouldDelete?>(null) }
     val scope = rememberCoroutineScope()
