@@ -35,7 +35,7 @@ import dev.patrickgold.neuboard.app.Routes
 import dev.patrickgold.neuboard.app.enumDisplayEntriesOf
 import dev.patrickgold.neuboard.ime.core.DisplayLanguageNamesIn
 import dev.patrickgold.neuboard.lib.FlorisLocale
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.model.observeAsState
 import dev.patrickgold.jetpref.datastore.ui.ColorPickerPreference
@@ -50,7 +50,7 @@ import org.neuboard.lib.color.ColorMappings
 
 
 @Composable
-fun OtherScreen() = NeuScreen {
+fun OtherScreen() = NeuboardScreen {
     title = stringRes(R.string.settings__other__title)
     previewFieldVisible = false
 

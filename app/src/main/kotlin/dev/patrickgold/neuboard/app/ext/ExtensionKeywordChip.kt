@@ -20,14 +20,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.patrickgold.neuboard.lib.compose.NeuChip
+import dev.patrickgold.neuboard.lib.compose.NeuboardChip
 
 @Composable
 fun ExtensionKeywordChip(
     keyword: String,
     modifier: Modifier = Modifier,
 ) {
-    NeuChip(
+    NeuboardChip(
         modifier = modifier,
         text = keyword,
         enabled = false,

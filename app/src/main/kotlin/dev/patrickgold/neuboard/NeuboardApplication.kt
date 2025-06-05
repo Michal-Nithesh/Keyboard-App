@@ -36,9 +36,11 @@ import dev.patrickgold.neuboard.ime.text.gestures.GlideTypingManager
 import dev.patrickgold.neuboard.ime.theme.ThemeManager
 import dev.patrickgold.neuboard.lib.cache.CacheManager
 import dev.patrickgold.neuboard.lib.crashutility.CrashUtility
-import dev.patrickgold.neuboard.lib.devtools.Nlog
+import dev.patrickgold.neuboard.lib.devtools.Flog
 import dev.patrickgold.neuboard.lib.devtools.LogTopic
-import dev.patrickgold.neuboard.lib.devtools.nlogError
+import dev.patrickgold.neuboard.lib.devtools.flogError
+import dev.patrickgold.neuboard.lib.devtools.flogInfo
+import dev.patrickgold.neuboard.lib.devtools.flogWarning
 import dev.patrickgold.neuboard.lib.ext.ExtensionManager
 import dev.patrickgold.jetpref.datastore.JetPref
 import org.neuboard.lib.kotlin.io.deleteContentsRecursively
@@ -81,16 +83,16 @@ class NeuboardApplication : Application() {
         NeuboardApplicationReference = WeakReference(this)
         try {
             JetPref.configure(saveIntervalMs = 500)
-            Nlog.install(
+            Flog.install(
                 context = this,
-                isNloggingEnabled = BuildConfig.DEBUG,
-                nlogTopics = LogTopic.ALL,
-                nlogLevels = Nlog.LEVEL_ALL,
-                nlogOutputs = Nlog.OUTPUT_CONSOLE,
+                isFloggingEnabled = BuildConfig.DEBUG,
+                flogTopics = LogTopic.ALL,
+                flogLevels = Flog.LEVEL_ALL,
+                flogOutputs = Flog.OUTPUT_CONSOLE,
             )
             CrashUtility.install(this)
             NeuboardEmojiCompat.init(this)
-            nlogError { "dummy result: ${dummyAdd(3,4)}" }
+            flogError { "dummy result: ${dummyAdd(3,4)}" }
 
             if (!UserManagerCompat.isUserUnlocked(this)) {
                 cacheDir?.deleteContentsRecursively()
@@ -121,7 +123,7 @@ class NeuboardApplication : Application() {
                 try {
                     unregisterReceiver(this)
                 } catch (e: Exception) {
-                    nlogError { e.toString() }
+                    flogError { e.toString() }
                 }
                 mainHandler.post { init() }
             }

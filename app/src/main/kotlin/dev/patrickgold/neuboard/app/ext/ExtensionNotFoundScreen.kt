@@ -23,11 +23,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.patrickgold.neuboard.R
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 
 @Composable
-internal fun ExtensionNotFoundScreen(id: String) = NeuScreen {
+internal fun ExtensionNotFoundScreen(id: String) = NeuboardScreen {
     title = stringRes(R.string.ext__error__not_found_title)
 
     content {

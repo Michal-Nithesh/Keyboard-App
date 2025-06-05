@@ -24,7 +24,7 @@ import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.app.LocalNavController
 import dev.patrickgold.neuboard.extensionManager
 import org.neuboard.lib.android.showLongToast
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.ext.Extension
 import dev.patrickgold.neuboard.lib.ext.ExtensionDefaults
 
@@ -42,7 +42,7 @@ fun ExtensionExportScreen(id: String) {
 }
 
 @Composable
-private fun ExportScreen(ext: Extension) = NeuScreen {
+private fun ExportScreen(ext: Extension) = NeuboardScreen {
     title = ext.meta.title
     scrollable = false
 

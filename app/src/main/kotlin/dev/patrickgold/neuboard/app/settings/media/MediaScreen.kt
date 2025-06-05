@@ -33,7 +33,7 @@ import dev.patrickgold.neuboard.ime.media.emoji.EmojiHistory
 import dev.patrickgold.neuboard.ime.media.emoji.EmojiHistoryHelper
 import dev.patrickgold.neuboard.ime.media.emoji.EmojiSkinTone
 import dev.patrickgold.neuboard.ime.media.emoji.EmojiSuggestionType
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.pluralsRes
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.ui.DialogSliderPreference
@@ -47,7 +47,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalJetPrefDatastoreUi::class)
 @Composable
-fun MediaScreen() = NeuScreen {
+fun MediaScreen() = NeuboardScreen {
     title = stringRes(R.string.settings__media__title)
     previewFieldVisible = true
     iconSpaceReserved = true

@@ -35,9 +35,9 @@ import dev.patrickgold.neuboard.BuildConfig
 import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.app.LocalNavController
 import dev.patrickgold.neuboard.app.Routes
-import dev.patrickgold.neuboard.lib.compose.NeuOutlinedBox
-import dev.patrickgold.neuboard.lib.compose.NeuTextButton
-import dev.patrickgold.neuboard.lib.compose.defaultNeuOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.NeuboardOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.FlorisTextButton
+import dev.patrickgold.neuboard.lib.compose.defaultNeuboardOutlinedBox
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.ext.Extension
 import dev.patrickgold.neuboard.lib.ext.generateUpdateUrl
@@ -47,8 +47,8 @@ import org.neuboard.lib.kotlin.curlyFormat
 @Composable
 fun ImportExtensionBox(navController: NavController) {
     val context = LocalContext.current
-    NeuOutlinedBox(
-        modifier = Modifier.defaultNeuOutlinedBox(),
+    NeuboardOutlinedBox(
+        modifier = Modifier.defaultNeuboardOutlinedBox(),
     ) {
         Text(
             modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 4.dp),
@@ -60,7 +60,7 @@ fun ImportExtensionBox(navController: NavController) {
                 .fillMaxWidth()
                 .padding(horizontal = 6.dp),
         ) {
-            NeuTextButton(
+            FlorisTextButton(
                 onClick = {
                     context.launchUrl("https://${BuildConfig.FLADDONS_STORE_URL}/")
                 },
@@ -68,7 +68,7 @@ fun ImportExtensionBox(navController: NavController) {
                 text = stringRes(id = R.string.ext__home__visit_store),
             )
             Spacer(modifier = Modifier.weight(1f))
-            NeuTextButton(
+            FlorisTextButton(
                 onClick = {
                     navController.navigate(Routes.Ext.Import(ExtensionImportScreenType.EXT_ANY, null))
                 },
@@ -82,8 +82,8 @@ fun ImportExtensionBox(navController: NavController) {
 @Composable
 fun UpdateBox(extensionIndex: List<Extension>) {
     val context = LocalContext.current
-    NeuOutlinedBox(
-        modifier = Modifier.defaultNeuOutlinedBox(),
+    NeuboardOutlinedBox(
+        modifier = Modifier.defaultNeuboardOutlinedBox(),
     ) {
         Text(
             modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 4.dp),
@@ -95,7 +95,7 @@ fun UpdateBox(extensionIndex: List<Extension>) {
                 .fillMaxWidth()
                 .padding(horizontal = 6.dp),
         ) {
-            NeuTextButton(
+            FlorisTextButton(
                 onClick = {
                     context.launchUrl(extensionIndex.generateUpdateUrl())
                 },
@@ -113,8 +113,8 @@ fun AddonManagementReferenceBox(
 ) {
     val navController = LocalNavController.current
 
-    NeuOutlinedBox(
-        modifier = Modifier.defaultNeuOutlinedBox(),
+    NeuboardOutlinedBox(
+        modifier = Modifier.defaultNeuboardOutlinedBox(),
         title = stringRes(id = R.string.ext__addon_management_box__managing_placeholder).curlyFormat(
             "extensions" to type.let { stringRes(id = it.titleResId).lowercase() }
         )
@@ -130,7 +130,7 @@ fun AddonManagementReferenceBox(
                 .padding(horizontal = 6.dp),
         ) {
             Spacer(modifier = Modifier.weight(1f))
-            NeuTextButton(
+            FlorisTextButton(
                 onClick = {
                     val route = Routes.Ext.List(type, showUpdate = true)
                     navController.navigate(

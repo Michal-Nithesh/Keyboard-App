@@ -43,13 +43,13 @@ import dev.patrickgold.neuboard.app.Routes
 import dev.patrickgold.neuboard.clipboardManager
 import dev.patrickgold.neuboard.lib.util.launchUrl
 import org.neuboard.lib.android.stringRes
-import dev.patrickgold.neuboard.lib.compose.NeuCanvasIcon
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.FlorisCanvasIcon
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.ui.Preference
 
 @Composable
-fun AboutScreen() = NeuScreen {
+fun AboutScreen() = NeuboardScreen {
     title = stringRes(R.string.about__title)
 
     val navController = LocalNavController.current
@@ -66,13 +66,13 @@ fun AboutScreen() = NeuScreen {
                 .fillMaxWidth()
                 .padding(top = 24.dp, bottom = 32.dp)
         ) {
-            NeuCanvasIcon(
+            FlorisCanvasIcon(
                 modifier = Modifier.requiredSize(64.dp),
-                iconId = R.mipmap.neu_app_icon,
+                iconId = R.mipmap.floris_app_icon,
                 contentDescription = "NeuBoard app icon",
             )
             Text(
-                text = stringRes(R.string.neu_app_name),
+                text = stringRes(R.string.floris_app_name),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(top = 16.dp),
@@ -99,19 +99,13 @@ fun AboutScreen() = NeuScreen {
             icon = Icons.Default.History,
             title = stringRes(R.string.about__changelog__title),
             summary = stringRes(R.string.about__changelog__summary),
-            onClick = { context.launchUrl(R.string.neuboard__changelog_url, "version" to BuildConfig.VERSION_NAME) },
-        )
-        Preference(
-            icon = Icons.Default.Code,
-            title = stringRes(R.string.about__repository__title),
-            summary = stringRes(R.string.about__repository__summary),
-            onClick = { context.launchUrl(R.string.neuboard__repo_url) },
+            onClick = { context.launchUrl(R.string.florisboard__changelog_url, "version" to BuildConfig.VERSION_NAME) },
         )
         Preference(
             icon = Icons.Outlined.Policy,
             title = stringRes(R.string.about__privacy_policy__title),
             summary = stringRes(R.string.about__privacy_policy__summary),
-            onClick = { context.launchUrl(R.string.neuboard__privacy_policy_url) },
+            onClick = { context.launchUrl(R.string.florisboard__privacy_policy_url) },
         )
         Preference(
             icon = Icons.Outlined.Description,

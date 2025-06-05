@@ -25,9 +25,9 @@ import dev.patrickgold.neuboard.ime.core.Subtype
 import dev.patrickgold.neuboard.ime.dictionary.DictionaryManager
 import dev.patrickgold.neuboard.ime.nlp.SpellingLanguageMode
 import dev.patrickgold.neuboard.ime.nlp.SpellingResult
-import dev.patrickgold.neuboard.lib.NeuboardLocale
+import dev.patrickgold.neuboard.lib.FlorisLocale
 import dev.patrickgold.neuboard.lib.devtools.LogTopic
-import dev.patrickgold.neuboard.lib.devtools.nlogInfo
+import dev.patrickgold.neuboard.lib.devtools.flogInfo
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.neuboard.lib.kotlin.map
@@ -39,20 +39,20 @@ class NeuboardSpellCheckerService : SpellCheckerService() {
     private val subtypeManager by subtypeManager()
 
     override fun onCreate() {
-        nlogInfo(LogTopic.SPELL_EVENTS)
+        flogInfo(LogTopic.SPELL_EVENTS)
 
         super.onCreate()
         dictionaryManager.loadUserDictionariesIfNecessary()
     }
 
     override fun createSession(): Session {
-        nlogInfo(LogTopic.SPELL_EVENTS)
+        flogInfo(LogTopic.SPELL_EVENTS)
 
         return NeuboardSpellCheckerSession()
     }
 
     override fun onDestroy() {
-        nlogInfo(LogTopic.SPELL_EVENTS)
+        flogInfo(LogTopic.SPELL_EVENTS)
 
         super.onDestroy()
     }
@@ -61,7 +61,7 @@ class NeuboardSpellCheckerService : SpellCheckerService() {
         private var cachedSpellingSubtype: Subtype? = null
 
         override fun onCreate() {
-            nlogInfo(LogTopic.SPELL_EVENTS) { "Session requested locale: $locale" }
+            flogInfo(LogTopic.SPELL_EVENTS) { "Session requested locale: $locale" }
 
             setupSpellingIfNecessary()
         }
@@ -72,7 +72,7 @@ class NeuboardSpellCheckerService : SpellCheckerService() {
                     subtypeManager.activeSubtype
                 }
                 else -> {
-                    Subtype.DEFAULT.copy(primaryLocale = NeuboardLocale.default())
+                    Subtype.DEFAULT.copy(primaryLocale = FlorisLocale.default())
                 }
             }
 
@@ -80,7 +80,7 @@ class NeuboardSpellCheckerService : SpellCheckerService() {
                 cachedSpellingSubtype = evaluatedSubtype
                 nlpManager.preload(evaluatedSubtype)
             }
-            nlogInfo(LogTopic.SPELL_EVENTS) {
+            flogInfo(LogTopic.SPELL_EVENTS) {
                 "Session actual locale: ${cachedSpellingSubtype?.primaryLocale?.languageTag()}"
             }
         }
@@ -102,7 +102,7 @@ class NeuboardSpellCheckerService : SpellCheckerService() {
         }
 
         override fun onGetSuggestions(textInfo: TextInfo?, suggestionsLimit: Int): SuggestionsInfo {
-            nlogInfo(LogTopic.SPELL_EVENTS) { "text=${textInfo?.text}, limit=$suggestionsLimit" }
+            flogInfo(LogTopic.SPELL_EVENTS) { "text=${textInfo?.text}, limit=$suggestionsLimit" }
 
             textInfo?.text ?: return SpellingResult.unspecified().suggestionsInfo
             setupSpellingIfNecessary()
@@ -121,7 +121,7 @@ class NeuboardSpellCheckerService : SpellCheckerService() {
             suggestionsLimit: Int,
             sequentialWords: Boolean,
         ): Array<SuggestionsInfo> {
-            nlogInfo(LogTopic.SPELL_EVENTS)
+            flogInfo(LogTopic.SPELL_EVENTS)
 
             textInfos ?: return emptyArray()
             setupSpellingIfNecessary()
@@ -136,14 +136,14 @@ class NeuboardSpellCheckerService : SpellCheckerService() {
             textInfos: Array<out TextInfo>?,
             suggestionsLimit: Int,
         ): Array<SentenceSuggestionsInfo> {
-            nlogInfo(LogTopic.SPELL_EVENTS)
+            flogInfo(LogTopic.SPELL_EVENTS)
 
             // TODO: implement custom solution here instead of calling the default implementation
             return super.onGetSentenceSuggestionsMultiple(textInfos, suggestionsLimit)
         }
 
         override fun onCancel() {
-            nlogInfo(LogTopic.SPELL_EVENTS)
+            flogInfo(LogTopic.SPELL_EVENTS)
 
             super.onCancel()
             if (prefs.devtools.showSpellingOverlay.get()) {
@@ -152,7 +152,7 @@ class NeuboardSpellCheckerService : SpellCheckerService() {
         }
 
         override fun onClose() {
-            nlogInfo(LogTopic.SPELL_EVENTS)
+            flogInfo(LogTopic.SPELL_EVENTS)
 
             super.onClose()
             if (prefs.devtools.showSpellingOverlay.get()) {

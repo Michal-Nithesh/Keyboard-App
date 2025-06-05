@@ -59,9 +59,9 @@ abstract class AbstractEditorInstance(context: Context) {
     private val scope = MainScope()
     protected val breakIterators = BreakIteratorGroup()
 
-    private val _activeInfoFlow = MutableStateFlow(FlorisEditorInfo.Unspecified)
+    private val _activeInfoFlow = MutableStateFlow(NeuboardEditorInfo.Unspecified)
     val activeInfoFlow = _activeInfoFlow.asStateFlow()
-    inline var activeInfo: FlorisEditorInfo
+    inline var activeInfo: NeuboardEditorInfo
         get() = activeInfoFlow.value
         private set(v) {
             _activeInfoFlow.value = v
@@ -93,14 +93,14 @@ abstract class AbstractEditorInstance(context: Context) {
 
     private fun currentInputConnection() = NeuboardImeService.currentInputConnection()
 
-    open fun handleStartInput(editorInfo: FlorisEditorInfo) {
+    open fun handleStartInput(editorInfo: NeuboardEditorInfo) {
         activeInfo = editorInfo
         activeCursorCapsMode = editorInfo.initialCapsMode
         activeContent = EditorContent.Unspecified
         currentInputConnection()?.requestCursorUpdates(CursorUpdateAll)
     }
 
-    open fun handleStartInputView(editorInfo: FlorisEditorInfo, isRestart: Boolean) {
+    open fun handleStartInputView(editorInfo: NeuboardEditorInfo, isRestart: Boolean) {
         if (isRestart) {
             reset() // Just to make sure our state is correct after a restart
         }
@@ -209,7 +209,7 @@ abstract class AbstractEditorInstance(context: Context) {
     }
 
     protected open fun reset() {
-        activeInfo = FlorisEditorInfo.Unspecified
+        activeInfo = NeuboardEditorInfo.Unspecified
         activeCursorCapsMode = InputAttributes.CapsMode.NONE
         activeContent = EditorContent.Unspecified
         runBlocking { expectedContentQueue.clear() }
@@ -217,7 +217,7 @@ abstract class AbstractEditorInstance(context: Context) {
     }
 
     private suspend fun generateContent(
-        editorInfo: FlorisEditorInfo,
+        editorInfo: NeuboardEditorInfo,
         selection: EditorRange,
         textBeforeSelection: CharSequence,
         textAfterSelection: CharSequence,
@@ -254,7 +254,7 @@ abstract class AbstractEditorInstance(context: Context) {
     }
 
     private suspend fun EditorContent.generateCopy(
-        editorInfo: FlorisEditorInfo = activeInfo,
+        editorInfo: NeuboardEditorInfo = activeInfo,
         selection: EditorRange = this.selection,
         textBeforeSelection: CharSequence = this.textBeforeSelection,
         textAfterSelection: CharSequence = this.textAfterSelection,
@@ -280,7 +280,7 @@ abstract class AbstractEditorInstance(context: Context) {
 
     abstract fun determineComposer(composerName: ExtensionComponentName): Composer
 
-    protected open fun shouldDetermineComposingRegion(editorInfo: FlorisEditorInfo): Boolean {
+    protected open fun shouldDetermineComposingRegion(editorInfo: NeuboardEditorInfo): Boolean {
         return editorInfo.isRichInputEditor && !editorInfo.inputAttributes.flagTextNoSuggestions
     }
 

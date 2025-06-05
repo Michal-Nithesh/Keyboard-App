@@ -52,11 +52,11 @@ import dev.patrickgold.neuboard.app.LocalNavController
 import dev.patrickgold.neuboard.app.Routes
 import dev.patrickgold.neuboard.extensionManager
 import dev.patrickgold.neuboard.ime.theme.ThemeExtension
-import dev.patrickgold.neuboard.lib.compose.NeuOutlinedBox
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
-import dev.patrickgold.neuboard.lib.compose.NeuTextButton
-import dev.patrickgold.neuboard.lib.compose.defaultNeuOutlinedBox
-import dev.patrickgold.neuboard.lib.compose.neuScrollbar
+import dev.patrickgold.neuboard.lib.compose.NeuboardOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
+import dev.patrickgold.neuboard.lib.compose.FlorisTextButton
+import dev.patrickgold.neuboard.lib.compose.defaultNeuboardOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.florisScrollbar
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.ext.ExtensionManager
 import dev.patrickgold.neuboard.lib.observeAsNonNullState
@@ -88,7 +88,7 @@ enum class ExtensionListScreenType(
 }
 
 @Composable
-fun ExtensionListScreen(type: ExtensionListScreenType, showUpdate: Boolean) = NeuScreen {
+fun ExtensionListScreen(type: ExtensionListScreenType, showUpdate: Boolean) = NeuboardScreen {
     title = stringRes(type.titleResId)
     previewFieldVisible = false
     scrollable = false
@@ -108,7 +108,7 @@ fun ExtensionListScreen(type: ExtensionListScreenType, showUpdate: Boolean) = Ne
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .neuScrollbar(state = listState, isVertical = true),
+                .florisScrollbar(state = listState, isVertical = true),
             state = listState,
             contentPadding = PaddingValues(bottom = fabHeightDp),
         ) {
@@ -121,8 +121,8 @@ fun ExtensionListScreen(type: ExtensionListScreenType, showUpdate: Boolean) = Ne
                 }
             }
             items(extensionIndex) { ext ->
-                NeuOutlinedBox(
-                    modifier = Modifier.defaultNeuOutlinedBox(),
+                NeuboardOutlinedBox(
+                    modifier = Modifier.defaultNeuboardOutlinedBox(),
                     title = ext.meta.title,
                     subtitle = ext.meta.id,
                 ) {
@@ -136,7 +136,7 @@ fun ExtensionListScreen(type: ExtensionListScreenType, showUpdate: Boolean) = Ne
                             .fillMaxWidth()
                             .padding(horizontal = 6.dp),
                     ) {
-                        NeuTextButton(
+                        FlorisTextButton(
                             onClick = {
                                 navController.navigate(Routes.Ext.View(ext.meta.id))
                             },
@@ -145,7 +145,7 @@ fun ExtensionListScreen(type: ExtensionListScreenType, showUpdate: Boolean) = Ne
                             colors = ButtonDefaults.textButtonColors(),
                         )
                         Spacer(modifier = Modifier.weight(1f))
-                        NeuTextButton(
+                        FlorisTextButton(
                             onClick = {
                                 navController.navigate(Routes.Ext.Edit(ext.meta.id))
                             },

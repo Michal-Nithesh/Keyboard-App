@@ -52,16 +52,16 @@ import dev.patrickgold.neuboard.ime.nlp.LanguagePackExtension
 import dev.patrickgold.neuboard.ime.theme.ThemeExtension
 import dev.patrickgold.neuboard.ime.theme.ThemeExtensionComponentImpl
 import org.neuboard.lib.android.showLongToast
-import dev.patrickgold.neuboard.lib.compose.NeuConfirmDeleteDialog
-import dev.patrickgold.neuboard.lib.compose.NeuHyperlinkText
-import dev.patrickgold.neuboard.lib.compose.NeuOutlinedButton
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
-import dev.patrickgold.neuboard.lib.compose.defaultNeuOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.NeuboardConfirmDeleteDialog
+import dev.patrickgold.neuboard.lib.compose.NeuboardHyperlinkText
+import dev.patrickgold.neuboard.lib.compose.FlorisOutlinedButton
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
+import dev.patrickgold.neuboard.lib.compose.defaultNeuboardOutlinedBox
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.ext.Extension
 import dev.patrickgold.neuboard.lib.ext.ExtensionMaintainer
 import dev.patrickgold.neuboard.lib.ext.ExtensionMeta
-import dev.patrickgold.neuboard.lib.io.NeuRef
+import dev.patrickgold.neuboard.lib.io.FlorisRef
 
 @Composable
 fun ExtensionViewScreen(id: String) {
@@ -77,7 +77,7 @@ fun ExtensionViewScreen(id: String) {
 }
 
 @Composable
-private fun ViewScreen(ext: Extension) = NeuScreen {
+private fun ViewScreen(ext: Extension) = NeuboardScreen {
     title = ext.meta.title
 
     val navController = LocalNavController.current
@@ -121,16 +121,16 @@ private fun ViewScreen(ext: Extension) = NeuScreen {
             }
             if (!ext.meta.homepage.isNullOrBlank()) {
                 ExtensionMetaRowSimpleText(label = stringRes(R.string.ext__meta__homepage)) {
-                    NeuHyperlinkText(
-                        text = NeuRef.fromUrl(ext.meta.homepage!!).authority,
+                    NeuboardHyperlinkText(
+                        text = FlorisRef.fromUrl(ext.meta.homepage!!).authority,
                         url = ext.meta.homepage!!,
                     )
                 }
             }
             if (!ext.meta.issueTracker.isNullOrBlank()) {
                 ExtensionMetaRowSimpleText(label = stringRes(R.string.ext__meta__issue_tracker)) {
-                    NeuHyperlinkText(
-                        text = NeuRef.fromUrl(ext.meta.issueTracker!!).authority,
+                    NeuboardHyperlinkText(
+                        text = FlorisRef.fromUrl(ext.meta.issueTracker!!).authority,
                         url = ext.meta.issueTracker!!,
                     )
                 }
@@ -142,7 +142,7 @@ private fun ViewScreen(ext: Extension) = NeuScreen {
             }
             Row(modifier = Modifier.fillMaxWidth()) {
                 if (extensionManager.canDelete(ext)) {
-                    NeuOutlinedButton(
+                    FlorisOutlinedButton(
                         onClick = {
                             extToDelete = ext
                         },
@@ -154,7 +154,7 @@ private fun ViewScreen(ext: Extension) = NeuScreen {
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                NeuOutlinedButton(
+                FlorisOutlinedButton(
                     onClick = {
                         navController.navigate(Routes.Ext.Export(ext.meta.id))
                     },
@@ -171,7 +171,7 @@ private fun ViewScreen(ext: Extension) = NeuScreen {
                     components = ext.themes,
                 ) { component ->
                     ExtensionComponentView(
-                        modifier = Modifier.defaultNeuOutlinedBox(),
+                        modifier = Modifier.defaultNeuboardOutlinedBox(),
                         meta = ext.meta,
                         component = component,
                     )
@@ -183,7 +183,7 @@ private fun ViewScreen(ext: Extension) = NeuScreen {
                     components = ext.items,
                 ) { component ->
                     ExtensionComponentView(
-                        modifier = Modifier.defaultNeuOutlinedBox(),
+                        modifier = Modifier.defaultNeuboardOutlinedBox(),
                         meta = ext.meta,
                         component = component,
                     )
@@ -195,7 +195,7 @@ private fun ViewScreen(ext: Extension) = NeuScreen {
         }
 
         if (extToDelete != null) {
-            NeuConfirmDeleteDialog(
+            NeuboardConfirmDeleteDialog(
                 onConfirm = {
                     runCatching {
                         extensionManager.delete(extToDelete!!)

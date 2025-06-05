@@ -49,8 +49,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.MimeTypeFilter
 import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.lib.cache.CacheManager
-import dev.patrickgold.neuboard.lib.compose.NeuIconButton
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.FlorisIconButton
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.ui.Preference
 import dev.patrickgold.jetpref.material.ui.JetPrefAlertDialog
@@ -83,7 +83,7 @@ val MIME_TYPES = mapOf(
 )
 
 @Composable
-fun ExtensionEditFilesScreen(workspace: CacheManager.ExtEditorWorkspace<*>) = NeuScreen {
+fun ExtensionEditFilesScreen(workspace: CacheManager.ExtEditorWorkspace<*>) = NeuboardScreen {
     title = stringRes(R.string.ext__editor__files__title)
 
     fun handleBackPress() {
@@ -91,7 +91,7 @@ fun ExtensionEditFilesScreen(workspace: CacheManager.ExtEditorWorkspace<*>) = Ne
     }
 
     navigationIcon {
-        NeuIconButton(
+        FlorisIconButton(
             onClick = { handleBackPress() },
             icon = Icons.Default.Close,
         )

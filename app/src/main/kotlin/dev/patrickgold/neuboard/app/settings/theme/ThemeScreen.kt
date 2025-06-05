@@ -37,8 +37,8 @@ import dev.patrickgold.neuboard.app.ext.AddonManagementReferenceBox
 import dev.patrickgold.neuboard.app.ext.ExtensionListScreenType
 import dev.patrickgold.neuboard.ime.theme.ThemeManager
 import dev.patrickgold.neuboard.ime.theme.ThemeMode
-import dev.patrickgold.neuboard.lib.compose.FlorisInfoCard
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardInfoCard
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.ext.ExtensionComponentName
 import dev.patrickgold.neuboard.themeManager
@@ -50,7 +50,7 @@ import dev.patrickgold.jetpref.datastore.ui.isMaterialYou
 import org.neuboard.lib.color.ColorMappings
 
 @Composable
-fun ThemeScreen() = NeuScreen {
+fun ThemeScreen() = NeuboardScreen {
     title = stringRes(R.string.settings__theme__title)
     previewFieldVisible = true
 
@@ -88,7 +88,7 @@ fun ThemeScreen() = NeuScreen {
             entries = enumDisplayEntriesOf(ThemeMode::class),
         )
         if (themeMode == ThemeMode.FOLLOW_TIME) {
-            FlorisInfoCard(
+            NeuboardInfoCard(
                 modifier = Modifier.padding(8.dp),
                 text = """
                 The theme mode "Follow time" is not available in this beta release.

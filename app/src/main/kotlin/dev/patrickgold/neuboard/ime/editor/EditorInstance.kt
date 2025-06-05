@@ -65,7 +65,7 @@ class EditorInstance(context: Context) : AbstractEditorInstance(context) {
 
     private fun currentInputConnection() = NeuboardImeService.currentInputConnection()
 
-    override fun handleStartInputView(editorInfo: FlorisEditorInfo, isRestart: Boolean) {
+    override fun handleStartInputView(editorInfo: NeuboardEditorInfo, isRestart: Boolean) {
         if (!prefs.correction.rememberCapsLockState.get()) {
             activeState.inputShiftState = InputShiftState.UNSHIFTED
         }
@@ -146,7 +146,7 @@ class EditorInstance(context: Context) : AbstractEditorInstance(context) {
         return keyboardManager.resources.composers.value?.get(composerName) ?: Appender
     }
 
-    override fun shouldDetermineComposingRegion(editorInfo: FlorisEditorInfo): Boolean {
+    override fun shouldDetermineComposingRegion(editorInfo: NeuboardEditorInfo): Boolean {
         return super.shouldDetermineComposingRegion(editorInfo) &&
             (phantomSpace.isInactive || phantomSpace.showComposingRegion)
     }

@@ -48,7 +48,7 @@ import dev.patrickgold.neuboard.app.LocalNavController
 import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.ime.core.DisplayLanguageNamesIn
 import dev.patrickgold.neuboard.lib.FlorisLocale
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.florisScrollbar
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.model.observeAsState
@@ -57,7 +57,7 @@ import dev.patrickgold.jetpref.material.ui.JetPrefListItem
 const val SelectLocaleScreenResultLanguageTag = "SelectLocaleScreen.languageTag"
 
 @Composable
-fun SelectLocaleScreen() = NeuScreen {
+fun SelectLocaleScreen() = NeuboardScreen {
     title = stringRes(R.string.settings__localization__subtype_select_locale)
     scrollable = false
 

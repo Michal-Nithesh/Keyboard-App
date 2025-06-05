@@ -41,16 +41,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.app.AppPrefs
-import dev.patrickgold.neuboard.app.FlorisAppActivity
+import dev.patrickgold.neuboard.app.NeuboardAppActivity
 import dev.patrickgold.neuboard.app.LocalNavController
 import dev.patrickgold.neuboard.app.Routes
 import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.lib.compose.FlorisBulletSpacer
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
-import dev.patrickgold.neuboard.lib.compose.NeuScreenScope
-import dev.patrickgold.neuboard.lib.compose.FlorisStep
-import dev.patrickgold.neuboard.lib.compose.FlorisStepLayout
-import dev.patrickgold.neuboard.lib.compose.FlorisStepState
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreenScope
+import dev.patrickgold.neuboard.lib.compose.NeuboardStep
+import dev.patrickgold.neuboard.lib.compose.NeuboardStepLayout
+import dev.patrickgold.neuboard.lib.compose.NeuboardStepState
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.util.InputMethodUtils
 import dev.patrickgold.neuboard.lib.util.launchActivity
@@ -62,7 +62,7 @@ import org.neuboard.lib.android.AndroidVersion
 
 
 @Composable
-fun SetupScreen() = NeuScreen {
+fun SetupScreen() = NeuboardScreen {
     title = stringRes(R.string.setup__title)
     navigationIconVisible = false
     scrollable = false
@@ -96,7 +96,7 @@ fun SetupScreen() = NeuScreen {
 }
 
 @Composable
-private fun NeuScreenScope.content(
+private fun NeuboardScreenScope.content(
     isFlorisBoardEnabled: Boolean,
     isFlorisBoardSelected: Boolean,
     context: Context,
@@ -105,14 +105,14 @@ private fun NeuScreenScope.content(
     hasNotificationPermission: NotificationPermissionState,
 ) {
 
-    val stepState = rememberSaveable(saver = FlorisStepState.Saver) {
+    val stepState = rememberSaveable(saver = NeuboardStepState.Saver) {
         val initStep = when {
             !isFlorisBoardEnabled -> Steps.EnableIme.id
             !isFlorisBoardSelected -> Steps.SelectIme.id
             hasNotificationPermission == NotificationPermissionState.NOT_SET && AndroidVersion.ATLEAST_API33_T -> Steps.SelectNotification.id
             else -> Steps.FinishUp.id
         }
-        FlorisStepState.new(init = initStep)
+        NeuboardStepState.new(init = initStep)
     }
 
     content {
@@ -140,7 +140,7 @@ private fun NeuScreenScope.content(
                     hasNotificationPermission == NotificationPermissionState.NOT_SET &&
                     isEnabled
                 ) {
-                    context.launchActivity(FlorisAppActivity::class) {
+                    context.launchActivity(NeuboardAppActivity::class) {
                         it.flags = (Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
                             or Intent.FLAG_ACTIVITY_SINGLE_TOP
                             or Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -148,7 +148,7 @@ private fun NeuScreenScope.content(
                 }
             }
         }
-        FlorisStepLayout(
+        NeuboardStepLayout(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp),
@@ -193,10 +193,10 @@ private fun PreferenceUiScope<AppPrefs>.steps(
     context: Context,
     navController: NavController,
     requestNotification: ManagedActivityResultLauncher<String, Boolean>,
-): List<FlorisStep> {
+): List<NeuboardStep> {
 
     return listOfNotNull(
-        FlorisStep(
+        NeuboardStep(
             id = Steps.EnableIme.id,
             title = stringRes(R.string.setup__enable_ime__title),
         ) {
@@ -205,7 +205,7 @@ private fun PreferenceUiScope<AppPrefs>.steps(
                 InputMethodUtils.showImeEnablerActivity(context)
             }
         },
-        FlorisStep(
+        NeuboardStep(
             id = Steps.SelectIme.id,
             title = stringRes(R.string.setup__select_ime__title),
         ) {
@@ -215,7 +215,7 @@ private fun PreferenceUiScope<AppPrefs>.steps(
             }
         },
         if (AndroidVersion.ATLEAST_API33_T) {
-            FlorisStep(
+            NeuboardStep(
                 id = Steps.SelectNotification.id,
                 title = stringRes(R.string.setup__grant_notification_permission__title),
             ) {
@@ -225,7 +225,7 @@ private fun PreferenceUiScope<AppPrefs>.steps(
                 }
             }
         } else null,
-        FlorisStep(
+        NeuboardStep(
             id = Steps.FinishUp.id,
             title = stringRes(R.string.setup__finish_up__title),
         ) {

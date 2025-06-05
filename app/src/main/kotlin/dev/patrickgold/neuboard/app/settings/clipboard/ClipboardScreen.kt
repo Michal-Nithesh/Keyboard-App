@@ -19,7 +19,7 @@ package dev.patrickgold.neuboard.app.settings.clipboard
 import androidx.compose.runtime.Composable
 import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.ime.clipboard.CLIPBOARD_HISTORY_NUM_GRID_COLUMNS_AUTO
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.pluralsRes
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.ui.DialogSliderPreference
@@ -30,7 +30,7 @@ import org.neuboard.lib.android.AndroidVersion
 
 @OptIn(ExperimentalJetPrefDatastoreUi::class)
 @Composable
-fun ClipboardScreen() = NeuScreen {
+fun ClipboardScreen() = NeuboardScreen {
     title = stringRes(R.string.settings__clipboard__title)
     previewFieldVisible = true
 
@@ -41,7 +41,7 @@ fun ClipboardScreen() = NeuScreen {
             summary = stringRes(R.string.pref__clipboard__use_internal_clipboard__summary),
         )
         SwitchPreference(
-            prefs.clipboard.syncToFloris,
+            prefs.clipboard.syncToNeu,
             title = stringRes(R.string.pref__clipboard__sync_from_system_clipboard__label),
             summary = stringRes(R.string.pref__clipboard__sync_from_system_clipboard__summary),
             enabledIf = { prefs.clipboard.useInternalClipboard isEqualTo true },

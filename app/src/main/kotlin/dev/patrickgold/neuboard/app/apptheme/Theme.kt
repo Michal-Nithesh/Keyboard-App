@@ -29,7 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import dev.patrickgold.neuboard.app.AppTheme
-import dev.patrickgold.neuboard.app.neuPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.jetpref.datastore.model.observeAsState
 import org.neuboard.lib.android.AndroidVersion
 import org.neuboard.lib.color.ColorMappings
@@ -79,7 +79,7 @@ fun getColorScheme(
     context: Context,
     theme: AppTheme,
 ): ColorScheme {
-    val prefs by NeuPreferenceModel()
+    val prefs by neuboardPreferenceModel()
     val accentColor by prefs.other.accentColor.observeAsState()
     val isDark = isSystemInDarkTheme()
 

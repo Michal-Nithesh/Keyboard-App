@@ -52,13 +52,13 @@ import dev.patrickgold.neuboard.ime.theme.ThemeExtension
 import dev.patrickgold.neuboard.lib.NATIVE_NULLPTR
 import org.neuboard.lib.android.showLongToast
 import dev.patrickgold.neuboard.lib.cache.CacheManager
-import dev.patrickgold.neuboard.lib.compose.NeuBulletSpacer
-import dev.patrickgold.neuboard.lib.compose.NeuButtonBar
-import dev.patrickgold.neuboard.lib.compose.NeuOutlinedBox
-import dev.patrickgold.neuboard.lib.compose.NeuOutlinedButton
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
-import dev.patrickgold.neuboard.lib.compose.defaultNeuOutlinedBox
-import dev.patrickgold.neuboard.lib.compose.neuHorizontalScroll
+import dev.patrickgold.neuboard.lib.compose.FlorisBulletSpacer
+import dev.patrickgold.neuboard.lib.compose.FlorisButtonBar
+import dev.patrickgold.neuboard.lib.compose.NeuboardOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.FlorisOutlinedButton
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
+import dev.patrickgold.neuboard.lib.compose.defaultNeuboardOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.florisHorizontalScroll
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.io.FileRegistry
 import org.neuboard.lib.kotlin.resultOk
@@ -91,7 +91,7 @@ enum class ExtensionImportScreenType(
 }
 
 @Composable
-fun ExtensionImportScreen(type: ExtensionImportScreenType, initUuid: String?) = NeuScreen {
+fun ExtensionImportScreen(type: ExtensionImportScreenType, initUuid: String?) = NeuboardScreen {
     title = stringRes(type.titleResId)
 
     val navController = LocalNavController.current
@@ -147,7 +147,7 @@ fun ExtensionImportScreen(type: ExtensionImportScreenType, initUuid: String?) = 
     )
 
     bottomBar {
-        NeuButtonBar {
+        FlorisButtonBar {
             ButtonBarSpacer()
             ButtonBarTextButton(
                 text = stringRes(R.string.action__cancel),
@@ -199,7 +199,7 @@ fun ExtensionImportScreen(type: ExtensionImportScreenType, initUuid: String?) = 
 
     content {
         if (initUuid == null) {
-            NeuOutlinedButton(
+            FlorisOutlinedButton(
                 onClick = {
                     importLauncher.launch("*/*")
                 },
@@ -237,7 +237,7 @@ fun ExtensionImportScreen(type: ExtensionImportScreenType, initUuid: String?) = 
                 SelectionContainer {
                     Text(
                         modifier = Modifier
-                            .neuHorizontalScroll()
+                            .florisHorizontalScroll()
                             .padding(horizontal = 16.dp),
                         text = result.exceptionOrNull()?.stackTraceToString() ?: "null",
                         style = MaterialTheme.typography.bodyMedium,
@@ -254,8 +254,8 @@ fun ExtensionImportScreen(type: ExtensionImportScreenType, initUuid: String?) = 
 private fun FileInfoView(
     fileInfo: CacheManager.FileInfo,
 ) {
-    NeuOutlinedBox(
-        modifier = Modifier.defaultNeuOutlinedBox(),
+    NeuboardOutlinedBox(
+        modifier = Modifier.defaultNeuboardOutlinedBox(),
         title = fileInfo.file.name,
         subtitle = fileInfo.mediaType ?: "application/unknown",
     ) {
@@ -273,13 +273,13 @@ private fun FileInfoView(
                     color = grayColor,
                 )
                 if (ext != null) {
-                    NeuBulletSpacer()
+                    FlorisBulletSpacer()
                     Text(
                         text = ext.meta.id,
                         style = MaterialTheme.typography.bodyMedium,
                         color = grayColor,
                     )
-                    NeuBulletSpacer()
+                    FlorisBulletSpacer()
                     Text(
                         text = ext.meta.version,
                         style = MaterialTheme.typography.bodyMedium,

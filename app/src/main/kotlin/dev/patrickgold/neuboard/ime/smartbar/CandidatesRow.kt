@@ -72,7 +72,7 @@ fun CandidatesRow(modifier: Modifier = Modifier) {
     val candidates by nlpManager.activeCandidatesFlow.collectAsState()
 
     SnyggRow(
-        elementName = FlorisImeUi.SmartbarCandidatesRow.elementName,
+        elementName = NeuboardImeUi.SmartbarCandidatesRow.elementName,
         modifier = modifier
             .fillMaxSize()
             .conditional(displayMode == CandidatesDisplayMode.DYNAMIC_SCROLLABLE && candidates.size > 1) {
@@ -106,7 +106,7 @@ fun CandidatesRow(modifier: Modifier = Modifier) {
             for ((n, candidate) in list.withIndex()) {
                 if (n > 0) {
                     SnyggSpacer(
-                        elementName = FlorisImeUi.SmartbarCandidateSpacer.elementName,
+                        elementName = NeuboardImeUi.SmartbarCandidateSpacer.elementName,
                         modifier = Modifier
                             .width(1.dp)
                             .fillMaxHeight(0.6f)
@@ -149,9 +149,9 @@ private fun CandidateItem(
     var isPressed by remember { mutableStateOf(false) }
 
     val elementName = if (candidate is ClipboardSuggestionCandidate) {
-        FlorisImeUi.SmartbarCandidateClip
+        NeuboardImeUi.SmartbarCandidateClip
     } else {
-        FlorisImeUi.SmartbarCandidateWord
+        NeuboardImeUi.SmartbarCandidateWord
     }.elementName
     val attributes = mapOf("auto-commit" to if (candidate.isEligibleForAutoCommit) 1 else 0)
     val selector = if (isPressed) SnyggSelector.PRESSED else SnyggSelector.NONE

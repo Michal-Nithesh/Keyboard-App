@@ -81,11 +81,11 @@ import dev.patrickgold.neuboard.ime.theme.ThemeManager
 import dev.patrickgold.neuboard.ime.theme.extPreviewTheme
 import dev.patrickgold.neuboard.lib.cache.CacheManager
 import dev.patrickgold.neuboard.lib.compose.FlorisIconButton
-import dev.patrickgold.neuboard.lib.compose.FlorisOutlinedBox
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.PreviewKeyboardField
 import dev.patrickgold.neuboard.lib.compose.Validation
-import dev.patrickgold.neuboard.lib.compose.defaultFlorisOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.defaultNeuboardOutlinedBox
 import dev.patrickgold.neuboard.lib.compose.florisVerticalScroll
 import dev.patrickgold.neuboard.lib.compose.rememberPreviewFieldController
 import dev.patrickgold.neuboard.lib.compose.rippleClickable
@@ -141,7 +141,7 @@ private enum class StylesheetLoadingStrategy {
 fun ThemeEditorScreen(
     workspace: CacheManager.ExtEditorWorkspace<*>,
     editor: ThemeExtensionComponentEditor,
-) = NeuScreen {
+) = NeuboardScreen {
     title = stringRes(R.string.ext__editor__edit_component__title_theme)
     scrollable = false
 
@@ -331,7 +331,7 @@ fun ThemeEditorScreen(
             item {
                 Column {
                     ExtensionComponentView(
-                        modifier = Modifier.defaultFlorisOutlinedBox(),
+                        modifier = Modifier.defaultNeuboardOutlinedBox(),
                         meta = workspace.editor!!.meta,
                         component = editor,
                         onEditBtnClick = { showEditComponentMetaDialog = true },
@@ -351,7 +351,7 @@ fun ThemeEditorScreen(
             items(stylesheetEditor.rules.toList()) { (rule, propertySet) -> key(rule) {
                 val propertySetSpec = SnyggSpec.propertySetSpecOf(rule)
                 val isVariablesRule = rule == SnyggAnnotationRule.Defines
-                FlorisOutlinedBox(
+                NeuboardOutlinedBox(
                     modifier = Modifier
                         .padding(vertical = 8.dp, horizontal = 16.dp)
                         .fillMaxWidth(),
@@ -395,7 +395,7 @@ fun ThemeEditorScreen(
                         ) {
                             for ((propertyName, propertySpec) in propertySetSpec?.properties.orEmpty()) {
                                 if (propertySpec.required && !propertySet.properties.containsKey(propertyName)) {
-                                    FlorisOutlinedBox(title = "Errors", modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp)) {
+                                    NeuboardOutlinedBox(title = "Errors", modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp)) {
                                         Text(
                                             modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
                                             text = "Required property '$propertyName' does not exist",
@@ -428,7 +428,7 @@ fun ThemeEditorScreen(
                                 val sets = propertySet.sets
                                 sets.forEachIndexed { propertySetIndex, propertySet ->
                                     key(propertySet.uuid) {
-                                        FlorisOutlinedBox(Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp)) {
+                                        NeuboardOutlinedBox(Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp)) {
                                             Row {
                                                 Text("Source set", Modifier
                                                     .padding(start = 16.dp)

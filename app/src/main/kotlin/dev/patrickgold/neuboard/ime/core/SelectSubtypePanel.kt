@@ -54,9 +54,9 @@ fun SelectSubtypePanel(modifier: Modifier = Modifier) {
 
     val currentlySelected = subtypeManager.activeSubtype.id
 
-    SnyggColumn(FlorisImeUi.SubtypePanel.elementName, modifier = modifier.safeDrawingPadding()) {
+    SnyggColumn(NeuboardImeUi.SubtypePanel.elementName, modifier = modifier.safeDrawingPadding()) {
         SnyggRow(
-            elementName = FlorisImeUi.SubtypePanelHeader.elementName,
+            elementName = NeuboardImeUi.SubtypePanelHeader.elementName,
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -68,7 +68,7 @@ fun SelectSubtypePanel(modifier: Modifier = Modifier) {
             )
         }
 
-        SnyggBox(FlorisImeUi.SubtypePanelList.elementName) {
+        SnyggBox(NeuboardImeUi.SubtypePanelList.elementName) {
             LazyColumn(
                 state = listState,
             ) {
@@ -79,7 +79,7 @@ fun SelectSubtypePanel(modifier: Modifier = Modifier) {
                     }
                 ) {
                     SnyggListItem(
-                        elementName = FlorisImeUi.SubtypePanelListItem.elementName,
+                        elementName = NeuboardImeUi.SubtypePanelListItem.elementName,
                         onClick = {
                             subtypeManager.switchToSubtypeById(it.id)
                             keyboardManager.activeState.isSubtypeSelectionVisible = false

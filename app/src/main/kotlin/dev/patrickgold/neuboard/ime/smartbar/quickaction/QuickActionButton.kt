@@ -70,7 +70,7 @@ fun QuickActionButton(
         QuickActionBarType.INTERACTIVE_TILE -> NeuboardImeUi.SmartbarActionTile
         QuickActionBarType.EDITOR_TILE -> NeuboardImeUi.SmartbarActionsEditorTile
     }.elementName
-    val attributes = mapOf(FlorisImeUi.Attr.Code to action.keyData().code)
+    val attributes = mapOf(NeuboardImeUi.Attr.Code to action.keyData().code)
     val selector = when {
         isPressed -> SnyggSelector.PRESSED
         !isEnabled -> SnyggSelector.DISABLED

@@ -62,7 +62,7 @@ class DictionaryManager private constructor(context: Context) {
             return emptyList()
         }
         return buildList {
-            if (prefs.dictionary.enableFlorisUserDictionary.get()) {
+            if (prefs.dictionary.enableNeuboardUserDictionary.get()) {
                 florisDao?.query(word, locale)?.let {
                     for (entry in it) {
                         add(WordSuggestionCandidate(entry.word, confidence = entry.freq / 255.0))
@@ -97,7 +97,7 @@ class DictionaryManager private constructor(context: Context) {
             return false
         }
         var ret = false
-        if (prefs.dictionary.enableFlorisUserDictionary.get()) {
+        if (prefs.dictionary.enableNeuboardUserDictionary.get()) {
             ret = ret || florisDao?.queryExactFuzzyLocale(word, locale)?.isNotEmpty() ?: false
             ret = ret || florisDao?.queryShortcut(word, locale)?.isNotEmpty() ?: false
         }
@@ -110,7 +110,7 @@ class DictionaryManager private constructor(context: Context) {
 
     @Synchronized
     fun florisUserDictionaryDao(): UserDictionaryDao? {
-        return if (prefs.dictionary.enableFlorisUserDictionary.get()) {
+        return if (prefs.dictionary.enableNeuboardUserDictionary.get()) {
             florisUserDictionaryDatabase?.userDictionaryDao()
         } else {
             null
@@ -119,7 +119,7 @@ class DictionaryManager private constructor(context: Context) {
 
     @Synchronized
     fun florisUserDictionaryDatabase(): FlorisUserDictionaryDatabase? {
-        return if (prefs.dictionary.enableFlorisUserDictionary.get()) {
+        return if (prefs.dictionary.enableNeuboardUserDictionary.get()) {
             florisUserDictionaryDatabase
         } else {
             null
@@ -148,7 +148,7 @@ class DictionaryManager private constructor(context: Context) {
     fun loadUserDictionariesIfNecessary() {
         val context = applicationContext.get() ?: return
 
-        if (florisUserDictionaryDatabase == null && prefs.dictionary.enableFlorisUserDictionary.get()) {
+        if (florisUserDictionaryDatabase == null && prefs.dictionary.enableNeuboardUserDictionary.get()) {
             florisUserDictionaryDatabase = Room.databaseBuilder(
                 context,
                 FlorisUserDictionaryDatabase::class.java,

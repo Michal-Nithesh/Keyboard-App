@@ -146,7 +146,7 @@ fun EmojiPaletteView(
     }
     val metadataVersion = activeEditorInfo.emojiCompatMetadataVersion
     val replaceAll = activeEditorInfo.emojiCompatReplaceAll
-    val emojiCompatInstance by FlorisEmojiCompat.getAsFlow(replaceAll).collectAsState()
+    val emojiCompatInstance by NeuboardEmojiCompat.getAsFlow(replaceAll).collectAsState()
     val emojiMappings = remember(emojiCompatInstance, fullEmojiMappings, metadataVersion, systemFontPaint) {
         fullEmojiMappings.byCategory.mapValues { (_, emojiSetList) ->
             emojiSetList.mapNotNull { emojiSet ->
@@ -315,17 +315,17 @@ private fun EmojiCategoriesTabRow(
     } else {
         EmojiCategoryValues.indexOf(activeCategory) - 1
     }
-    val style = rememberSnyggThemeQuery(FlorisImeUi.MediaEmojiTab.elementName)
+    val style = rememberSnyggThemeQuery(NeuboardImeUi.MediaEmojiTab.elementName)
     TabRow(
         modifier = Modifier
             .fillMaxWidth()
-            .height(FlorisImeSizing.smartbarHeight),
+            .height(NeuboardImeSizing.smartbarHeight),
         selectedTabIndex = selectedTabIndex,
         containerColor = Color.Transparent,
         contentColor = style.foreground(),
         indicator = { tabPositions ->
             val style = rememberSnyggThemeQuery(
-                elementName = FlorisImeUi.MediaEmojiTab.elementName,
+                elementName = NeuboardImeUi.MediaEmojiTab.elementName,
                 selector = SnyggSelector.FOCUS,
             )
             TabRowDefaults.PrimaryIndicator(
@@ -346,7 +346,7 @@ private fun EmojiCategoriesTabRow(
                 },
                 selected = activeCategory == category,
                 icon = { SnyggIcon(
-                    elementName = FlorisImeUi.MediaEmojiTab.elementName,
+                    elementName = NeuboardImeUi.MediaEmojiTab.elementName,
                     selector = if (activeCategory == category) SnyggSelector.FOCUS else SnyggSelector.NONE,
                     modifier = Modifier.size(ButtonDefaults.IconSize),
                     imageVector = category.icon(),
@@ -371,7 +371,7 @@ private fun EmojiKey(
     val variations = emojiSet.variations(withoutSkinTone = preferredSkinTone)
     var showVariantsBox by remember { mutableStateOf(false) }
 
-    SnyggBox(FlorisImeUi.MediaEmojiKey.elementName,
+    SnyggBox(NeuboardImeUi.MediaEmojiKey.elementName,
         modifier = Modifier
             .aspectRatio(1f)
             .pointerInput(Unit) {
@@ -397,7 +397,7 @@ private fun EmojiKey(
             emojiCompatInstance = emojiCompatInstance,
         )
         if (variations.isNotEmpty() || isPinned || isRecent) {
-            val style = rememberSnyggThemeQuery(FlorisImeUi.MediaEmojiKeyPopupExtendedIndicator.elementName)
+            val style = rememberSnyggThemeQuery(NeuboardImeUi.MediaEmojiKeyPopupExtendedIndicator.elementName)
             val shape = when (LocalLayoutDirection.current) {
                 LayoutDirection.Ltr -> VariantsTriangleShapeLtr
                 LayoutDirection.Rtl -> VariantsTriangleShapeRtl
@@ -462,13 +462,13 @@ private fun EmojiVariationsPopup(
             onDismissRequest = onDismiss,
         ) {
             SnyggRow(
-                elementName = FlorisImeUi.MediaEmojiKeyPopupBox.elementName,
+                elementName = NeuboardImeUi.MediaEmojiKeyPopupBox.elementName,
                 modifier = Modifier
                     .widthIn(max = EmojiBaseWidth * 6),
             ) {
                 for (emoji in variations) {
                     SnyggBox(
-                        elementName = FlorisImeUi.MediaEmojiKeyPopupElement.elementName,
+                        elementName = NeuboardImeUi.MediaEmojiKeyPopupElement.elementName,
                         modifier = Modifier
                             .pointerInput(Unit) {
                                 detectTapGestures { onEmojiTap(emoji) }
@@ -509,7 +509,7 @@ private fun EmojiHistoryPopup(
     @Composable
     fun Action(icon: ImageVector, action: suspend () -> Unit) {
         SnyggBox(
-            elementName = FlorisImeUi.MediaEmojiKeyPopupElement.elementName,
+            elementName = NeuboardImeUi.MediaEmojiKeyPopupElement.elementName,
             modifier = Modifier
                 .pointerInput(Unit) {
                     detectTapGestures {
@@ -540,7 +540,7 @@ private fun EmojiHistoryPopup(
             onDismissRequest = onDismiss,
         ) {
             SnyggRow(
-                elementName = FlorisImeUi.MediaEmojiKeyPopupBox.elementName,
+                elementName = NeuboardImeUi.MediaEmojiKeyPopupBox.elementName,
                 modifier = Modifier
                     .widthIn(max = EmojiBaseWidth * 6),
             ) {

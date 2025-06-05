@@ -32,8 +32,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.ime.core.DisplayLanguageNamesIn
-import dev.patrickgold.neuboard.lib.compose.NeuIconButton
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.FlorisIconButton
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.model.observeAsState
 import org.neuboard.lib.android.showLongToast
@@ -42,7 +42,7 @@ import org.neuboard.lib.kotlin.io.subFile
 import java.util.Locale
 
 @Composable
-fun AndroidLocalesScreen() = NeuScreen {
+fun AndroidLocalesScreen() = NeuboardScreen {
     title = stringRes(R.string.devtools__android_locales__title)
     scrollable = false
 
@@ -50,7 +50,7 @@ fun AndroidLocalesScreen() = NeuScreen {
     val availableLocales = remember { Locale.getAvailableLocales().sortedBy { it.toLanguageTag() } }
 
     actions {
-        NeuIconButton(
+        FlorisIconButton(
             onClick = {
                 try {
                     val devtoolsDir = context.noBackupFilesDir.subDir("devtools")

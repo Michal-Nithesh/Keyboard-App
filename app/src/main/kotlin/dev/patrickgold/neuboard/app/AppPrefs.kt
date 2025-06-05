@@ -820,7 +820,7 @@ class AppPrefs : PreferenceModel("neuboard-app-prefs") {
             //Migrate one hand mode prefs keep until: 0.7 dev cycle
             "keyboard__one_handed_mode" -> {
                 if (entry.rawValue != "OFF") {
-                    val prefs by NeuPreferenceModel()
+                    val prefs by neuboardPreferenceModel()
                     prefs.keyboard.oneHandedModeEnabled.set(true)
                     entry.keepAsIs()
                 } else {

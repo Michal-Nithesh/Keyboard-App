@@ -165,7 +165,7 @@ class ClipboardManager(
      * Called by system clipboard when the system primary clip has changed.
      */
     override fun onPrimaryClipChanged() {
-        if (!prefs.clipboard.useInternalClipboard.get() || prefs.clipboard.syncToFloris.get()) {
+        if (!prefs.clipboard.useInternalClipboard.get() || prefs.clipboard.syncToNeu.get()) {
             val systemPrimaryClip = systemClipboardManager.primaryClip
             ioScope.launch {
                 val isDuplicate: Boolean

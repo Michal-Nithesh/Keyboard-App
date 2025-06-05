@@ -35,9 +35,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.lib.compose.FlorisCanvasIcon
-import dev.patrickgold.neuboard.lib.compose.FlorisErrorCard
-import dev.patrickgold.neuboard.lib.compose.FlorisSimpleCard
-import dev.patrickgold.neuboard.lib.compose.FlorisWarningCard
+import dev.patrickgold.neuboard.lib.compose.NeuboardErrorCard
+import dev.patrickgold.neuboard.lib.compose.NeuboardSimpleCard
+import dev.patrickgold.neuboard.lib.compose.NeuboardWarningCard
 import dev.patrickgold.neuboard.lib.compose.observeAsState
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.util.launchActivity
@@ -77,7 +77,7 @@ fun SpellCheckerServiceSelector(florisSpellCheckerEnabled: MutableState<Boolean>
     Column(modifier = Modifier.padding(horizontal = 8.dp)) {
         if (systemSpellCheckerEnabled == "1") {
             if (systemSpellCheckerId == null) {
-                FlorisWarningCard(
+                NeuboardWarningCard(
                     text = stringRes(R.string.pref__spelling__active_spellchecker__summary_none),
                     onClick = openSystemSpellCheckerSettings,
                 )
@@ -92,7 +92,7 @@ fun SpellCheckerServiceSelector(florisSpellCheckerEnabled: MutableState<Boolean>
                 } catch (e: Exception) {
                     spellCheckerIcon = null
                 }
-                FlorisSimpleCard(
+                NeuboardSimpleCard(
                     icon = {
                         if (spellCheckerIcon != null) {
                             FlorisCanvasIcon(
@@ -118,7 +118,7 @@ fun SpellCheckerServiceSelector(florisSpellCheckerEnabled: MutableState<Boolean>
                 )
             }
         } else {
-            FlorisErrorCard(
+            NeuboardErrorCard(
                 text = stringRes(R.string.pref__spelling__active_spellchecker__summary_disabled),
                 onClick = openSystemSpellCheckerSettings,
             )

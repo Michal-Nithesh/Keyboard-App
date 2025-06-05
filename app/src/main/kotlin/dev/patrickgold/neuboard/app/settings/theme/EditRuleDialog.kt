@@ -85,8 +85,8 @@ import dev.patrickgold.neuboard.ime.text.keyboard.TextKeyData
 import dev.patrickgold.neuboard.ime.theme.NeuboardImeUi
 import dev.patrickgold.neuboard.keyboardManager
 import dev.patrickgold.neuboard.lib.NATIVE_NULLPTR
-import dev.patrickgold.neuboard.lib.compose.FlorisChip
-import dev.patrickgold.neuboard.lib.compose.FlorisHyperlinkText
+import dev.patrickgold.neuboard.lib.compose.NeuboardChip
+import dev.patrickgold.neuboard.lib.compose.NeuboardHyperlinkText
 import dev.patrickgold.neuboard.lib.compose.FlorisIconButton
 import dev.patrickgold.neuboard.lib.compose.florisHorizontalScroll
 import dev.patrickgold.neuboard.lib.compose.stringRes
@@ -248,7 +248,7 @@ internal fun EditRuleDialog(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         // TODO: avoid code duplication
-                        FlorisChip(
+                        NeuboardChip(
                             onClick = { updateCurrentRule(SnyggSelector.PRESSED) },
                             text = when (level) {
                                 SnyggLevel.DEVELOPER -> SnyggSelector.PRESSED.id
@@ -256,7 +256,7 @@ internal fun EditRuleDialog(
                             },
                             selected = selector == SnyggSelector.PRESSED,
                         )
-                        FlorisChip(
+                        NeuboardChip(
                             onClick = { updateCurrentRule(SnyggSelector.FOCUS) },
                             text = when (level) {
                                 SnyggLevel.DEVELOPER -> SnyggSelector.FOCUS.id
@@ -264,7 +264,7 @@ internal fun EditRuleDialog(
                             },
                             selected = selector == SnyggSelector.FOCUS,
                         )
-                        FlorisChip(
+                        NeuboardChip(
                             onClick = { updateCurrentRule(SnyggSelector.HOVER) },
                             text = when (level) {
                                 SnyggLevel.DEVELOPER -> SnyggSelector.HOVER.id
@@ -272,7 +272,7 @@ internal fun EditRuleDialog(
                             },
                             selected = selector == SnyggSelector.HOVER,
                         )
-                        FlorisChip(
+                        NeuboardChip(
                             onClick = { updateCurrentRule(SnyggSelector.DISABLED) },
                             text = when (level) {
                                 SnyggLevel.DEVELOPER -> SnyggSelector.DISABLED.id
@@ -323,7 +323,7 @@ internal fun EditRuleDialog(
                     }
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         for (code in codes) {
-                            FlorisChip(
+                            NeuboardChip(
                                 onClick = { editCodeDialogValue = code },
                                 text = code,
                                 selected = editCodeDialogValue == code,
@@ -508,11 +508,11 @@ private fun EditCodeValueDialog(
                 Column(modifier = Modifier.padding(bottom = 16.dp)) {
                     Text(text = stringRes(R.string.settings__theme_editor__code_recording_help_text))
                     Text(text = stringRes(R.string.settings__theme_editor__code_help_text))
-                    FlorisHyperlinkText(
+                    NeuboardHyperlinkText(
                         text = "Characters (unicode-table.com)",
                         url = stringRes(R.string.florisboard__character_key_codes_url),
                     )
-                    FlorisHyperlinkText(
+                    NeuboardHyperlinkText(
                         text = "Internal (github.com)",
                         url = stringRes(R.string.florisboard__internal_key_codes_url),
                     )
@@ -689,7 +689,7 @@ private fun <V : Any> EnumLikeAttributeBox(
     ) {
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             for (entry in alreadyAddedEntries) {
-                FlorisChip(
+                NeuboardChip(
                     onClick = {
                         setAttributes(attributes.excluding(attribute to entry.key.toString()))
                     },
@@ -713,7 +713,7 @@ private fun <V : Any> EnumLikeAttributeBox(
         ) {
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 for (entry in notYetAddedEntries) {
-                    FlorisChip(
+                    NeuboardChip(
                         onClick = {
                             setAttributes(attributes.including(attribute to entry.key.toString()))
                             showAddDialog = false

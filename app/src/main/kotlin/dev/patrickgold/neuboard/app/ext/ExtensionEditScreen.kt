@@ -60,14 +60,14 @@ import dev.patrickgold.neuboard.ime.theme.ThemeExtensionComponentImpl
 import dev.patrickgold.neuboard.ime.theme.ThemeExtensionEditor
 import dev.patrickgold.neuboard.lib.ValidationResult
 import dev.patrickgold.neuboard.lib.cache.CacheManager
-import dev.patrickgold.neuboard.lib.compose.NeuButtonBar
-import dev.patrickgold.neuboard.lib.compose.NeuIconButton
-import dev.patrickgold.neuboard.lib.compose.NeuInfoCard
-import dev.patrickgold.neuboard.lib.compose.NeuOutlinedBox
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
-import dev.patrickgold.neuboard.lib.compose.NeuUnsavedChangesDialog
+import dev.patrickgold.neuboard.lib.compose.FlorisButtonBar
+import dev.patrickgold.neuboard.lib.compose.FlorisIconButton
+import dev.patrickgold.neuboard.lib.compose.NeuboardInfoCard
+import dev.patrickgold.neuboard.lib.compose.NeuboardOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardUnsavedChangesDialog
 import dev.patrickgold.neuboard.lib.compose.Validation
-import dev.patrickgold.neuboard.lib.compose.defaultNeuOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.defaultNeuboardOutlinedBox
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.ext.Extension
 import dev.patrickgold.neuboard.lib.ext.ExtensionComponent
@@ -80,7 +80,7 @@ import dev.patrickgold.neuboard.lib.ext.ExtensionManager
 import dev.patrickgold.neuboard.lib.ext.ExtensionMeta
 import dev.patrickgold.neuboard.lib.ext.ExtensionValidation
 import dev.patrickgold.neuboard.lib.ext.validate
-import dev.patrickgold.neuboard.lib.io.NeuRef
+import dev.patrickgold.neuboard.lib.io.FlorisRef
 import dev.patrickgold.neuboard.lib.io.ZipUtils
 import dev.patrickgold.neuboard.lib.rememberValidationResult
 import dev.patrickgold.neuboard.themeManager
@@ -225,7 +225,7 @@ private fun ExtensionEditScreenSheetSwitcher(
 private fun EditScreen(
     workspace: CacheManager.ExtEditorWorkspace<*>,
     isCreateExt: Boolean,
-) = NeuScreen {
+) = NeuboardScreen {
     title = stringRes(if (isCreateExt) {
         when (workspace.ext) {
             is KeyboardExtension -> R.string.ext__editor__title_create_keyboard
@@ -243,7 +243,7 @@ private fun EditScreen(
     val context = LocalContext.current
     val navController = LocalNavController.current
 
-    val extEditor = workspace.editor ?: return@NeuScreen
+    val extEditor = workspace.editor ?: return@NeuboardScreen
     var showUnsavedChangesDialog by remember { mutableStateOf(false) }
     var showInvalidMetadataDialog by remember { mutableStateOf(false) }
 
@@ -304,7 +304,7 @@ private fun EditScreen(
         val flexArchiveFile = workspace.dir.subFile(flexArchiveName)
         ZipUtils.zip(workspace.saverDir, flexArchiveFile)
         val sourceRef = if (isCreateExt) {
-            NeuRef.internal(ExtensionManager.IME_THEME_PATH).subRef(flexArchiveName)
+            FlorisRef.internal(ExtensionManager.IME_THEME_PATH).subRef(flexArchiveName)
         } else {
             workspace.ext!!.sourceRef!!
         }
@@ -314,14 +314,14 @@ private fun EditScreen(
     }
 
     navigationIcon {
-        NeuIconButton(
+        FlorisIconButton(
             onClick = { handleBackPress() },
             icon = Icons.AutoMirrored.Filled.ArrowBack,
         )
     }
 
     bottomBar {
-        NeuButtonBar {
+        FlorisButtonBar {
             ButtonBarSpacer()
             ButtonBarTextButton(text = stringRes(R.string.action__cancel)) {
                 handleBackPress()
@@ -337,8 +337,8 @@ private fun EditScreen(
             handleBackPress()
         }
 
-        NeuOutlinedBox(
-            modifier = Modifier.defaultNeuOutlinedBox(),
+        NeuboardOutlinedBox(
+            modifier = Modifier.defaultNeuboardOutlinedBox(),
         ) {
             Preference(
                 onClick = { workspace.currentAction = EditorAction.ManageMetaData },
@@ -367,7 +367,7 @@ private fun EditScreen(
                     },
                 ) { component ->
                     ExtensionComponentView(
-                        modifier = Modifier.defaultNeuOutlinedBox(),
+                        modifier = Modifier.defaultNeuboardOutlinedBox(),
                         meta = extEditor.meta,
                         component = component,
                         onDeleteBtnClick = { workspace.update { extEditor.themes.remove(component) } },
@@ -381,7 +381,7 @@ private fun EditScreen(
         }
 
         if (showUnsavedChangesDialog) {
-            NeuUnsavedChangesDialog(
+            NeuboardUnsavedChangesDialog(
                 onSave = {
                     handleSave()
                 },
@@ -417,10 +417,10 @@ private fun EditScreen(
 private fun ManageMetaDataScreen(
     workspace: CacheManager.ExtEditorWorkspace<*>,
     isCreateExt: Boolean,
-) = NeuScreen {
+) = NeuboardScreen {
     title = stringRes(R.string.ext__editor__metadata__title)
 
-    val meta = workspace.editor?.meta ?: return@NeuScreen
+    val meta = workspace.editor?.meta ?: return@NeuboardScreen
     var showValidationErrors by rememberSaveable { mutableStateOf(false) }
 
     var id by rememberSaveable { mutableStateOf(meta.id) }
@@ -470,14 +470,14 @@ private fun ManageMetaDataScreen(
     }
 
     navigationIcon {
-        NeuIconButton(
+        FlorisIconButton(
             onClick = { handleBackPress() },
             icon = Icons.Default.Close,
         )
     }
 
     bottomBar {
-        NeuButtonBar {
+        FlorisButtonBar {
             ButtonBarSpacer()
             ButtonBarTextButton(text = stringRes(R.string.action__cancel)) {
                 handleBackPress()
@@ -562,17 +562,17 @@ private fun ManageMetaDataScreen(
 }
 
 @Composable
-private fun ManageDependenciesScreen(workspace: CacheManager.ExtEditorWorkspace<*>) = NeuScreen {
+private fun ManageDependenciesScreen(workspace: CacheManager.ExtEditorWorkspace<*>) = NeuboardScreen {
     title = stringRes(R.string.ext__editor__dependencies__title)
 
-    val dependencyList = workspace.editor?.dependencies ?: return@NeuScreen
+    val dependencyList = workspace.editor?.dependencies ?: return@NeuboardScreen
 
     fun handleBackPress() {
         workspace.currentAction = null
     }
 
     navigationIcon {
-        NeuIconButton(
+        FlorisIconButton(
             onClick = { handleBackPress() },
             icon = Icons.Default.Close,
         )
@@ -583,7 +583,7 @@ private fun ManageDependenciesScreen(workspace: CacheManager.ExtEditorWorkspace<
             handleBackPress()
         }
 
-        NeuInfoCard(
+        NeuboardInfoCard(
             modifier = Modifier.padding(all = 8.dp),
             text = """
                 Dependencies are currently not implemented, but are already somewhat
@@ -609,7 +609,7 @@ private enum class CreateFrom {
 private fun <T : ExtensionComponent> CreateComponentScreen(
     workspace: CacheManager.ExtEditorWorkspace<*>,
     type: KClass<T>,
-) = NeuScreen {
+) = NeuboardScreen {
     title = stringRes(when (type) {
         ThemeExtensionComponent::class -> R.string.ext__editor__create_component__title_theme
         else -> R.string.ext__editor__create_component__title
@@ -738,14 +738,14 @@ private fun <T : ExtensionComponent> CreateComponentScreen(
     }
 
     navigationIcon {
-        NeuIconButton(
+        FlorisIconButton(
             onClick = { handleBackPress() },
             icon = Icons.Default.Close,
         )
     }
 
     bottomBar {
-        NeuButtonBar {
+        FlorisButtonBar {
             ButtonBarSpacer()
             ButtonBarTextButton(text = stringRes(R.string.action__cancel)) {
                 handleBackPress()
@@ -764,8 +764,8 @@ private fun <T : ExtensionComponent> CreateComponentScreen(
             handleBackPress()
         }
 
-        NeuOutlinedBox(
-            modifier = Modifier.defaultNeuOutlinedBox(),
+        NeuboardOutlinedBox(
+            modifier = Modifier.defaultNeuboardOutlinedBox(),
         ) {
             RadioListItem(
                 onClick = { createFrom = CreateFrom.EXISTING },
@@ -780,8 +780,8 @@ private fun <T : ExtensionComponent> CreateComponentScreen(
         }
 
         if (createFrom == CreateFrom.EXISTING) {
-            NeuOutlinedBox(
-                modifier = Modifier.defaultNeuOutlinedBox(),
+            NeuboardOutlinedBox(
+                modifier = Modifier.defaultNeuboardOutlinedBox(),
             ) {
                 for ((componentName, component) in components) {
                     RadioListItem(
@@ -793,8 +793,8 @@ private fun <T : ExtensionComponent> CreateComponentScreen(
                 }
             }
         } else if (createFrom == CreateFrom.EMPTY) {
-            NeuInfoCard(
-                modifier = Modifier.defaultNeuOutlinedBox(),
+            NeuboardInfoCard(
+                modifier = Modifier.defaultNeuboardOutlinedBox(),
                 text = stringRes(R.string.ext__editor__create_component__from_empty_warning),
             )
             DialogProperty(

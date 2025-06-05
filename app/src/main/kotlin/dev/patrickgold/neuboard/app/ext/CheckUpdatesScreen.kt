@@ -20,11 +20,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.extensionManager
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 
 @Composable
-fun CheckUpdatesScreen() = NeuScreen {
+fun CheckUpdatesScreen() = NeuboardScreen {
     title = stringRes(R.string.ext__check_updates__title)
 
     val context = LocalContext.current

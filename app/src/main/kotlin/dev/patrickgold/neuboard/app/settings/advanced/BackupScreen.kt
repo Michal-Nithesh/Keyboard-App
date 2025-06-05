@@ -48,9 +48,9 @@ import dev.patrickgold.neuboard.ime.clipboard.provider.ClipboardFileStorage
 import dev.patrickgold.neuboard.ime.clipboard.provider.ItemType
 import dev.patrickgold.neuboard.lib.cache.CacheManager
 import dev.patrickgold.neuboard.lib.compose.FlorisButtonBar
-import dev.patrickgold.neuboard.lib.compose.FlorisOutlinedBox
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
-import dev.patrickgold.neuboard.lib.compose.defaultFlorisOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.NeuboardOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
+import dev.patrickgold.neuboard.lib.compose.defaultNeuboardOutlinedBox
 import dev.patrickgold.neuboard.lib.compose.rippleClickable
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.devtools.flogError
@@ -129,7 +129,7 @@ object Backup {
 }
 
 @Composable
-fun BackupScreen() = NeuScreen {
+fun BackupScreen() = NeuboardScreen {
     title = stringRes(R.string.backup_and_restore__back_up__title)
     previewFieldVisible = false
 
@@ -274,8 +274,8 @@ fun BackupScreen() = NeuScreen {
     }
 
     content {
-        FlorisOutlinedBox(
-            modifier = Modifier.defaultFlorisOutlinedBox(),
+        NeuboardOutlinedBox(
+            modifier = Modifier.defaultNeuboardOutlinedBox(),
             title = stringRes(R.string.backup_and_restore__back_up__destination),
         ) {
             RadioListItem(
@@ -306,8 +306,8 @@ internal fun BackupFilesSelector(
     filesSelector: Backup.FilesSelector,
     title: String,
 ) {
-    FlorisOutlinedBox(
-        modifier = modifier.defaultFlorisOutlinedBox(),
+    NeuboardOutlinedBox(
+        modifier = modifier.defaultNeuboardOutlinedBox(),
         title = title,
     ) {
         CheckboxListItem(

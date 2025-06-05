@@ -38,23 +38,23 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.sp
 import dev.patrickgold.neuboard.R
-import dev.patrickgold.neuboard.app.neuPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.clipboardManager
-import dev.patrickgold.neuboard.lib.compose.NeuButton
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
-import dev.patrickgold.neuboard.lib.compose.neuHorizontalScroll
-import dev.patrickgold.neuboard.lib.compose.neuScrollbar
+import dev.patrickgold.neuboard.lib.compose.FlorisButton
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
+import dev.patrickgold.neuboard.lib.compose.florisHorizontalScroll
+import dev.patrickgold.neuboard.lib.compose.florisScrollbar
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.devtools.Devtools
 import org.neuboard.lib.android.showShortToast
 
 // TODO: This screen is just a quick thrown-together thing and needs further enhancing in the UI
 @Composable
-fun ExportDebugLogScreen() = NeuScreen {
+fun ExportDebugLogScreen() = NeuboardScreen {
     title = stringRes(R.string.devtools__debuglog__title)
     scrollable = false
 
-    val prefs by NeuPreferenceModel()
+    val prefs by neuboardPreferenceModel()
     val context = LocalContext.current
     val clipboardManager by context.clipboardManager()
 
@@ -71,7 +71,7 @@ fun ExportDebugLogScreen() = NeuScreen {
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            NeuButton(
+            FlorisButton(
                 onClick = {
                     clipboardManager.addNewPlaintext(debugLog!!.joinToString("\n"))
                     context.showShortToast(context.getString(R.string.devtools__debuglog__copied_to_clipboard))
@@ -80,7 +80,7 @@ fun ExportDebugLogScreen() = NeuScreen {
                 text = stringRes(R.string.devtools__debuglog__copy_log),
                 enabled = debugLog != null,
             )
-            NeuButton(
+            FlorisButton(
                 onClick = {
                     clipboardManager.addNewPlaintext(formattedDebugLog!!.joinToString("\n"))
                     context.showShortToast(context.getString(R.string.devtools__debuglog__copied_to_clipboard))
@@ -98,8 +98,8 @@ fun ExportDebugLogScreen() = NeuScreen {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .neuScrollbar(lazyListState, isVertical = true)
-                    .neuHorizontalScroll(),
+                    .florisScrollbar(lazyListState, isVertical = true)
+                    .florisHorizontalScroll(),
                 state = lazyListState,
             ) {
                 val log = debugLog

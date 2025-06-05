@@ -35,9 +35,9 @@ import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.extensionManager
 import dev.patrickgold.neuboard.ime.theme.ThemeExtensionComponent
-import dev.patrickgold.neuboard.lib.compose.FlorisOutlinedBox
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
-import dev.patrickgold.neuboard.lib.compose.defaultFlorisOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.NeuboardOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
+import dev.patrickgold.neuboard.lib.compose.defaultNeuboardOutlinedBox
 import dev.patrickgold.neuboard.lib.compose.rippleClickable
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.ext.ExtensionComponentName
@@ -52,7 +52,7 @@ enum class ThemeManagerScreenAction(val id: String) {
 }
 
 @Composable
-fun ThemeManagerScreen(action: ThemeManagerScreenAction?) = NeuScreen {
+fun ThemeManagerScreen(action: ThemeManagerScreenAction?) = NeuboardScreen {
     title = stringRes(when (action) {
         ThemeManagerScreenAction.SELECT_DAY -> R.string.settings__theme_manager__title_day
         ThemeManagerScreenAction.SELECT_NIGHT -> R.string.settings__theme_manager__title_night
@@ -104,8 +104,8 @@ fun ThemeManagerScreen(action: ThemeManagerScreenAction?) = NeuScreen {
         val grayColor = LocalContentColor.current.copy(alpha = 0.56f)
         for ((extensionId, configs) in extGroupedThemes) key(extensionId) {
             val ext = extensionManager.getExtensionById(extensionId)!!
-            FlorisOutlinedBox(
-                modifier = Modifier.defaultFlorisOutlinedBox(),
+            NeuboardOutlinedBox(
+                modifier = Modifier.defaultNeuboardOutlinedBox(),
                 title = ext.meta.title,
                 subtitle = extensionId,
             ) {

@@ -36,7 +36,7 @@ import dev.patrickgold.neuboard.ime.core.DisplayLanguageNamesIn
 import dev.patrickgold.neuboard.ime.core.Subtype
 import dev.patrickgold.neuboard.ime.core.SubtypePreset
 import dev.patrickgold.neuboard.ime.editor.EditorContent
-import dev.patrickgold.neuboard.ime.editor.FlorisEditorInfo
+import dev.patrickgold.neuboard.ime.editor.NeuboardEditorInfo
 import dev.patrickgold.neuboard.ime.editor.ImeOptions
 import dev.patrickgold.neuboard.ime.editor.InputAttributes
 import dev.patrickgold.neuboard.ime.input.CapitalizationBehavior
@@ -924,7 +924,7 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
     private inner class ComputingEvaluatorImpl(
         override val version: Int,
         override val keyboard: Keyboard,
-        override val editorInfo: FlorisEditorInfo,
+        override val editorInfo: NeuboardEditorInfo,
         override val state: KeyboardState,
         override val subtype: Subtype,
     ) : ComputingEvaluator {

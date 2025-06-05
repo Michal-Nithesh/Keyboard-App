@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.app.enumDisplayEntriesOf
 import dev.patrickgold.neuboard.ime.text.gestures.SwipeAction
-import dev.patrickgold.neuboard.lib.compose.FlorisInfoCard
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardInfoCard
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.ui.DialogSliderPreference
 import dev.patrickgold.jetpref.datastore.ui.ExperimentalJetPrefDatastoreUi
@@ -34,12 +34,12 @@ import dev.patrickgold.jetpref.datastore.ui.SwitchPreference
 
 @OptIn(ExperimentalJetPrefDatastoreUi::class)
 @Composable
-fun GesturesScreen() = NeuScreen {
+fun GesturesScreen() = NeuboardScreen {
     title = stringRes(R.string.settings__gestures__title)
     previewFieldVisible = true
 
     content {
-        FlorisInfoCard(
+        NeuboardInfoCard(
             modifier = Modifier.padding(8.dp),
             text = """
                 Glide typing is currently not available and will be re-implemented from the ground up with word suggestions & the new keyboard layout engine. DO NOT file an issue for this missing functionality.

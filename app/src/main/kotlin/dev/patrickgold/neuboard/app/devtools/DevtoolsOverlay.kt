@@ -40,7 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.patrickgold.neuboard.app.neuPreferenceModel
+import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.clipboardManager
 import dev.patrickgold.neuboard.editorInstance
 import dev.patrickgold.neuboard.ime.keyboard.CachedLayout
@@ -48,7 +48,7 @@ import dev.patrickgold.neuboard.ime.keyboard.DebugLayoutComputationResult
 import dev.patrickgold.neuboard.ime.nlp.NlpInlineAutofill
 import dev.patrickgold.neuboard.ime.theme.ThemeManager
 import dev.patrickgold.neuboard.keyboardManager
-import dev.patrickgold.neuboard.lib.NeuLocale
+import dev.patrickgold.neuboard.lib.FlorisLocale
 import dev.patrickgold.neuboard.lib.observeAsNonNullState
 import dev.patrickgold.neuboard.nlpManager
 import dev.patrickgold.neuboard.themeManager
@@ -59,12 +59,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 private val CardBackground = Color.Black.copy(0.6f)
-private val DateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss", NeuLocale.default().base)
+private val DateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss", FlorisLocale.default().base)
 
 @Composable
 fun DevtoolsOverlay(modifier: Modifier = Modifier) {
     val context = LocalContext.current
-    val prefs by neuPreferenceModel()
+    val prefs by neuboardPreferenceModel()
     val keyboardManager by context.keyboardManager()
     val themeManager by context.themeManager()
 

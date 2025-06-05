@@ -49,7 +49,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.ime.core.DisplayLanguageNamesIn
 import dev.patrickgold.neuboard.ime.core.Subtype
-import dev.patrickgold.neuboard.ime.editor.FlorisEditorInfo
+import dev.patrickgold.neuboard.ime.editor.NeuboardEditorInfo
 import dev.patrickgold.neuboard.ime.editor.ImeOptions
 import dev.patrickgold.neuboard.ime.input.InputShiftState
 import dev.patrickgold.neuboard.ime.text.key.KeyCode
@@ -62,7 +62,7 @@ interface ComputingEvaluator {
 
     val keyboard: Keyboard
 
-    val editorInfo: FlorisEditorInfo
+    val editorInfo: NeuboardEditorInfo
 
     val state: KeyboardState
 
@@ -86,7 +86,7 @@ object DefaultComputingEvaluator : ComputingEvaluator {
 
     override val keyboard = PlaceholderLoadingKeyboard
 
-    override val editorInfo = FlorisEditorInfo.Unspecified
+    override val editorInfo = NeuboardEditorInfo.Unspecified
 
     override val state = KeyboardState.new()
 

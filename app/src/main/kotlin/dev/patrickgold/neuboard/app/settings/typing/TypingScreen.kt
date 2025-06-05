@@ -37,9 +37,9 @@ import dev.patrickgold.neuboard.app.Routes
 import dev.patrickgold.neuboard.app.enumDisplayEntriesOf
 import dev.patrickgold.neuboard.ime.keyboard.IncognitoMode
 import dev.patrickgold.neuboard.ime.nlp.SpellingLanguageMode
-import dev.patrickgold.neuboard.lib.compose.FlorisErrorCard
-import dev.patrickgold.neuboard.lib.compose.FlorisHyperlinkText
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardErrorCard
+import dev.patrickgold.neuboard.lib.compose.NeuboardHyperlinkText
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.model.observeAsState
 import dev.patrickgold.jetpref.datastore.ui.DialogSliderPreference
@@ -53,7 +53,7 @@ import org.neuboard.lib.android.AndroidVersion
 
 @OptIn(ExperimentalJetPrefDatastoreUi::class)
 @Composable
-fun TypingScreen() = NeuScreen {
+fun TypingScreen() = NeuboardScreen {
     title = stringRes(R.string.settings__typing__title)
     previewFieldVisible = true
 
@@ -61,7 +61,7 @@ fun TypingScreen() = NeuScreen {
 
     content {
         // This card is temporary and is therefore not using a string resource (not so temporary as we thought...)
-        FlorisErrorCard(
+        NeuboardErrorCard(
             modifier = Modifier.padding(8.dp),
             text = """
                 Suggestions (except system autofill) and spell checking are not available in this release. All
@@ -118,7 +118,7 @@ fun TypingScreen() = NeuScreen {
                                 thread. This helps a lot in improving this feature. Thanks!
                             """.trimIndent().replace('\n', ' '),
                         )
-                        FlorisHyperlinkText(
+                        NeuboardHyperlinkText(
                             text = "Feedback thread (GitHub)",
                             url = "https://github.com/florisboard/florisboard/discussions/1935",
                         )

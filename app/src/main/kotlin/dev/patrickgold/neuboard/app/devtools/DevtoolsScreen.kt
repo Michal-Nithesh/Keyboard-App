@@ -26,13 +26,13 @@ import dev.patrickgold.neuboard.app.LocalNavController
 import dev.patrickgold.neuboard.app.Routes
 import dev.patrickgold.neuboard.extensionManager
 import dev.patrickgold.neuboard.ime.dictionary.DictionaryManager
-import dev.patrickgold.neuboard.ime.dictionary.NeuUserDictionaryDatabase
+import dev.patrickgold.neuboard.ime.dictionary.FlorisUserDictionaryDatabase
 import dev.patrickgold.neuboard.ime.smartbar.quickaction.QuickActionArrangement
 import dev.patrickgold.neuboard.ime.smartbar.quickaction.QuickActionJsonConfig
 import org.neuboard.lib.android.AndroidSettings
 import org.neuboard.lib.android.showLongToast
-import dev.patrickgold.neuboard.lib.compose.NeuConfirmDeleteDialog
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardConfirmDeleteDialog
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.model.observeAsState
 import dev.patrickgold.jetpref.datastore.ui.Preference
@@ -45,7 +45,7 @@ class DebugOnPurposeCrashException : Exception(
 )
 
 @Composable
-fun DevtoolsScreen() = NeuScreen {
+fun DevtoolsScreen() = NeuboardScreen {
     title = stringRes(R.string.devtools__title)
     previewFieldVisible = true
 
@@ -213,16 +213,16 @@ fun DevtoolsScreen() = NeuScreen {
         }
 
         if (showDialog) {
-            NeuConfirmDeleteDialog(
+            NeuboardConfirmDeleteDialog(
                 onConfirm = {
                     DictionaryManager.default().let {
                         it.loadUserDictionariesIfNecessary()
-                        it.NeuUserDictionaryDao()?.deleteAll()
+                        it.florisUserDictionaryDao()?.deleteAll()
                     }
                     setShowDialog(false)
                 },
                 onDismiss = { setShowDialog(false) },
-                what = NeuUserDictionaryDatabase.DB_FILE_NAME,
+                what = FlorisUserDictionaryDatabase.DB_FILE_NAME,
             )
         }
     }

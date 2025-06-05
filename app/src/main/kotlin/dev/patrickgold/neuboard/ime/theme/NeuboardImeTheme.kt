@@ -32,8 +32,6 @@ import dev.patrickgold.neuboard.keyboardManager
 import dev.patrickgold.neuboard.lib.observeAsNonNullState
 import dev.patrickgold.neuboard.themeManager
 import dev.patrickgold.jetpref.datastore.model.observeAsState
-import org.neuboard.lib.snygg.SnyggAttributes
-import org.neuboard.lib.snygg.SnyggQueryAttributes
 import org.neuboard.lib.snygg.ui.ProvideSnyggTheme
 import org.neuboard.lib.snygg.ui.rememberSnyggTheme
 
@@ -60,7 +58,7 @@ fun NeuboardImeTheme(content: @Composable () -> Unit) {
     val activeStyle = remember(activeThemeInfo) { activeThemeInfo.stylesheet }
 
     val assetResolver = remember(activeThemeInfo) {
-        FlorisAssetResolver(context, activeThemeInfo)
+        NeuboardAssetResolver(context, activeThemeInfo)
     }
     val snyggTheme = rememberSnyggTheme(activeStyle, assetResolver)
     val fontSizeMultiplier = prefs.keyboard.fontSizeMultiplier()

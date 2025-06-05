@@ -30,7 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.patrickgold.neuboard.lib.compose.NeuChip
+import dev.patrickgold.neuboard.lib.compose.NeuboardChip
 import dev.patrickgold.neuboard.lib.ext.ExtensionMaintainer
 import dev.patrickgold.neuboard.lib.util.launchUrl
 import dev.patrickgold.jetpref.material.ui.JetPrefAlertDialog
@@ -43,7 +43,7 @@ fun ExtensionMaintainerChip(
     val context = LocalContext.current
     var showDialog by rememberSaveable { mutableStateOf(false) }
 
-    NeuChip(
+    NeuboardChip(
         modifier = modifier,
         text = maintainer.name,
         trailingIcons = when {
@@ -67,7 +67,7 @@ fun ExtensionMaintainerChip(
         ) {
             Column {
                 if (maintainer.email != null) {
-                    NeuChip(
+                    NeuboardChip(
                         onClick = { context.launchUrl("mailto:${maintainer.email}") },
                         text = maintainer.email.toString(),
                         leadingIcons = listOf(Icons.Outlined.Mail),
@@ -75,7 +75,7 @@ fun ExtensionMaintainerChip(
                     )
                 }
                 if (maintainer.url != null) {
-                    NeuChip(
+                    NeuboardChip(
                         onClick = { context.launchUrl(maintainer.url.toString()) },
                         text = maintainer.url.toString(),
                         leadingIcons = listOf(Icons.Default.Link),

@@ -61,7 +61,7 @@ fun QuickActionsOverflowPanel() {
     }
 
     SnyggBox(
-        elementName = FlorisImeUi.SmartbarActionsOverflow.elementName,
+        elementName = NeuboardImeUi.SmartbarActionsOverflow.elementName,
         modifier = Modifier
             .fillMaxWidth()
             .height(NeuboardImeSizing.keyboardUiHeight()),
@@ -80,7 +80,7 @@ fun QuickActionsOverflowPanel() {
             }
             item(span = { GridItemSpan(maxLineSpan) }) {
                 SnyggButton(
-                    elementName = FlorisImeUi.SmartbarActionsOverflowCustomizeButton.elementName,
+                    elementName = NeuboardImeUi.SmartbarActionsOverflowCustomizeButton.elementName,
                     onClick = { keyboardManager.activeState.isActionsEditorVisible = true },
                     modifier = Modifier
                         .wrapContentWidth(),

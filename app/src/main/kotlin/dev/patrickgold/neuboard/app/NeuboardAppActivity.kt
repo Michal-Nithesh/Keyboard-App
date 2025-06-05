@@ -42,11 +42,11 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dev.patrickgold.neuboard.R
-import dev.patrickgold.neuboard.app.apptheme.NeuboardAppTheme
+import dev.patrickgold.neuboard.app.apptheme.NeuAppTheme
 import dev.patrickgold.neuboard.app.ext.ExtensionImportScreenType
 import dev.patrickgold.neuboard.app.setup.NotificationPermissionState
 import dev.patrickgold.neuboard.cacheManager
-import dev.patrickgold.neuboard.lib.NeuboardLocale
+import dev.patrickgold.neuboard.lib.FlorisLocale
 import dev.patrickgold.neuboard.lib.compose.LocalPreviewFieldController
 import dev.patrickgold.neuboard.lib.compose.PreviewKeyboardField
 import dev.patrickgold.neuboard.lib.compose.ProvideLocalizedResources
@@ -93,7 +93,7 @@ class NeuboardAppActivity : ComponentActivity() {
         }
         prefs.other.settingsLanguage.observe(this) {
             val config = Configuration(resources.configuration)
-            val locale = if (it == "auto") NeuboardLocale.default() else NeuboardLocale.fromTag(it)
+            val locale = if (it == "auto") FlorisLocale.default() else FlorisLocale.fromTag(it)
             config.setLocale(locale.base)
             resourcesContext = createConfigurationContext(config)
         }
@@ -117,7 +117,7 @@ class NeuboardAppActivity : ComponentActivity() {
             AppVersionUtils.updateVersionOnInstallAndLastUse(this, prefs)
             setContent {
                 ProvideLocalizedResources(resourcesContext) {
-                    NeuboardAppTheme(theme = appTheme) {
+                    NeuAppTheme(theme = appTheme) {
                         Surface(color = MaterialTheme.colorScheme.background) {
                             AppContent()
                         }

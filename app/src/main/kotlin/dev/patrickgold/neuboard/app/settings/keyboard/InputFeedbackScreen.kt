@@ -25,7 +25,7 @@ import dev.patrickgold.neuboard.ime.input.HapticVibrationMode
 import org.neuboard.lib.android.AndroidVersion
 import org.neuboard.lib.android.systemVibratorOrNull
 import org.neuboard.lib.android.vibrate
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.ui.DialogSliderPreference
 import dev.patrickgold.jetpref.datastore.ui.ExperimentalJetPrefDatastoreUi
@@ -35,7 +35,7 @@ import dev.patrickgold.jetpref.datastore.ui.SwitchPreference
 
 @OptIn(ExperimentalJetPrefDatastoreUi::class)
 @Composable
-fun InputFeedbackScreen() = NeuScreen {
+fun InputFeedbackScreen() = NeuboardScreen {
     title = stringRes(R.string.settings__input_feedback__title)
     previewFieldVisible = true
     iconSpaceReserved = false

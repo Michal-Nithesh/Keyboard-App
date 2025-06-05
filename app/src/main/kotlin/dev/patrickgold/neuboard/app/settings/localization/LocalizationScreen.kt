@@ -44,8 +44,8 @@ import dev.patrickgold.neuboard.ime.core.DisplayLanguageNamesIn
 import dev.patrickgold.neuboard.ime.core.Subtype
 import dev.patrickgold.neuboard.ime.keyboard.LayoutType
 import dev.patrickgold.neuboard.keyboardManager
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
-import dev.patrickgold.neuboard.lib.compose.FlorisWarningCard
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardWarningCard
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.observeAsNonNullState
 import dev.patrickgold.neuboard.subtypeManager
@@ -69,7 +69,7 @@ internal val SubtypeSaver = Saver<MutableState<Subtype?>, String>(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun LocalizationScreen() = NeuScreen {
+fun LocalizationScreen() = NeuboardScreen {
     title = stringRes(R.string.settings__localization__title)
     previewFieldVisible = true
     iconSpaceReserved = false
@@ -118,7 +118,7 @@ fun LocalizationScreen() = NeuScreen {
         PreferenceGroup(title = stringRes(R.string.settings__localization__group_subtypes__label)) {
             val subtypes by subtypeManager.subtypesFlow.collectAsState()
             if (subtypes.isEmpty()) {
-                FlorisWarningCard(
+                NeuboardWarningCard(
                     modifier = Modifier.padding(all = 8.dp),
                     text = stringRes(R.string.settings__localization__subtype_no_subtypes_configured_warning),
                 )

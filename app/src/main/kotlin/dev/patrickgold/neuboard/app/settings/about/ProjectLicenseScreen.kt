@@ -28,15 +28,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.sp
 import dev.patrickgold.neuboard.R
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
-import dev.patrickgold.neuboard.lib.compose.neuHorizontalScroll
-import dev.patrickgold.neuboard.lib.compose.neuVerticalScroll
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
+import dev.patrickgold.neuboard.lib.compose.florisHorizontalScroll
+import dev.patrickgold.neuboard.lib.compose.florisVerticalScroll
 import dev.patrickgold.neuboard.lib.compose.stringRes
-import dev.patrickgold.neuboard.lib.io.NeuRef
+import dev.patrickgold.neuboard.lib.io.FlorisRef
 import dev.patrickgold.neuboard.lib.io.loadTextAsset
 
 @Composable
-fun ProjectLicenseScreen() = NeuScreen {
+fun ProjectLicenseScreen() = NeuboardScreen {
     title = stringRes(R.string.about__project_license__title)
     scrollable = false
 
@@ -50,10 +50,10 @@ fun ProjectLicenseScreen() = NeuScreen {
             SelectionContainer(
                 modifier = Modifier
                     .fillMaxSize()
-                    .neuVerticalScroll()
-                    .neuHorizontalScroll(),
+                    .florisVerticalScroll()
+                    .florisHorizontalScroll(),
             ) {
-                val licenseText = NeuRef.assets("license/project_license.txt").loadTextAsset(
+                val licenseText = FlorisRef.assets("license/project_license.txt").loadTextAsset(
                     context
                 ).getOrElse {
                     stringRes(R.string.about__project_license__error_license_text_failed, "error_message" to (it.message ?: ""))

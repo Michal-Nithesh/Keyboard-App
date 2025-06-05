@@ -23,6 +23,9 @@ import dev.patrickgold.neuboard.lib.ValidationRule
 import org.neuboard.lib.snygg.SnyggStylesheet
 import dev.patrickgold.neuboard.lib.validate
 import org.neuboard.lib.snygg.value.SnyggVarValue
+import org.neuboard.lib.snygg.value.SnyggStaticColorValue
+import org.neuboard.lib.snygg.value.SnyggDpShapeValue
+import org.neuboard.lib.snygg.value.SnyggPercentShapeValue
 
 object ExtensionValidation {
     private val MetaIdRegex = """^[a-z][a-z0-9_]*(\.[a-z0-9][a-z0-9_]*)*${'$'}""".toRegex()
@@ -152,8 +155,8 @@ object ExtensionValidation {
         }
     }
 
-    val SnyggStaticColorValue = ValidationRule<String> {
-        forKlass = org.neuboard.lib.snygg.value.SnyggStaticColorValue::class
+    val SnyggStaticColorValue: ValidationRule<String> = ValidationRule<String> {
+        forKlass = SnyggStaticColorValue::class
         forProperty = "color"
         validator { input ->
             val str = input.trim()
@@ -167,8 +170,8 @@ object ExtensionValidation {
         }
     }
 
-    val SnyggDpShapeValue = ValidationRule<String> {
-        forKlass = org.neuboard.lib.snygg.value.SnyggDpShapeValue::class
+    val SnyggDpShapeValue: ValidationRule<String> = ValidationRule<String> {
+        forKlass = SnyggDpShapeValue::class
         forProperty = "corner"
         validator { str ->
             val floatValue = str.toFloatOrNull()
@@ -181,8 +184,8 @@ object ExtensionValidation {
         }
     }
 
-    val SnyggPercentShapeValue = ValidationRule<String> {
-        forKlass = org.neuboard.lib.snygg.value.SnyggPercentShapeValue::class
+    val SnyggPercentShapeValue: ValidationRule<String> = ValidationRule<String> {
+        forKlass = SnyggPercentShapeValue::class
         forProperty = "corner"
         validator { str ->
             val intValue = str.toIntOrNull()

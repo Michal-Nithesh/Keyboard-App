@@ -24,12 +24,12 @@ import androidx.compose.ui.Modifier
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibraryDefaults
 import dev.patrickgold.neuboard.R
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
-import dev.patrickgold.neuboard.lib.compose.neuScrollbar
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
+import dev.patrickgold.neuboard.lib.compose.florisScrollbar
 import dev.patrickgold.neuboard.lib.compose.stringRes
 
 @Composable
-fun ThirdPartyLicensesScreen() = NeuScreen {
+fun ThirdPartyLicensesScreen() = NeuboardScreen {
     title = stringRes(R.string.about__third_party_licenses__title)
     scrollable = false
     iconSpaceReserved = false
@@ -40,7 +40,7 @@ fun ThirdPartyLicensesScreen() = NeuScreen {
         LibrariesContainer(
             modifier = Modifier
                 .fillMaxSize()
-                .neuScrollbar(lazyListState, isVertical = true),
+                .florisScrollbar(lazyListState, isVertical = true),
             colors = LibraryDefaults.libraryColors(
                 backgroundColor = MaterialTheme.colorScheme.background,
                 badgeBackgroundColor = MaterialTheme.colorScheme.primaryContainer,

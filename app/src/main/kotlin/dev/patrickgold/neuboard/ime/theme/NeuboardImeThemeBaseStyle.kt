@@ -26,17 +26,6 @@ import dev.patrickgold.neuboard.ime.input.InputShiftState
 import dev.patrickgold.neuboard.ime.text.key.KeyCode
 import org.neuboard.lib.snygg.SnyggSelector
 import org.neuboard.lib.snygg.SnyggStylesheet
-import org.neuboard.lib.snygg.value.circleShape
-import org.neuboard.lib.snygg.value.fontSize
-import org.neuboard.lib.snygg.value.genericFontFamily
-import org.neuboard.lib.snygg.value.rgbaColor
-import org.neuboard.lib.snygg.value.rectangleShape
-import org.neuboard.lib.snygg.value.roundedCornerShape
-import org.neuboard.lib.snygg.value.size
-import org.neuboard.lib.snygg.value.textAlign
-import org.neuboard.lib.snygg.value.textMaxLines
-import org.neuboard.lib.snygg.value.textOverflow
-import org.neuboard.lib.snygg.value.fontWeight
 
 val NeuboardImeThemeBaseStyle = SnyggStylesheet.v2 {
     defines {

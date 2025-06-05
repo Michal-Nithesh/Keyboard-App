@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The NeuBoard Contributors
+ * Copyright (C) 2021-2025 The FlorisBoard Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,21 +17,21 @@
 package dev.patrickgold.neuboard.ime.theme
 
 /*
-import org.neuboard.lib.snygg.Snygg
-import org.neuboard.lib.snygg.SnyggLevel
-import org.neuboard.lib.snygg.SnyggPropertySetSpecDeclBuilder
-import org.neuboard.lib.snygg.SnyggSpecDecl
-import org.neuboard.lib.snygg.value.SnyggCircleShapeValue
-import org.neuboard.lib.snygg.value.SnyggCutCornerDpShapeValue
-import org.neuboard.lib.snygg.value.SnyggCutCornerPercentShapeValue
-import org.neuboard.lib.snygg.value.SnyggDpSizeValue
-import org.neuboard.lib.snygg.value.SnyggDynamicColorDarkColorValue
-import org.neuboard.lib.snygg.value.SnyggDynamicColorLightColorValue
-import org.neuboard.lib.snygg.value.SnyggRectangleShapeValue
-import org.neuboard.lib.snygg.value.SnyggRoundedCornerDpShapeValue
-import org.neuboard.lib.snygg.value.SnyggRoundedCornerPercentShapeValue
-import org.neuboard.lib.snygg.value.SnyggStaticColorValue
-import org.neuboard.lib.snygg.value.SnyggSpSizeValue
+import org.florisboard.lib.snygg.Snygg
+import org.florisboard.lib.snygg.SnyggLevel
+import org.florisboard.lib.snygg.SnyggPropertySetSpecDeclBuilder
+import org.florisboard.lib.snygg.SnyggSpecDecl
+import org.florisboard.lib.snygg.value.SnyggCircleShapeValue
+import org.florisboard.lib.snygg.value.SnyggCutCornerDpShapeValue
+import org.florisboard.lib.snygg.value.SnyggCutCornerPercentShapeValue
+import org.florisboard.lib.snygg.value.SnyggDpSizeValue
+import org.florisboard.lib.snygg.value.SnyggDynamicColorDarkColorValue
+import org.florisboard.lib.snygg.value.SnyggDynamicColorLightColorValue
+import org.florisboard.lib.snygg.value.SnyggRectangleShapeValue
+import org.florisboard.lib.snygg.value.SnyggRoundedCornerDpShapeValue
+import org.florisboard.lib.snygg.value.SnyggRoundedCornerPercentShapeValue
+import org.florisboard.lib.snygg.value.SnyggStaticColorValue
+import org.florisboard.lib.snygg.value.SnyggSpSizeValue
 
 fun SnyggPropertySetSpecDeclBuilder.background() {
     property(
@@ -88,11 +88,11 @@ fun SnyggPropertySetSpecDeclBuilder.shape() {
     )
 }
 
-object NeuImeUiSpec : SnyggSpecDecl({
-    element(NeuImeUi.Keyboard) {
+object FlorisImeUiSpec : SnyggSpecDecl({
+    element(FlorisImeUi.Keyboard) {
         background()
     }
-    element(NeuImeUi.Key) {
+    element(FlorisImeUi.Key) {
         background()
         foreground()
         font()
@@ -100,13 +100,13 @@ object NeuImeUiSpec : SnyggSpecDecl({
         shadow()
         border()
     }
-    element(NeuImeUi.KeyHint) {
+    element(FlorisImeUi.KeyHint) {
         background()
         foreground()
         font()
         shape()
     }
-    element(NeuImeUi.KeyPopup) {
+    element(FlorisImeUi.KeyPopup) {
         background()
         foreground()
         font()
@@ -115,38 +115,30 @@ object NeuImeUiSpec : SnyggSpecDecl({
         border()
     }
 
-    element(NeuImeUi.Smartbar) {
+    element(FlorisImeUi.Smartbar) {
         background()
     }
-    element(NeuImeUi.SmartbarSharedActionsRow) {
+    element(FlorisImeUi.SmartbarSharedActionsRow) {
         background()
     }
-    element(NeuImeUi.SmartbarSharedActionsToggle) {
-        background()
-        foreground()
-        shape()
-        shadow()
-        border()
-    }
-    element(NeuImeUi.SmartbarExtendedActionsRow) {
-        background()
-    }
-    element(NeuImeUi.SmartbarExtendedActionsToggle) {
+    element(FlorisImeUi.SmartbarSharedActionsToggle) {
         background()
         foreground()
         shape()
         shadow()
         border()
     }
-    element(NeuImeUi.SmartbarActionKey) {
+    element(FlorisImeUi.SmartbarExtendedActionsRow) {
+        background()
+    }
+    element(FlorisImeUi.SmartbarExtendedActionsToggle) {
         background()
         foreground()
-        font()
         shape()
         shadow()
         border()
     }
-    element(NeuImeUi.SmartbarActionTile) {
+    element(FlorisImeUi.SmartbarActionKey) {
         background()
         foreground()
         font()
@@ -154,7 +146,7 @@ object NeuImeUiSpec : SnyggSpecDecl({
         shadow()
         border()
     }
-    element(NeuImeUi.SmartbarActionsOverflowCustomizeButton) {
+    element(FlorisImeUi.SmartbarActionTile) {
         background()
         foreground()
         font()
@@ -162,55 +154,55 @@ object NeuImeUiSpec : SnyggSpecDecl({
         shadow()
         border()
     }
-    element(NeuImeUi.SmartbarActionsOverflow) {
-        background()
-    }
-    element(NeuImeUi.SmartbarActionsEditor) {
-        background()
-        shape()
-    }
-    element(NeuImeUi.SmartbarActionsEditorHeader) {
-        background()
-        foreground()
-        font()
-    }
-    element(NeuImeUi.SmartbarActionsEditorSubheader) {
-        foreground()
-        font()
-    }
-    element(NeuImeUi.SmartbarCandidatesRow) {
-        background()
-    }
-    element(NeuImeUi.SmartbarCandidateWord) {
+    element(FlorisImeUi.SmartbarActionsOverflowCustomizeButton) {
         background()
         foreground()
         font()
         shape()
+        shadow()
+        border()
     }
-    element(NeuImeUi.SmartbarCandidateClip) {
+    element(FlorisImeUi.SmartbarActionsOverflow) {
+        background()
+    }
+    element(FlorisImeUi.SmartbarActionsEditor) {
+        background()
+        shape()
+    }
+    element(FlorisImeUi.SmartbarActionsEditorHeader) {
+        background()
+        foreground()
+        font()
+    }
+    element(FlorisImeUi.SmartbarActionsEditorSubheader) {
+        foreground()
+        font()
+    }
+    element(FlorisImeUi.SmartbarCandidatesRow) {
+        background()
+    }
+    element(FlorisImeUi.SmartbarCandidateWord) {
         background()
         foreground()
         font()
         shape()
     }
-    element(NeuImeUi.SmartbarCandidateSpacer) {
+    element(FlorisImeUi.SmartbarCandidateClip) {
+        background()
+        foreground()
+        font()
+        shape()
+    }
+    element(FlorisImeUi.SmartbarCandidateSpacer) {
         foreground()
     }
 
-    element(NeuImeUi.ClipboardHeader) {
+    element(FlorisImeUi.ClipboardHeader) {
         background()
         foreground()
         font()
     }
-    element(NeuImeUi.ClipboardItem) {
-        background()
-        foreground()
-        font()
-        shape()
-        shadow()
-        border()
-    }
-    element(NeuImeUi.ClipboardItemPopup) {
+    element(FlorisImeUi.ClipboardItem) {
         background()
         foreground()
         font()
@@ -218,13 +210,7 @@ object NeuImeUiSpec : SnyggSpecDecl({
         shadow()
         border()
     }
-    element(NeuImeUi.ClipboardEnableHistoryButton) {
-        background()
-        foreground()
-        shape()
-    }
-
-    element(NeuImeUi.EmojiKey) {
+    element(FlorisImeUi.ClipboardItemPopup) {
         background()
         foreground()
         font()
@@ -232,75 +218,89 @@ object NeuImeUiSpec : SnyggSpecDecl({
         shadow()
         border()
     }
-    element(NeuImeUi.EmojiKeyPopup) {
-        background()
-        foreground()
-        font()
-        shape()
-        shadow()
-        border()
-    }
-    element(NeuImeUi.EmojiTab) {
-        foreground()
-    }
-
-    element(NeuImeUi.ExtractedLandscapeInputLayout) {
-        background()
-    }
-    element(NeuImeUi.ExtractedLandscapeInputField) {
-        background()
-        foreground()
-        font()
-        shape()
-        border()
-    }
-    element(NeuImeUi.ExtractedLandscapeInputAction) {
+    element(FlorisImeUi.ClipboardEnableHistoryButton) {
         background()
         foreground()
         shape()
     }
 
-    element(NeuImeUi.GlideTrail) {
+    element(FlorisImeUi.EmojiKey) {
+        background()
+        foreground()
+        font()
+        shape()
+        shadow()
+        border()
+    }
+    element(FlorisImeUi.EmojiKeyPopup) {
+        background()
+        foreground()
+        font()
+        shape()
+        shadow()
+        border()
+    }
+    element(FlorisImeUi.EmojiTab) {
         foreground()
     }
 
-    element(NeuImeUi.IncognitoModeIndicator) {
+    element(FlorisImeUi.ExtractedLandscapeInputLayout) {
+        background()
+    }
+    element(FlorisImeUi.ExtractedLandscapeInputField) {
+        background()
+        foreground()
+        font()
+        shape()
+        border()
+    }
+    element(FlorisImeUi.ExtractedLandscapeInputAction) {
+        background()
+        foreground()
+        shape()
+    }
+
+    element(FlorisImeUi.GlideTrail) {
         foreground()
     }
 
-    element(NeuImeUi.OneHandedPanel) {
+    element(FlorisImeUi.IncognitoModeIndicator) {
+        foreground()
+    }
+
+    element(FlorisImeUi.OneHandedPanel) {
         background()
         foreground()
     }
 
-    element(NeuImeUi.SystemNavBar) {
+    element(FlorisImeUi.SystemNavBar) {
         background()
     }
 })
 
 Snygg.init(
-            stylesheetSpec = NeuImeUiSpec,
+            stylesheetSpec = FlorisImeUiSpec,
             rulePreferredElementSorting = listOf(
-                NeuImeUi.Keyboard,
-                NeuImeUi.Key,
-                NeuImeUi.KeyHint,
-                NeuImeUi.KeyPopup,
-                NeuImeUi.Smartbar,
-                NeuImeUi.SmartbarSharedActionsRow,
-                NeuImeUi.SmartbarSharedActionsToggle,
-                NeuImeUi.SmartbarExtendedActionsRow,
-                NeuImeUi.SmartbarExtendedActionsToggle,
-                NeuImeUi.SmartbarActionKey,
-                NeuImeUi.SmartbarActionTile,
-                NeuImeUi.SmartbarActionsOverflow,
-                NeuImeUi.SmartbarActionsOverflowCustomizeButton,
-                NeuImeUi.SmartbarActionsEditor,
-                NeuImeUi.SmartbarActionsEditorHeader,
-                NeuImeUi.SmartbarActionsEditorSubheader,
-                NeuImeUi.SmartbarCandidatesRow,
-                NeuImeUi.SmartbarCandidateWord,
-                NeuImeUi.SmartbarCandidateClip,
-                NeuImeUi.SmartbarCandidateSpacer,
+                FlorisImeUi.Keyboard,
+                FlorisImeUi.Key,
+                FlorisImeUi.KeyHint,
+                FlorisImeUi.KeyPopup,
+                FlorisImeUi.Smartbar,
+                FlorisImeUi.SmartbarSharedActionsRow,
+                FlorisImeUi.SmartbarSharedActionsToggle,
+                FlorisImeUi.SmartbarExtendedActionsRow,
+                FlorisImeUi.SmartbarExtendedActionsToggle,
+                FlorisImeUi.SmartbarActionKey,
+                FlorisImeUi.SmartbarActionTile,
+                FlorisImeUi.SmartbarActionsOverflow,
+                FlorisImeUi.SmartbarActionsOverflowCustomizeButton,
+                FlorisImeUi.SmartbarActionsEditor,
+                FlorisImeUi.SmartbarActionsEditorHeader,
+                FlorisImeUi.SmartbarActionsEditorSubheader,
+                FlorisImeUi.SmartbarCandidatesRow,
+                FlorisImeUi.SmartbarCandidateWord,
+                FlorisImeUi.SmartbarCandidateClip,
+                FlorisImeUi.SmartbarCandidateSpacer,
             ),
             rulePlaceholders = mapOf(
                 "c:delete" to KeyCode.DELETE,

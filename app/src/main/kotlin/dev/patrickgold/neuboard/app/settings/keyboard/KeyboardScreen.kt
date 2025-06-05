@@ -28,7 +28,7 @@ import dev.patrickgold.neuboard.ime.onehanded.OneHandedMode
 import dev.patrickgold.neuboard.ime.smartbar.IncognitoDisplayMode
 import dev.patrickgold.neuboard.ime.text.key.KeyHintMode
 import dev.patrickgold.neuboard.ime.text.key.UtilityKeyAction
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.ui.DialogSliderPreference
 import dev.patrickgold.jetpref.datastore.ui.ExperimentalJetPrefDatastoreUi
@@ -39,7 +39,7 @@ import dev.patrickgold.jetpref.datastore.ui.SwitchPreference
 
 @OptIn(ExperimentalJetPrefDatastoreUi::class)
 @Composable
-fun KeyboardScreen() = NeuScreen {
+fun KeyboardScreen() = NeuboardScreen {
     title = stringRes(R.string.settings__keyboard__title)
     previewFieldVisible = true
 

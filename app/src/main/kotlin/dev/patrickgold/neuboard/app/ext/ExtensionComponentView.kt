@@ -40,9 +40,9 @@ import androidx.compose.ui.unit.dp
 import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.ime.nlp.LanguagePackComponent
 import dev.patrickgold.neuboard.ime.theme.ThemeExtensionComponent
-import dev.patrickgold.neuboard.lib.compose.NeuIconButton
-import dev.patrickgold.neuboard.lib.compose.NeuOutlinedBox
-import dev.patrickgold.neuboard.lib.compose.NeuTextButton
+import dev.patrickgold.neuboard.lib.compose.FlorisIconButton
+import dev.patrickgold.neuboard.lib.compose.NeuboardOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.FlorisTextButton
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.ext.ExtensionComponent
 import dev.patrickgold.neuboard.lib.ext.ExtensionComponentName
@@ -66,7 +66,7 @@ fun ExtensionComponentView(
     onEditBtnClick: (() -> Unit)? = null,
 ) {
     val componentName = remember(meta.id, component.id) { ExtensionComponentName(meta.id, component.id).toString() }
-    NeuOutlinedBox(
+    NeuboardOutlinedBox(
         modifier = modifier,
         title = component.label,
         subtitle = componentName,
@@ -121,7 +121,7 @@ fun ExtensionComponentView(
                     .padding(horizontal = 6.dp),
             ) {
                 if (onDeleteBtnClick != null) {
-                    NeuTextButton(
+                    FlorisTextButton(
                         onClick = onDeleteBtnClick,
                         icon = Icons.Default.Delete,
                         text = stringRes(R.string.action__delete),
@@ -132,7 +132,7 @@ fun ExtensionComponentView(
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 if (onEditBtnClick != null) {
-                    NeuTextButton(
+                    FlorisTextButton(
                         onClick = onEditBtnClick,
                         icon = Icons.Default.Edit,
                         text = stringRes(R.string.action__edit),
@@ -162,7 +162,7 @@ fun <T : ExtensionComponent> ExtensionComponentListView(
             ) },
             trailingContent = if (onCreateBtnClick != null) {
                 @Composable {
-                    NeuIconButton(
+                    FlorisIconButton(
                         onClick = onCreateBtnClick,
                         icon = Icons.Default.Add,
                         iconColor = MaterialTheme.colorScheme.secondary,

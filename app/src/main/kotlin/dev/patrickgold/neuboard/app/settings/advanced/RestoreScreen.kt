@@ -52,11 +52,11 @@ import dev.patrickgold.neuboard.ime.clipboard.provider.ClipboardItem
 import dev.patrickgold.neuboard.ime.clipboard.provider.ItemType
 import dev.patrickgold.neuboard.lib.cache.CacheManager
 import dev.patrickgold.neuboard.lib.compose.FlorisButtonBar
-import dev.patrickgold.neuboard.lib.compose.FlorisCardDefaults
-import dev.patrickgold.neuboard.lib.compose.FlorisOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.NeuboardCardDefaults
+import dev.patrickgold.neuboard.lib.compose.NeuboardOutlinedBox
 import dev.patrickgold.neuboard.lib.compose.FlorisOutlinedButton
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
-import dev.patrickgold.neuboard.lib.compose.defaultFlorisOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
+import dev.patrickgold.neuboard.lib.compose.defaultNeuboardOutlinedBox
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.ext.ExtensionManager
 import dev.patrickgold.neuboard.lib.io.ZipUtils
@@ -87,7 +87,7 @@ object Restore {
 }
 
 @Composable
-fun RestoreScreen() = NeuScreen {
+fun RestoreScreen() = NeuboardScreen {
     title = stringRes(R.string.backup_and_restore__restore__title)
     previewFieldVisible = false
 
@@ -269,8 +269,8 @@ fun RestoreScreen() = NeuScreen {
     }
 
     content {
-        FlorisOutlinedBox(
-            modifier = Modifier.defaultFlorisOutlinedBox(),
+        NeuboardOutlinedBox(
+            modifier = Modifier.defaultNeuboardOutlinedBox(),
             title = stringRes(R.string.backup_and_restore__restore__mode),
         ) {
             RadioListItem(
@@ -314,8 +314,8 @@ fun RestoreScreen() = NeuScreen {
                 fontStyle = FontStyle.Italic,
             )
         } else {
-            FlorisOutlinedBox(
-                modifier = Modifier.defaultFlorisOutlinedBox(),
+            NeuboardOutlinedBox(
+                modifier = Modifier.defaultNeuboardOutlinedBox(),
                 title = stringRes(R.string.backup_and_restore__restore__metadata),
             ) {
                 Preference(
@@ -336,7 +336,7 @@ fun RestoreScreen() = NeuScreen {
                     },
                 )
                 if (workspace.restoreErrorId != null) {
-                    Column(modifier = Modifier.padding(FlorisCardDefaults.ContentPadding)) {
+                    Column(modifier = Modifier.padding(NeuboardCardDefaults.ContentPadding)) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -352,7 +352,7 @@ fun RestoreScreen() = NeuScreen {
                         )
                     }
                 } else if (workspace.restoreWarningId != null) {
-                    Column(modifier = Modifier.padding(FlorisCardDefaults.ContentPadding)) {
+                    Column(modifier = Modifier.padding(NeuboardCardDefaults.ContentPadding)) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()

@@ -77,7 +77,7 @@ import dev.patrickgold.neuboard.app.ext.IMAGES
 import dev.patrickgold.neuboard.lib.ValidationResult
 import dev.patrickgold.neuboard.lib.cache.CacheManager
 import dev.patrickgold.neuboard.lib.compose.DpSizeSaver
-import dev.patrickgold.neuboard.lib.compose.FlorisChip
+import dev.patrickgold.neuboard.lib.compose.NeuboardChip
 import dev.patrickgold.neuboard.lib.compose.FlorisIconButton
 import dev.patrickgold.neuboard.lib.compose.FlorisTextButton
 import dev.patrickgold.neuboard.lib.compose.Validation
@@ -822,7 +822,7 @@ private fun PaddingValueEditor(
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = alignment,
         ) {
-            FlorisChip(
+            NeuboardChip(
                 onClick = onClick,
                 text = text,
                 shape = MaterialTheme.shapes.medium,
@@ -997,7 +997,7 @@ private fun ShapeValueEditor(
                 horizontalArrangement = Arrangement.SpaceAround,
             ) {
                 Column {
-                    FlorisChip(
+                    NeuboardChip(
                         onClick = {
                             showDialogInitDp = topStart
                             showDialogForCorner = ShapeCorner.TOP_START
@@ -1005,7 +1005,7 @@ private fun ShapeValueEditor(
                         text = stringRes(R.string.unit__display_pixel__symbol).curlyFormat("v" to topStart.value.toStringWithoutDotZero()),
                         shape = MaterialTheme.shapes.medium,
                     )
-                    FlorisChip(
+                    NeuboardChip(
                         onClick = {
                             showDialogInitDp = bottomStart
                             showDialogForCorner = ShapeCorner.BOTTOM_START
@@ -1020,7 +1020,7 @@ private fun ShapeValueEditor(
                         .border(1.dp, MaterialTheme.colorScheme.onBackground, shape),
                 )
                 Column {
-                    FlorisChip(
+                    NeuboardChip(
                         onClick = {
                             showDialogInitDp = topEnd
                             showDialogForCorner = ShapeCorner.TOP_END
@@ -1028,7 +1028,7 @@ private fun ShapeValueEditor(
                         text = stringRes(R.string.unit__display_pixel__symbol).curlyFormat("v" to topEnd.value.toStringWithoutDotZero()),
                         shape = MaterialTheme.shapes.medium,
                     )
-                    FlorisChip(
+                    NeuboardChip(
                         onClick = {
                             showDialogInitDp = bottomEnd
                             showDialogForCorner = ShapeCorner.BOTTOM_END
@@ -1143,7 +1143,7 @@ private fun ShapeValueEditor(
                 horizontalArrangement = Arrangement.SpaceAround,
             ) {
                 Column {
-                    FlorisChip(
+                    NeuboardChip(
                         onClick = {
                             showDialogInitPercentage = topStart
                             showDialogForCorner = ShapeCorner.TOP_START
@@ -1151,7 +1151,7 @@ private fun ShapeValueEditor(
                         text = stringRes(R.string.unit__percent__symbol).curlyFormat("v" to topStart),
                         shape = MaterialTheme.shapes.medium,
                     )
-                    FlorisChip(
+                    NeuboardChip(
                         onClick = {
                             showDialogInitPercentage = bottomStart
                             showDialogForCorner = ShapeCorner.BOTTOM_START
@@ -1166,7 +1166,7 @@ private fun ShapeValueEditor(
                         .border(1.dp, MaterialTheme.colorScheme.onBackground, shape),
                 )
                 Column {
-                    FlorisChip(
+                    NeuboardChip(
                         onClick = {
                             showDialogInitPercentage = topEnd
                             showDialogForCorner = ShapeCorner.TOP_END
@@ -1174,7 +1174,7 @@ private fun ShapeValueEditor(
                         text = stringRes(R.string.unit__percent__symbol).curlyFormat("v" to topEnd),
                         shape = MaterialTheme.shapes.medium,
                     )
-                    FlorisChip(
+                    NeuboardChip(
                         onClick = {
                             showDialogInitPercentage = bottomEnd
                             showDialogForCorner = ShapeCorner.BOTTOM_END

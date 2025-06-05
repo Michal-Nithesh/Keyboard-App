@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package dev.patrickgold.nueboard.app.settings
+package dev.patrickgold.neuboard.app.settings
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -35,19 +35,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import dev.patrickgold.neu.R
-import dev.patrickgold.neu.app.LocalNavController
-import dev.patrickgold.neu.app.Routes
-import dev.patrickgold.neu.lib.compose.NeuErrorCard
-import dev.patrickgold.neu.lib.compose.NeuScreen
-import dev.patrickgold.neu.lib.compose.NeuWarningCard
-import dev.patrickgold.neu.lib.compose.stringRes
-import dev.patrickgold.neu.lib.util.InputMethodUtils
+import dev.patrickgold.neuboard.R
+import dev.patrickgold.neuboard.app.LocalNavController
+import dev.patrickgold.neuboard.app.Routes
+import dev.patrickgold.neuboard.lib.compose.NeuboardErrorCard
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardWarningCard
+import dev.patrickgold.neuboard.lib.compose.stringRes
+import dev.patrickgold.neuboard.lib.util.InputMethodUtils
 import dev.patrickgold.jetpref.datastore.model.observeAsState
 import dev.patrickgold.jetpref.datastore.ui.Preference
 
 @Composable
-fun HomeScreen() = NeuScreen {
+fun HomeScreen() = NeuboardScreen {
     title = stringRes(R.string.settings__home__title)
     navigationIconVisible = false
     previewFieldVisible = true
@@ -58,17 +58,17 @@ fun HomeScreen() = NeuScreen {
     content {
         val isCollapsed by prefs.internal.homeIsBetaToolboxCollapsed.observeAsState()
 
-        val isNeuBoardEnabled by InputMethodUtils.observeIsNeuboardEnabled(foregroundOnly = true)
-        val isNeuBoardSelected by InputMethodUtils.observeIsNeuboardSelected(foregroundOnly = true)
+        val isNeuBoardEnabled by InputMethodUtils.observeIsFlorisboardEnabled(foregroundOnly = true)
+        val isNeuBoardSelected by InputMethodUtils.observeIsFlorisboardSelected(foregroundOnly = true)
         if (!isNeuBoardEnabled) {
-            NeuErrorCard(
+            NeuboardErrorCard(
                 modifier = Modifier.padding(8.dp),
                 showIcon = false,
                 text = stringRes(R.string.settings__home__ime_not_enabled),
                 onClick = { InputMethodUtils.showImeEnablerActivity(context) },
             )
         } else if (!isNeuBoardSelected) {
-            NeuWarningCard(
+            NeuboardWarningCard(
                 modifier = Modifier.padding(8.dp),
                 showIcon = false,
                 text = stringRes(R.string.settings__home__ime_not_selected),

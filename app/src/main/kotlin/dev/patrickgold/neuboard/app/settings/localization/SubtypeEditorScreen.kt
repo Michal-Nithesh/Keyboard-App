@@ -76,8 +76,8 @@ import dev.patrickgold.neuboard.keyboardManager
 import dev.patrickgold.neuboard.lib.FlorisLocale
 import dev.patrickgold.neuboard.lib.compose.FlorisButtonBar
 import dev.patrickgold.neuboard.lib.compose.FlorisDropdownLikeButton
-import dev.patrickgold.neuboard.lib.compose.FlorisDropdownMenu
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardDropdownMenu
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.florisScrollbar
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.ext.ExtensionComponentName
@@ -176,7 +176,7 @@ private class SubtypeEditorState(init: Subtype?) {
 }
 
 @Composable
-fun SubtypeEditorScreen(id: Long?) = NeuScreen {
+fun SubtypeEditorScreen(id: Long?) = NeuboardScreen {
     title = stringRes(if (id == null) {
         R.string.settings__localization__subtype_add_title
     } else {
@@ -377,7 +377,7 @@ fun SubtypeEditorScreen(id: Long?) = NeuScreen {
                 }
                 var expanded by remember { mutableStateOf(false) }
                 val selectedIndex = popupMappingIds.indexOf(popupMapping).coerceAtLeast(0)
-                FlorisDropdownMenu(
+                NeuboardDropdownMenu(
                     items = popupMappingLabels,
                     expanded = expanded,
                     selectedIndex = selectedIndex,
@@ -407,7 +407,7 @@ fun SubtypeEditorScreen(id: Long?) = NeuScreen {
                 }
                 var expanded by remember { mutableStateOf(false) }
                 val selectedIndex = nlpProviderMappingIds.indexOf(nlpProviders.suggestion).coerceAtLeast(0)
-                FlorisDropdownMenu(
+                NeuboardDropdownMenu(
                     items = nlpProviderMappingLabels,
                     expanded = expanded,
                     selectedIndex = selectedIndex,
@@ -434,7 +434,7 @@ fun SubtypeEditorScreen(id: Long?) = NeuScreen {
                     selectListValues + composers.values.map { it.label }
                 }
                 var expanded by remember { mutableStateOf(false) }
-                FlorisDropdownMenu(
+                NeuboardDropdownMenu(
                     items = composerNames,
                     expanded = expanded,
                     selectedIndex = composerIds.indexOf(composer).coerceAtLeast(0),
@@ -452,7 +452,7 @@ fun SubtypeEditorScreen(id: Long?) = NeuScreen {
                     selectListValues + currencySets.values.map { it.label }
                 }
                 var expanded by remember { mutableStateOf(false) }
-                FlorisDropdownMenu(
+                NeuboardDropdownMenu(
                     items = currencySetNames,
                     expanded = expanded,
                     selectedIndex = currencySetIds.indexOf(currencySet).coerceAtLeast(0),
@@ -559,7 +559,7 @@ private fun SubtypeLayoutDropdown(
     val layoutId = remember(layoutMap) { layoutMap[layoutType] }
     var expanded by remember { mutableStateOf(false) }
     val selectedIndex = layoutIds.indexOf(layoutId).coerceAtLeast(0)
-    FlorisDropdownMenu(
+    NeuboardDropdownMenu(
         items = layoutLabels,
         expanded = expanded,
         selectedIndex = selectedIndex,

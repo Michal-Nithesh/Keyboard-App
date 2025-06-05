@@ -242,16 +242,16 @@ fun QuickActionsEditorPanel() {
         }
     }
 
-    SnyggColumn(FlorisImeUi.SmartbarActionsEditor.elementName, modifier = Modifier.safeDrawingPadding()) {
+    SnyggColumn(NeuboardImeUi.SmartbarActionsEditor.elementName, modifier = Modifier.safeDrawingPadding()) {
         SnyggRow(
-            elementName = FlorisImeUi.SmartbarActionsEditorHeader.elementName,
+            elementName = NeuboardImeUi.SmartbarActionsEditorHeader.elementName,
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // Extra box wrapper is needed to enforce size constraint but still allow for Snygg margin to be used
             Box(modifier = Modifier.size(48.dp)) {
                 SnyggIconButton(
-                    elementName = FlorisImeUi.SmartbarActionsEditorHeaderButton.elementName,
+                    elementName = NeuboardImeUi.SmartbarActionsEditorHeaderButton.elementName,
                     modifier = Modifier.fillMaxHeight().aspectRatio(1f),
                     onClick = {
                         keyboardManager.activeState.isActionsEditorVisible = false
@@ -269,7 +269,7 @@ fun QuickActionsEditorPanel() {
             Spacer(Modifier.size(48.dp))
         }
 
-        SnyggBox(FlorisImeUi.SmartbarActionsEditorTileGrid.elementName) {
+        SnyggBox(NeuboardImeUi.SmartbarActionsEditorTileGrid.elementName) {
             LazyVerticalGrid(
                 modifier = Modifier
                     .pointerInput(Unit) {
@@ -350,7 +350,7 @@ private fun Subheader(
     modifier: Modifier = Modifier,
 ) {
     SnyggText(
-        elementName = FlorisImeUi.SmartbarActionsEditorSubheader.elementName,
+        elementName = NeuboardImeUi.SmartbarActionsEditorSubheader.elementName,
         modifier = modifier.fillMaxWidth(),
         text = text,
     )

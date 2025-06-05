@@ -56,7 +56,7 @@ import dev.patrickgold.neuboard.ime.dictionary.UserDictionaryEntry
 import dev.patrickgold.neuboard.ime.dictionary.UserDictionaryValidation
 import dev.patrickgold.neuboard.lib.FlorisLocale
 import dev.patrickgold.neuboard.lib.compose.FlorisIconButton
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.Validation
 import dev.patrickgold.neuboard.lib.compose.rippleClickable
 import dev.patrickgold.neuboard.lib.compose.stringRes
@@ -75,14 +75,14 @@ private val UserDictionaryEntryToAdd = UserDictionaryEntry(id = 0, "", 255, null
 private const val SystemUserDictionaryUiIntentAction = "android.settings.USER_DICTIONARY_SETTINGS"
 
 enum class UserDictionaryType(val id: String) {
-    FLORIS("floris"),
+    NEU("neu"),
     SYSTEM("system");
 }
 
 @Composable
-fun UserDictionaryScreen(type: UserDictionaryType) = NeuScreen {
+fun UserDictionaryScreen(type: UserDictionaryType) = NeuboardScreen {
     title = stringRes(when (type) {
-        UserDictionaryType.FLORIS -> R.string.settings__udm__title_floris
+        UserDictionaryType.NEU -> R.string.settings__udm__title_floris
         UserDictionaryType.SYSTEM -> R.string.settings__udm__title_system
     })
     previewFieldVisible = false
@@ -100,7 +100,7 @@ fun UserDictionaryScreen(type: UserDictionaryType) = NeuScreen {
 
     fun userDictionaryDao(): UserDictionaryDao? {
         return when (type) {
-            UserDictionaryType.FLORIS -> dictionaryManager.florisUserDictionaryDao()
+            UserDictionaryType.NEU -> dictionaryManager.florisUserDictionaryDao()
             UserDictionaryType.SYSTEM -> dictionaryManager.systemUserDictionaryDao()
         }
     }
@@ -139,7 +139,7 @@ fun UserDictionaryScreen(type: UserDictionaryType) = NeuScreen {
             // by pressing the back button), so we don't display an error message here.
             if (uri == null) return@rememberLauncherForActivityResult
             val db = when (type) {
-                UserDictionaryType.FLORIS -> dictionaryManager.florisUserDictionaryDatabase()
+                UserDictionaryType.NEU -> dictionaryManager.florisUserDictionaryDatabase()
                 UserDictionaryType.SYSTEM -> dictionaryManager.systemUserDictionaryDatabase()
             }
             if (db == null) {
@@ -164,7 +164,7 @@ fun UserDictionaryScreen(type: UserDictionaryType) = NeuScreen {
             // by pressing the back button), so we don't display an error message here.
             if (uri == null) return@rememberLauncherForActivityResult
             val db = when (type) {
-                UserDictionaryType.FLORIS -> dictionaryManager.florisUserDictionaryDatabase()
+                UserDictionaryType.NEU -> dictionaryManager.florisUserDictionaryDatabase()
                 UserDictionaryType.SYSTEM -> dictionaryManager.systemUserDictionaryDatabase()
             }
             if (db == null) {

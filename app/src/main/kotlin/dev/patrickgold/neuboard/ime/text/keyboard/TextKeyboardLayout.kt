@@ -55,7 +55,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
-import dev.patrickgold.neuboard.FlorisImeService
+import dev.patrickgold.neuboard.NeuboardImeService
 import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.editorInstance
 import dev.patrickgold.neuboard.glideTypingManager
@@ -337,7 +337,7 @@ private fun TextKeyButton(
         key.label?.let { label ->
             var customLabel = label
             if (key.computedData.code == KeyCode.SPACE) {
-                val prefs by florisPreferenceModel()
+                val prefs by neuboardPreferenceModel()
                 val spaceBarMode by prefs.keyboard.spaceBarMode.observeAsState()
                 when (spaceBarMode) {
                     SpaceBarMode.NOTHING -> return@let
@@ -390,7 +390,7 @@ private class TextKeyboardLayoutController(
     private val keyboardManager by context.keyboardManager()
 
     private val inputEventDispatcher get() = keyboardManager.inputEventDispatcher
-    private val inputFeedbackController get() = FlorisImeService.inputFeedbackController()
+    private val inputFeedbackController get() = NeuboardImeService.inputFeedbackController()
     private val keyHintConfiguration = prefs.keyboard.keyHintConfiguration()
     private val pointerMap: PointerMap<TouchPointer> = PointerMap { TouchPointer() }
     lateinit var popupUiController: PopupUiController

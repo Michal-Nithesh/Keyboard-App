@@ -48,11 +48,11 @@ import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.extensionManager
 import dev.patrickgold.neuboard.ime.nlp.LanguagePackComponent
 import org.neuboard.lib.android.showLongToast
-import dev.patrickgold.neuboard.lib.compose.FlorisConfirmDeleteDialog
-import dev.patrickgold.neuboard.lib.compose.FlorisOutlinedBox
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardConfirmDeleteDialog
+import dev.patrickgold.neuboard.lib.compose.NeuboardOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.FlorisTextButton
-import dev.patrickgold.neuboard.lib.compose.defaultFlorisOutlinedBox
+import dev.patrickgold.neuboard.lib.compose.defaultNeuboardOutlinedBox
 import dev.patrickgold.neuboard.lib.compose.rippleClickable
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.neuboard.lib.ext.Extension
@@ -69,7 +69,7 @@ enum class LanguagePackManagerScreenAction(val id: String) {
 // TODO: this file is based on ThemeManagerScreen.kt and can arguably be merged.
 @OptIn(ExperimentalJetPrefDatastoreUi::class)
 @Composable
-fun LanguagePackManagerScreen(action: LanguagePackManagerScreenAction?) = NeuScreen {
+fun LanguagePackManagerScreen(action: LanguagePackManagerScreenAction?) = NeuboardScreen {
     title = stringRes(when (action) {
         LanguagePackManagerScreenAction.MANAGE -> R.string.settings__localization__language_pack_title
         else -> error("LanguagePack manager screen action must not be null")
@@ -109,8 +109,8 @@ fun LanguagePackManagerScreen(action: LanguagePackManagerScreenAction?) = NeuScr
     content {
         val grayColor = LocalContentColor.current.copy(alpha = 0.56f)
         if (action == LanguagePackManagerScreenAction.MANAGE) {
-            FlorisOutlinedBox(
-                modifier = Modifier.defaultFlorisOutlinedBox(),
+            NeuboardOutlinedBox(
+                modifier = Modifier.defaultNeuboardOutlinedBox(),
             ) {
                 Preference(
                     onClick = { navController.navigate(
@@ -123,8 +123,8 @@ fun LanguagePackManagerScreen(action: LanguagePackManagerScreenAction?) = NeuScr
         }
         for ((extensionId, configs) in extGroupedLanguagePacks) key(extensionId) {
             val ext = extensionManager.getExtensionById(extensionId)!!
-            FlorisOutlinedBox(
-                modifier = Modifier.defaultFlorisOutlinedBox(),
+            NeuboardOutlinedBox(
+                modifier = Modifier.defaultNeuboardOutlinedBox(),
                 title = ext.meta.title,
                 onTitleClick = { navController.navigate(Routes.Ext.View(extensionId)) },
                 subtitle = extensionId,
@@ -194,7 +194,7 @@ fun LanguagePackManagerScreen(action: LanguagePackManagerScreenAction?) = NeuScr
         }
 
         if (languagePackExtToDelete != null) {
-            FlorisConfirmDeleteDialog(
+            NeuboardConfirmDeleteDialog(
                 onConfirm = {
                     runCatching {
                         extensionManager.delete(languagePackExtToDelete!!)

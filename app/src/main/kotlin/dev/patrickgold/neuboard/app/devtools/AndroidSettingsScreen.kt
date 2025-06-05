@@ -28,13 +28,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import dev.patrickgold.neuboard.R
 import org.neuboard.lib.android.AndroidSettings
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.ui.Preference
 import dev.patrickgold.jetpref.material.ui.JetPrefAlertDialog
 
 @Composable
-fun AndroidSettingsScreen(name: String?) = NeuScreen {
+fun AndroidSettingsScreen(name: String?) = NeuboardScreen {
     title = when (name) {
         AndroidSettings.Global.groupId -> stringRes(R.string.devtools__android_settings_global__title)
         AndroidSettings.Secure.groupId -> stringRes(R.string.devtools__android_settings_secure__title)

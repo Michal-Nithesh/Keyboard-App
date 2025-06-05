@@ -23,14 +23,14 @@ import dev.patrickgold.neuboard.app.enumDisplayEntriesOf
 import dev.patrickgold.neuboard.ime.smartbar.CandidatesDisplayMode
 import dev.patrickgold.neuboard.ime.smartbar.ExtendedActionsPlacement
 import dev.patrickgold.neuboard.ime.smartbar.SmartbarLayout
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.ui.ListPreference
 import dev.patrickgold.jetpref.datastore.ui.PreferenceGroup
 import dev.patrickgold.jetpref.datastore.ui.SwitchPreference
 
 @Composable
-fun SmartbarScreen() = NeuScreen {
+fun SmartbarScreen() = NeuboardScreen {
     title = stringRes(R.string.settings__smartbar__title)
     previewFieldVisible = true
 

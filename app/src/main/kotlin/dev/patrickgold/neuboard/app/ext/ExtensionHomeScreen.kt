@@ -26,12 +26,12 @@ import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.app.LocalNavController
 import dev.patrickgold.neuboard.app.Routes
 import dev.patrickgold.neuboard.extensionManager
-import dev.patrickgold.neuboard.lib.compose.NeuScreen
+import dev.patrickgold.neuboard.lib.compose.NeuboardScreen
 import dev.patrickgold.neuboard.lib.compose.stringRes
 import dev.patrickgold.jetpref.datastore.ui.Preference
 
 @Composable
-fun ExtensionHomeScreen() = NeuScreen {
+fun ExtensionHomeScreen() = NeuboardScreen {
     title = stringRes(R.string.ext__home__title)
     previewFieldVisible = false
 

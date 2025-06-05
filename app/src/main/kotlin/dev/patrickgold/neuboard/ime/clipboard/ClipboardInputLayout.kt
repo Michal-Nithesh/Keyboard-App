@@ -81,7 +81,6 @@ import dev.patrickgold.neuboard.ime.ImeUiMode
 import dev.patrickgold.neuboard.ime.clipboard.provider.ClipboardFileStorage
 import dev.patrickgold.neuboard.ime.clipboard.provider.ClipboardItem
 import dev.patrickgold.neuboard.ime.clipboard.provider.ItemType
-import dev.patrickgold.neuboard.ime.keyboard.FlorisImeSizing
 import dev.patrickgold.neuboard.ime.keyboard.NeuboardImeSizing
 import dev.patrickgold.neuboard.ime.media.KeyboardLikeButton
 import dev.patrickgold.neuboard.ime.text.keyboard.TextKeyData
@@ -308,7 +307,7 @@ fun ClipboardInputLayout(
 
     @Composable
     fun HistoryMainView() {
-        SnyggBox(FlorisImeUi.ClipboardContent.elementName,
+        SnyggBox(NeuboardImeUi.ClipboardContent.elementName,
             modifier = Modifier.fillMaxSize(),
         ) {
             val historyAlpha by animateFloatAsState(targetValue = if (isPopupSurfaceActive()) 0.12f else 1f)
@@ -332,7 +331,7 @@ fun ClipboardInputLayout(
                     }
                     items(items) { item ->
                         ClipItemView(
-                            elementName = FlorisImeUi.ClipboardItem.elementName,
+                            elementName = NeuboardImeUi.ClipboardItem.elementName,
                             item = item,
                             contentScrollInsteadOfClip = false,
                         )
@@ -374,12 +373,12 @@ fun ClipboardInputLayout(
                     horizontalArrangement = Arrangement.SpaceAround,
                 ) {
                     ClipItemView(
-                        elementName = FlorisImeUi.ClipboardItemPopup.elementName,
+                        elementName = NeuboardImeUi.ClipboardItemPopup.elementName,
                         modifier = Modifier.widthIn(max = ItemWidth),
                         item = popupItem!!,
                         contentScrollInsteadOfClip = true,
                     )
-                    SnyggColumn(FlorisImeUi.ClipboardItemActions.elementName) {
+                    SnyggColumn(NeuboardImeUi.ClipboardItemActions.elementName) {
                         PopupAction(
                             iconId = R.drawable.ic_pin,
                             text = stringRes(if (popupItem!!.isPinned) {
@@ -424,7 +423,7 @@ fun ClipboardInputLayout(
                     horizontalArrangement = Arrangement.SpaceAround,
                 ) {
                     SnyggColumn(
-                        elementName = FlorisImeUi.ClipboardClearAllDialog.elementName,
+                        elementName = NeuboardImeUi.ClipboardClearAllDialog.elementName,
                         modifier = Modifier
                             .width(DialogWidth)
                             .pointerInput(Unit) {
@@ -432,13 +431,13 @@ fun ClipboardInputLayout(
                             },
                     ) {
                         SnyggText(
-                            elementName = FlorisImeUi.ClipboardClearAllDialogMessage.elementName,
+                            elementName = NeuboardImeUi.ClipboardClearAllDialogMessage.elementName,
                             text = stringRes(R.string.clipboard__confirm_clear_history__message),
                         )
-                        SnyggRow(FlorisImeUi.ClipboardClearAllDialogButtons.elementName) {
+                        SnyggRow(NeuboardImeUi.ClipboardClearAllDialogButtons.elementName) {
                             Spacer(modifier = Modifier.weight(1f))
                             SnyggButton(
-                                elementName = FlorisImeUi.ClipboardClearAllDialogButton.elementName,
+                                elementName = NeuboardImeUi.ClipboardClearAllDialogButton.elementName,
                                 attributes = mapOf("action" to "no"),
                                 onClick = {
                                     showClearAllHistory = false
@@ -449,7 +448,7 @@ fun ClipboardInputLayout(
                                 )
                             }
                             SnyggButton(
-                                elementName = FlorisImeUi.ClipboardClearAllDialogButton.elementName,
+                                elementName = NeuboardImeUi.ClipboardClearAllDialogButton.elementName,
                                 attributes = mapOf("action" to "yes"),
                                 onClick = {
                                     clipboardManager.clearHistory()
@@ -470,7 +469,7 @@ fun ClipboardInputLayout(
 
     @Composable
     fun HistoryEmptyView() {
-        SnyggColumn(FlorisImeUi.ClipboardContent.elementName,
+        SnyggColumn(NeuboardImeUi.ClipboardContent.elementName,
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -485,19 +484,19 @@ fun ClipboardInputLayout(
 
     @Composable
     fun HistoryDisabledView() {
-        SnyggColumn(FlorisImeUi.ClipboardContent.elementName,
+        SnyggColumn(NeuboardImeUi.ClipboardContent.elementName,
             modifier = Modifier.fillMaxSize(),
         ) {
             SnyggText(
-                elementName = FlorisImeUi.ClipboardHistoryDisabledTitle.elementName,
+                elementName = NeuboardImeUi.ClipboardHistoryDisabledTitle.elementName,
                 modifier = Modifier.padding(bottom = 8.dp),
                 text = stringRes(R.string.clipboard__disabled__title),
             )
             SnyggText(
-                elementName = FlorisImeUi.ClipboardHistoryDisabledMessage.elementName,
+                elementName = NeuboardImeUi.ClipboardHistoryDisabledMessage.elementName,
                 text = stringRes(R.string.clipboard__disabled__message),
             )
-            SnyggButton(FlorisImeUi.ClipboardHistoryDisabledButton.elementName,
+            SnyggButton(NeuboardImeUi.ClipboardHistoryDisabledButton.elementName,
                 onClick = { prefs.clipboard.historyEnabled.set(true) },
                 modifier = Modifier.align(Alignment.End),
             ) {
@@ -510,16 +509,16 @@ fun ClipboardInputLayout(
 
     @Composable
     fun HistoryLockedView() {
-        SnyggColumn(FlorisImeUi.ClipboardContent.elementName,
+        SnyggColumn(NeuboardImeUi.ClipboardContent.elementName,
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             SnyggText(
-                elementName = FlorisImeUi.ClipboardHistoryLockedTitle.elementName,
+                elementName = NeuboardImeUi.ClipboardHistoryLockedTitle.elementName,
                 text = stringRes(R.string.clipboard__locked__title),
             )
             SnyggText(
-                elementName = FlorisImeUi.ClipboardHistoryLockedMessage.elementName,
+                elementName = NeuboardImeUi.ClipboardHistoryLockedMessage.elementName,
                 text = stringRes(R.string.clipboard__locked__message),
             )
         }
@@ -552,7 +551,7 @@ private fun ClipCategoryTitle(
     text: String,
     modifier: Modifier = Modifier,
 ) {
-    SnyggText(FlorisImeUi.ClipboardSubheader.elementName,
+    SnyggText(NeuboardImeUi.ClipboardSubheader.elementName,
         modifier = modifier.fillMaxWidth(),
         text = text.uppercase(),
     )
@@ -606,14 +605,14 @@ private fun PopupAction(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-    SnyggRow(FlorisImeUi.ClipboardItemAction.elementName,
+    SnyggRow(NeuboardImeUi.ClipboardItemAction.elementName,
         modifier = modifier.rippleClickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        SnyggIcon(FlorisImeUi.ClipboardItemActionIcon.elementName,
+        SnyggIcon(NeuboardImeUi.ClipboardItemActionIcon.elementName,
             painter = painterResource(iconId),
         )
-        SnyggText(FlorisImeUi.ClipboardItemActionText.elementName,
+        SnyggText(NeuboardImeUi.ClipboardItemActionText.elementName,
             modifier = Modifier.weight(1f),
             text = text,
         )
