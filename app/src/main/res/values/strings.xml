@@ -1,6 +1,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">NeuBoard</string>
+    <string name="neuboard_app_name">NeuBoard</string>
 
+    <!-- AI Enhancement strings -->
+    <string name="ai__enhance_button_description">Enhance message with AI</string>
+    <string name="ai__enhance_dialog_title">Enhance Your Message</string>
+    <string name="ai__original_message">Original Message:</string>
+    <string name="ai__enhanced_message">Enhanced Message:</string>
+    <string name="ai__customize_enhancement">Customize Enhancement:</string>
+    <string name="ai__recipient_type">Recipient Type</string>
+    <string name="ai__tone">Tone</string>
+    <string name="ai__intent">Intent</string>
+    <string name="ai__enhance_with_ai">Enhance with AI</string>
+    <string name="ai__save_style">Save Style</string>
+    <string name="ai__style_name_hint">e.g., \'Professional Email to Boss\'</string>
+    <string name="ai__use_this">Use This</string>
+    <string name="ai__regenerate">Regenerate</string>
+    <string name="ai__cancel">Cancel</string>
+    
     <string name="key__phone_pause" comment="Label for the Pause key in the telephone keyboard layout">Pause</string>
     <string name="key__phone_wait" comment="Label for the Wait key in the telephone keyboard layout">Wait</string>
     <string name="key_popup__threedots_alt" comment="Content description for the three-dots icon in a key popup">Three-dot icon. If visible, indicates that more letters can be used if longer pressed.</string>

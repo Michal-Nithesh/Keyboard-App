@@ -77,6 +77,7 @@ import androidx.lifecycle.lifecycleScope
 import dev.patrickgold.neuboard.app.NeuboardAppActivity
 import dev.patrickgold.neuboard.app.devtools.DevtoolsOverlay
 import dev.patrickgold.neuboard.app.neuboardPreferenceModel
+import dev.patrickgold.neuboard.themeManager
 import dev.patrickgold.neuboard.ime.ImeUiMode
 import dev.patrickgold.neuboard.ime.clipboard.ClipboardInputLayout
 import dev.patrickgold.neuboard.ime.core.SelectSubtypePanel
@@ -105,6 +106,7 @@ import dev.patrickgold.neuboard.ime.theme.WallpaperChangeReceiver
 import dev.patrickgold.neuboard.lib.compose.ProvideLocalizedResources
 import dev.patrickgold.neuboard.lib.compose.SystemUiIme
 import dev.patrickgold.neuboard.lib.devtools.LogTopic
+import dev.patrickgold.neuboard.lib.devtools.flogDebug
 import dev.patrickgold.neuboard.lib.devtools.flogError
 import dev.patrickgold.neuboard.lib.devtools.flogInfo
 import dev.patrickgold.neuboard.lib.devtools.flogWarning
@@ -144,6 +146,26 @@ class NeuboardImeService : LifecycleInputMethodService() {
     companion object {
         private val InlineSuggestionUiSmallestSize = Size(0, 0)
         private val InlineSuggestionUiBiggestSize = Size(Int.MAX_VALUE, Int.MAX_VALUE)
+
+        // Pattern to identify common messaging apps package names
+        private val MESSAGING_APP_PATTERNS = listOf(
+            "com.whatsapp",
+            "com.facebook.orca",
+            "com.google.android.apps.messaging",
+            "com.android.messaging",
+            "org.telegram",
+            "com.viber",
+            "com.instagram",
+            "com.discord",
+            "com.tencent.mm",
+            "com.slack"
+        )
+
+        // Enable additional debug messages for message detection
+        private const val DEBUG_MESSAGE_DETECTION = true
+        
+        // The amount of time to consider a cleared field followed by new text as a new message (in milliseconds)
+        private const val MESSAGE_DETECTION_THRESHOLD_MS = 500
 
         fun currentInputConnection(): InputConnection? {
             return NeuboardImeServiceReference.get()?.currentInputConnection
@@ -258,6 +280,12 @@ class NeuboardImeService : LifecycleInputMethodService() {
     private val subtypeManager by subtypeManager()
     private val themeManager by themeManager()
 
+    // Message detection fields
+    private var lastTextLength: Int = 0
+    private var textFieldClearedTimestamp: Long = 0
+    private var isInMessagingApp: Boolean = false
+    private var lastDetectedMessage: String? = null
+
     private val activeState get() = keyboardManager.activeState
     private var inputWindowView by mutableStateOf<View?>(null)
     private var inputViewSize by mutableStateOf(IntSize.Zero)
@@ -341,6 +369,16 @@ class NeuboardImeService : LifecycleInputMethodService() {
         super.onStartInput(info, restarting)
         if (info == null) return
         val editorInfo = NeuboardEditorInfo.wrap(info)
+        
+        // Check if we're in a messaging application
+        isInMessagingApp = editorInfo.packageName?.let { packageName ->
+            MESSAGING_APP_PATTERNS.any { pattern -> 
+                packageName.contains(pattern) 
+            }
+        } ?: false
+        
+        flogInfo { "Is in messaging app: $isInMessagingApp for package: ${editorInfo.packageName}" }
+        
         editorInstance.handleStartInput(editorInfo)
     }
 
@@ -374,6 +412,11 @@ class NeuboardImeService : LifecycleInputMethodService() {
                 composing = EditorRange.normalized(candidatesStart, candidatesEnd),
             )
         }
+        
+        // Check for possible message detection
+        if (isInMessagingApp) {
+            checkForReceivedMessage(newSelStart, newSelEnd)
+        }
     }
 
     override fun onFinishInputView(finishingInput: Boolean) {
@@ -387,6 +430,12 @@ class NeuboardImeService : LifecycleInputMethodService() {
         super.onFinishInput()
         editorInstance.handleFinishInput()
         NlpInlineAutofill.clearInlineSuggestions()
+        
+        // Reset message detection state
+        lastTextLength = 0
+        textFieldClearedTimestamp = 0
+        isInMessagingApp = false
+        lastDetectedMessage = null
     }
 
     override fun onWindowShown() {
@@ -557,6 +606,92 @@ class NeuboardImeService : LifecycleInputMethodService() {
             }
         } catch (_: Throwable) {
             super.getTextForImeAction(imeOptions)?.toString()
+        }
+    }
+
+    /**
+     * Analyzes selection changes to detect if a message was received.
+     * This method uses several heuristics to identify received messages:
+     * 1. Field was cleared and then text appeared after a short delay
+     * 2. Text appears at the beginning of an input field (newSelStart == newSelEnd == text.length)
+     * 3. The text is different from the last detected message
+     *
+     * @param newSelStart The new selection start position
+     * @param newSelEnd The new selection end position
+     */
+    private fun checkForReceivedMessage(newSelStart: Int, newSelEnd: Int) {
+        val ic = currentInputConnection() ?: return
+        
+        // If the selection is not at the same position, we're likely not looking at a received message
+        if (newSelStart != newSelEnd) {
+            if (DEBUG_MESSAGE_DETECTION) {
+                flogDebug(LogTopic.IME) { "Selection not at same position: start=$newSelStart, end=$newSelEnd" }
+            }
+            return
+        }
+        
+        try {
+            // Get the current text to analyze
+            val currentText = ic.getTextBeforeCursor(1000, 0)?.toString() ?: ""
+            val currentLength = currentText.length
+            
+            if (DEBUG_MESSAGE_DETECTION) {
+                flogDebug(LogTopic.IME) { "Current text length: $currentLength, last text length: $lastTextLength" }
+            }
+            
+            // Reset tracking if the field was cleared
+            if (currentLength == 0 && lastTextLength > 0) {
+                textFieldClearedTimestamp = System.currentTimeMillis()
+                lastTextLength = 0
+                if (DEBUG_MESSAGE_DETECTION) {
+                    flogDebug(LogTopic.IME) { "Field cleared, setting timestamp: $textFieldClearedTimestamp" }
+                }
+                return
+            }
+            
+            val now = System.currentTimeMillis()
+            
+            // Check for received message patterns
+            val potentialMessage = when {
+                // Pattern 1: Field was cleared and then text appeared after a short delay
+                currentLength > 0 && lastTextLength == 0 && 
+                  (now - textFieldClearedTimestamp) > MESSAGE_DETECTION_THRESHOLD_MS -> {
+                    if (DEBUG_MESSAGE_DETECTION) {
+                        flogDebug(LogTopic.IME) { "Pattern 1 matched: Field cleared and new text appeared after delay" }
+                    }
+                    currentText
+                }
+                
+                // Pattern 2: Text appears at the beginning of an input field 
+                // and caret is positioned at the end of the text
+                currentLength > 0 && newSelStart == currentLength && 
+                  currentLength > lastTextLength && lastTextLength == 0 -> {
+                    if (DEBUG_MESSAGE_DETECTION) {
+                        flogDebug(LogTopic.IME) { "Pattern 2 matched: Text appears at beginning with cursor at end" }
+                    }
+                    currentText
+                }
+                
+                else -> null
+            }
+            
+            // Update the last text length for next comparison
+            lastTextLength = currentLength
+            
+            // Process the detected message if it's different from the last one
+            if (potentialMessage != null && potentialMessage != lastDetectedMessage) {
+                lastDetectedMessage = potentialMessage
+                
+                // Get AI enhancement manager and set the detected message
+                flogInfo(LogTopic.IME) { "Detected received message: $potentialMessage" }
+                applicationContext.aiEnhancementManager().value.setLastReceivedMessage(potentialMessage)
+            } else if (potentialMessage != null) {
+                if (DEBUG_MESSAGE_DETECTION) {
+                    flogDebug(LogTopic.IME) { "Potential message matched previous message, ignoring" }
+                }
+            }
+        } catch (e: Exception) {
+            flogError { "Error in message detection: ${e.message}" }
         }
     }
 
