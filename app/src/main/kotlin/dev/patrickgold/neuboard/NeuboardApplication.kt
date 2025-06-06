@@ -25,6 +25,7 @@ import android.content.IntentFilter
 import android.os.Handler
 import androidx.core.os.UserManagerCompat
 import dev.patrickgold.neuboard.app.neuboardPreferenceModel
+import dev.patrickgold.neuboard.ime.ai.AiEnhancementManager
 import dev.patrickgold.neuboard.ime.clipboard.ClipboardManager
 import dev.patrickgold.neuboard.ime.core.SubtypeManager
 import dev.patrickgold.neuboard.ime.dictionary.DictionaryManager
@@ -77,6 +78,7 @@ class NeuboardApplication : Application() {
     val nlpManager = lazy { NlpManager(this) }
     val subtypeManager = lazy { SubtypeManager(this) }
     val themeManager = lazy { ThemeManager(this) }
+    val aiEnhancementManager = lazy { AiEnhancementManager(this) }
 
     override fun onCreate() {
         super.onCreate()
@@ -161,3 +163,5 @@ fun Context.nlpManager() = this.neuboardApplication().nlpManager
 fun Context.subtypeManager() = this.neuboardApplication().subtypeManager
 
 fun Context.themeManager() = this.neuboardApplication().themeManager
+
+fun Context.aiEnhancementManager() = this.neuboardApplication().aiEnhancementManager

@@ -31,13 +31,14 @@ object LogTopic {
 
     const val IMS_EVENTS: FlogTopic =           1u
     const val KEY_EVENTS: FlogTopic =           2u
+    const val IME: FlogTopic =                  4u
 
-    const val SUBTYPE_MANAGER: FlogTopic =      4u
-    const val LAYOUT_MANAGER: FlogTopic =       8u
-    const val TEXT_KEYBOARD_VIEW: FlogTopic =   16u
-    const val GESTURES: FlogTopic =             32u
-    const val SMARTBAR: FlogTopic =             64u
-    const val THEME_MANAGER: FlogTopic =        128u
+    const val SUBTYPE_MANAGER: FlogTopic =      8u  // Updated to avoid collision
+    const val LAYOUT_MANAGER: FlogTopic =       16u
+    const val TEXT_KEYBOARD_VIEW: FlogTopic =   32u
+    const val GESTURES: FlogTopic =             64u
+    const val SMARTBAR: FlogTopic =             128u
+    const val THEME_MANAGER: FlogTopic =        256u
 
     const val GLIDE: FlogTopic =                512u
     const val CLIPBOARD: FlogTopic =            1024u

@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -31,7 +32,9 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
 import dev.patrickgold.neuboard.R
+import dev.patrickgold.neuboard.aiEnhancementManager
 import dev.patrickgold.neuboard.app.neuboardPreferenceModel
+import dev.patrickgold.neuboard.editorInstance
 import dev.patrickgold.neuboard.ime.smartbar.IncognitoDisplayMode
 import dev.patrickgold.neuboard.ime.smartbar.InlineSuggestionsStyleCache
 import dev.patrickgold.neuboard.ime.smartbar.Smartbar
@@ -48,11 +51,19 @@ fun TextInputLayout(
 ) {
     val context = LocalContext.current
     val keyboardManager by context.keyboardManager()
+    val editorInstance by context.editorInstance()
+    val aiEnhancementManager by context.aiEnhancementManager()
 
     val prefs by neuboardPreferenceModel()
 
     val state by keyboardManager.activeState.collectAsState()
     val evaluator by keyboardManager.activeEvaluator.collectAsState()
+
+    // Update current message for AI enhancement
+    val activeContent = editorInstance.activeContent
+    LaunchedEffect(activeContent.text) {
+        aiEnhancementManager.updateCurrentMessage(activeContent.text.toString())
+    }
 
     InlineSuggestionsStyleCache()
 

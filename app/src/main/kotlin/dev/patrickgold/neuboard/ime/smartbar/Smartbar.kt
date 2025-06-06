@@ -52,7 +52,13 @@ import androidx.compose.ui.graphics.isUnspecified
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import dev.patrickgold.neuboard.R
+import dev.patrickgold.neuboard.aiEnhancementManager
 import dev.patrickgold.neuboard.app.neuboardPreferenceModel
+import dev.patrickgold.neuboard.editorInstance
+import dev.patrickgold.neuboard.ime.editor.AbstractEditorInstance
+import dev.patrickgold.neuboard.ime.ai.EnhanceButton
+import dev.patrickgold.neuboard.ime.ai.MessageEnhancementDialog
+import dev.patrickgold.neuboard.ime.ai.QuickReplySuggestionsRow
 import dev.patrickgold.neuboard.ime.keyboard.NeuboardImeSizing
 import dev.patrickgold.neuboard.ime.nlp.NlpInlineAutofill
 import dev.patrickgold.neuboard.ime.smartbar.quickaction.QuickActionButton
@@ -203,6 +209,10 @@ private fun SmartbarMainRow(modifier: Modifier = Modifier) {
     @Composable
     fun RowScope.CenterContent() {
         val expanded = sharedActionsExpanded && smartbarLayout == SmartbarLayout.SUGGESTIONS_ACTIONS_SHARED
+        val aiEnhancementManager by context.aiEnhancementManager()
+        val quickReplySuggestions by aiEnhancementManager.quickReplySuggestions.collectAsState()
+        val hasQuickReplies = quickReplySuggestions.isNotEmpty()
+        
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -217,6 +227,8 @@ private fun SmartbarMainRow(modifier: Modifier = Modifier) {
             ) {
                 if (shouldShowInlineSuggestionsUi) {
                     InlineSuggestionsUi(inlineSuggestions)
+                } else if (hasQuickReplies) {
+                    QuickReplySuggestionsRow()
                 } else {
                     CandidatesRow()
                 }
@@ -274,6 +286,10 @@ private fun SmartbarMainRow(modifier: Modifier = Modifier) {
     fun StickyAction() {
         val actionArrangement by prefs.smartbar.actionArrangement.observeAsState()
         val evaluator by keyboardManager.activeSmartbarEvaluator.collectAsState()
+        val aiEnhancementManager by context.aiEnhancementManager()
+        val currentMessage by aiEnhancementManager.currentMessage.collectAsState()
+        val editorInstance = context.editorInstance().value
+        val isEditorEnabled = editorInstance.activeInfo.isRichInputEditor && currentMessage.isNotEmpty()
 
         val action = when {
             actionArrangement.stickyAction != null -> {
@@ -288,16 +304,47 @@ private fun SmartbarMainRow(modifier: Modifier = Modifier) {
         }
 
         if (action != null) {
-            QuickActionButton(
-                modifier = Modifier.padding(horizontal = 4.dp),
-                action = action,
-                evaluator = evaluator,
-            )
+            if (isEditorEnabled) {
+                EnhanceButton(
+                    onClick = {
+                        aiEnhancementManager.showEnhancementDialog()
+                    },
+                    modifier = Modifier.padding(horizontal = 4.dp)
+                )
+            } else {
+                QuickActionButton(
+                    modifier = Modifier.padding(horizontal = 4.dp),
+                    action = action,
+                    evaluator = evaluator,
+                )
+            }
         } else {
-            Spacer(
-                modifier = Modifier
-                    .padding(horizontal = 4.dp)
-                    .aspectRatio(1f),
+            if (isEditorEnabled) {
+                EnhanceButton(
+                    onClick = {
+                        aiEnhancementManager.showEnhancementDialog()
+                    },
+                    modifier = Modifier.padding(horizontal = 4.dp)
+                )
+            } else {
+                Spacer(
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .aspectRatio(1f),
+                )
+            }
+        }
+        
+        if (aiEnhancementManager.isEnhancementDialogVisible) {
+            MessageEnhancementDialog(
+                originalMessage = currentMessage,
+                onDismiss = { aiEnhancementManager.hideEnhancementDialog() },
+                onMessageEnhanced = { enhancedMessage: String -> 
+                    val editor = context.editorInstance().value
+                    editor.deleteBackwards()
+                    editor.commitText(enhancedMessage)
+                },
+                enhancerService = aiEnhancementManager.enhancerService
             )
         }
     }

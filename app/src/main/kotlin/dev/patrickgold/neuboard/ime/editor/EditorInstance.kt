@@ -43,10 +43,13 @@ import org.neuboard.lib.android.showShortToast
 import dev.patrickgold.neuboard.lib.ext.ExtensionComponentName
 import dev.patrickgold.neuboard.nlpManager
 import dev.patrickgold.neuboard.subtypeManager
+import dev.patrickgold.neuboard.aiEnhancementManager
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.atomic.AtomicInteger
 
 class EditorInstance(context: Context) : AbstractEditorInstance(context) {
+    private val aiEnhancementManager by context.aiEnhancementManager()
+    
     companion object {
         private const val SPACE = " "
     }
@@ -72,6 +75,10 @@ class EditorInstance(context: Context) : AbstractEditorInstance(context) {
         activeState.isActionsOverflowVisible = false
         activeState.isActionsEditorVisible = false
         super.handleStartInputView(editorInfo, isRestart)
+        
+        // Clear any quick replies when starting a new input session
+        aiEnhancementManager.setLastReceivedMessage("")
+        
         val keyboardMode = when (editorInfo.inputAttributes.type) {
             InputAttributes.Type.NUMBER -> {
                 activeState.keyVariation = KeyVariation.NORMAL
