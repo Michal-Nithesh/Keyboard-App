@@ -22,7 +22,7 @@ import kotlin.test.assertIs
 import kotlin.test.assertNotNull
 
 class SnyggStylesheetTest {
-    private val SCHEMA_LINE = "\"\$schema\": \"https://schemas.neuboard.org/snygg/v2/stylesheet\""
+    private val SCHEMA_LINE = "\"\$schema\": \"https://schemas.florisboard.org/snygg/v2/stylesheet\""
 
     @Nested
     inner class BasicTests {
@@ -48,7 +48,7 @@ class SnyggStylesheetTest {
         @Test
         fun `basic deserialization`() {
             val stylesheet = SnyggStylesheet.fromJson(BasicStylesheetJson).getOrThrow()
-            assertEquals("https://schemas.neuboard.org/snygg/v2/stylesheet", stylesheet.schema)
+            assertEquals("https://schemas.florisboard.org/snygg/v2/stylesheet", stylesheet.schema)
             assertEquals(3, stylesheet.rules.size)
 
             val defines = stylesheet.rules[SnyggAnnotationRule.Defines]
@@ -164,7 +164,7 @@ class SnyggStylesheetTest {
         @Test
         fun `basic serialization`() {
             val stylesheet = SnyggStylesheet(
-                schema = "https://schemas.neuboard.org/snygg/v2/stylesheet",
+                schema = "https://schemas.florisboard.org/snygg/v2/stylesheet",
                 rules = mapOf(
                     SnyggElementRule("smartbar") to SnyggSinglePropertySet(
                         mapOf(
@@ -181,7 +181,7 @@ class SnyggStylesheetTest {
             )
             @Language("json")
             val expectedJson =
-                """{"\$schema":"https://schemas.neuboard.org/snygg/v2/stylesheet","smartbar":{"background":"rgba(255,0,0,1)","shape":"rectangle()"},"key:pressed":{"shape":"circle()"}}"""
+                """{"\$schema":"https://schemas.florisboard.org/snygg/v2/stylesheet","smartbar":{"background":"rgba(255,0,0,1)","shape":"rectangle()"},"key:pressed":{"shape":"circle()"}}"""
             val actualJson = stylesheet.toJson().getOrThrow()
             assertEquals(expectedJson, actualJson)
         }
@@ -434,7 +434,7 @@ class SnyggStylesheetTest {
             }
             @Language("json")
             val expectedJson =
-                """{"\$schema":"https://schemas.neuboard.org/snygg/v2/stylesheet","@font `Comic Sans`": [{"src":"uri(`flex:/path/to/font.ttf`)"}]}"""
+                """{"\$schema":"https://schemas.florisboard.org/snygg/v2/stylesheet","@font `Comic Sans`": [{"src":"uri(`flex:/path/to/font.ttf`)"}]}"""
             val actualJson = stylesheet.toJson().getOrThrow()
             assertEquals(expectedJson, actualJson)
         }
@@ -453,7 +453,7 @@ class SnyggStylesheetTest {
             }
             @Language("json")
             val expectedJson =
-                """{"\$schema":"https://schemas.neuboard.org/snygg/v2/stylesheet","@font `Comic Sans`": [{"src":"uri(`flex:/path/to/font.ttf`)"},{"src":"uri(`flex:/path/to/font2.ttf`)}]}"""
+                """{"\$schema":"https://schemas.florisboard.org/snygg/v2/stylesheet","@font `Comic Sans`": [{"src":"uri(`flex:/path/to/font.ttf`)"},{"src":"uri(`flex:/path/to/font2.ttf`)}]}"""
             val actualJson = stylesheet.toJson().getOrThrow()
             assertEquals(expectedJson, actualJson)
         }
@@ -521,7 +521,7 @@ class SnyggStylesheetTest {
         fun `deserialization with unsupported schema but ignoreUnsupportedSchema=true should succeed`() {
             val json = """
             {
-              "${'$'}schema": "https://schemas.neuboard.org/snygg/v1/stylesheet",
+              "${'$'}schema": "https://schemas.florisboard.org/snygg/v1/stylesheet",
               "@defines": {
                 "--test": "transparent"
               },

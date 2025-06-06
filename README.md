@@ -83,7 +83,7 @@ Want to contribute to NeuBoard? That's great to hear! There are lots of
 different ways to help out, please see the [contribution guidelines](CONTRIBUTING.md) for more info.
 
 ## Addons Store
-The official [Addons Store](https://beta.addons.neuboard.org) offers the possibility for the community to share and download NeuBoard extensions.
+The official [Addons Store](https://beta.addons.florisboard.org) offers the possibility for the community to share and download NeuBoard extensions.
 Instructions on how to publish addons can be found [here](https://github.com/neuboard/neuboard/wiki/How-to-publish-on-NeuBoard-Addons).
 
 Many thanks to Ali ([@4H1R](https://github.com/4H1R)) for implementing the store!
