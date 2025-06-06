@@ -42,9 +42,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import dev.patrickgold.neuboard.ime.keyboard.KeyboardState
+import dev.patrickgold.neuboard.lib.compose.NeuboardDropdownMenu
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -108,11 +107,11 @@ fun QuickReplySuggestionBar(
 }
 
 /**
- * Dialog that allows users to enhance their messages with AI.
+ * In-IME Compose overlay that allows users to enhance their messages with AI.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MessageEnhancementDialog(
+fun MessageEnhancementOverlay(
     originalMessage: String,
     onDismiss: () -> Unit,
     onMessageEnhanced: (String) -> Unit,
@@ -140,309 +139,241 @@ fun MessageEnhancementDialog(
     var toneDropdownExpanded by remember { mutableStateOf(false) }
     var intentDropdownExpanded by remember { mutableStateOf(false) }
     
-    Dialog(
-        onDismissRequest = onDismiss,
-        properties = DialogProperties(
-            dismissOnClickOutside = true,
-            dismissOnBackPress = true
-        )
+    Surface(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        shape = RoundedCornerShape(16.dp),
+        tonalElevation = 8.dp
     ) {
-        Surface(
-            modifier = modifier
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
                 .fillMaxWidth()
-                .padding(16.dp),
-            shape = RoundedCornerShape(16.dp),
-            tonalElevation = 8.dp
         ) {
-            Column(
+            // Header
+            Row(
                 modifier = Modifier
-                    .padding(16.dp)
                     .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                // Header
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Enhance Your Message",
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                    IconButton(onClick = onDismiss) {
-                        Icon(Icons.Default.Close, contentDescription = "Close")
-                    }
-                }
-                
-                // Original message display
                 Text(
-                    text = "Original Message:",
-                    style = MaterialTheme.typography.labelLarge
+                    text = "Enhance Your Message",
+                    style = MaterialTheme.typography.titleLarge
                 )
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    color = MaterialTheme.colorScheme.surfaceVariant,
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text(
-                        text = originalMessage,
-                        modifier = Modifier.padding(12.dp)
-                    )
+                IconButton(onClick = onDismiss) {
+                    Icon(Icons.Default.Close, contentDescription = "Close")
                 }
-                
-                // Enhancement parameters
+            }
+            
+            // Original message display
+            Text(
+                text = "Original Message:",
+                style = MaterialTheme.typography.labelLarge
+            )
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                shape = RoundedCornerShape(8.dp)
+            ) {
                 Text(
-                    text = "Customize Enhancement:",
-                    style = MaterialTheme.typography.labelLarge,
-                    modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+                    text = originalMessage,
+                    modifier = Modifier.padding(12.dp)
                 )
-                
-                // Recipient type dropdown
-                ExposedDropdownMenuBox(
-                    expanded = recipientDropdownExpanded,
-                    onExpandedChange = { recipientDropdownExpanded = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp)
-                ) {
-                    OutlinedTextField(
-                        value = recipientType.lowercase().replaceFirstChar { it.uppercase() },
-                        onValueChange = {},
-                        readOnly = true,
-                        label = { Text("Recipient Type") },
-                        trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = recipientDropdownExpanded)
-                        },
-                        modifier = Modifier
-                            .menuAnchor()
-                            .fillMaxWidth()
-                    )
-                    
-                    ExposedDropdownMenu(
-                        expanded = recipientDropdownExpanded,
-                        onDismissRequest = { recipientDropdownExpanded = false }
-                    ) {
-                        MessageEnhancerService.RecipientType.values().forEach { type ->
-                            DropdownMenuItem(
-                                text = { Text(type.name.lowercase().replaceFirstChar { it.uppercase() }) },
-                                onClick = {
-                                    recipientType = type.name
-                                    recipientDropdownExpanded = false
-                                }
-                            )
-                        }
-                    }
+            }
+            
+            // Enhancement parameters
+            Text(
+                text = "Customize Enhancement:",
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+            )
+
+            // Recipient type dropdown (replaces ExposedDropdownMenuBox)
+            NeuboardDropdownMenu(
+                items = MessageEnhancerService.RecipientType.values().toList(),
+                expanded = recipientDropdownExpanded,
+                selectedIndex = MessageEnhancerService.RecipientType.values().indexOfFirst { it.name == recipientType },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                labelProvider = { it.name.lowercase().replaceFirstChar { c -> c.uppercase() } },
+                onExpandRequest = { recipientDropdownExpanded = true },
+                onDismissRequest = { recipientDropdownExpanded = false },
+                onSelectItem = {
+                    recipientType = MessageEnhancerService.RecipientType.values()[it].name
+                    recipientDropdownExpanded = false
                 }
-                
-                // Tone dropdown
-                ExposedDropdownMenuBox(
-                    expanded = toneDropdownExpanded,
-                    onExpandedChange = { toneDropdownExpanded = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp)
-                ) {
-                    OutlinedTextField(
-                        value = tone.lowercase().replaceFirstChar { it.uppercase() },
-                        onValueChange = {},
-                        readOnly = true,
-                        label = { Text("Tone") },
-                        trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = toneDropdownExpanded)
-                        },
-                        modifier = Modifier
-                            .menuAnchor()
-                            .fillMaxWidth()
-                    )
-                    
-                    ExposedDropdownMenu(
-                        expanded = toneDropdownExpanded,
-                        onDismissRequest = { toneDropdownExpanded = false }
-                    ) {
-                        MessageEnhancerService.MessageTone.values().forEach { toneType ->
-                            DropdownMenuItem(
-                                text = { Text(toneType.name.lowercase().replaceFirstChar { it.uppercase() }) },
-                                onClick = {
-                                    tone = toneType.name
-                                    toneDropdownExpanded = false
-                                }
-                            )
-                        }
-                    }
+            )
+
+            // Tone dropdown (replaces ExposedDropdownMenuBox)
+            NeuboardDropdownMenu(
+                items = MessageEnhancerService.MessageTone.values().toList(),
+                expanded = toneDropdownExpanded,
+                selectedIndex = MessageEnhancerService.MessageTone.values().indexOfFirst { it.name == tone },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                labelProvider = { it.name.lowercase().replaceFirstChar { c -> c.uppercase() } },
+                onExpandRequest = { toneDropdownExpanded = true },
+                onDismissRequest = { toneDropdownExpanded = false },
+                onSelectItem = {
+                    tone = MessageEnhancerService.MessageTone.values()[it].name
+                    toneDropdownExpanded = false
                 }
-                
-                // Intent dropdown
-                ExposedDropdownMenuBox(
-                    expanded = intentDropdownExpanded,
-                    onExpandedChange = { intentDropdownExpanded = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp)
-                ) {
-                    OutlinedTextField(
-                        value = intent.lowercase().replaceFirstChar { it.uppercase() },
-                        onValueChange = {},
-                        readOnly = true,
-                        label = { Text("Intent") },
-                        trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = intentDropdownExpanded)
-                        },
-                        modifier = Modifier
-                            .menuAnchor()
-                            .fillMaxWidth()
-                    )
-                    
-                    ExposedDropdownMenu(
-                        expanded = intentDropdownExpanded,
-                        onDismissRequest = { intentDropdownExpanded = false }
-                    ) {
-                        MessageEnhancerService.MessageIntent.values().forEach { intentType ->
-                            DropdownMenuItem(
-                                text = { Text(intentType.name.lowercase().replaceFirstChar { it.uppercase() }) },
-                                onClick = {
-                                    intent = intentType.name
-                                    intentDropdownExpanded = false
-                                }
-                            )
-                        }
-                    }
+            )
+
+            // Intent dropdown (replaces ExposedDropdownMenuBox)
+            NeuboardDropdownMenu(
+                items = MessageEnhancerService.MessageIntent.values().toList(),
+                expanded = intentDropdownExpanded,
+                selectedIndex = MessageEnhancerService.MessageIntent.values().indexOfFirst { it.name == intent },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                labelProvider = { it.name.lowercase().replaceFirstChar { c -> c.uppercase() } },
+                onExpandRequest = { intentDropdownExpanded = true },
+                onDismissRequest = { intentDropdownExpanded = false },
+                onSelectItem = {
+                    intent = MessageEnhancerService.MessageIntent.values()[it].name
+                    intentDropdownExpanded = false
                 }
-                
-                // Enhance button
-                Button(
-                    onClick = {
-                        coroutineScope.launch {
-                            isEnhancing = true
-                            val params = MessageEnhancerService.EnhancementParams(
-                                recipientType = recipientType,
-                                tone = tone,
-                                intent = intent,
-                                originalMessage = originalMessage
-                            )
-                            enhancedMessage = enhancerService.enhanceMessage(params)
-                            isEnhancing = false
-                            showEnhancedMessage = true
-                        }
-                    },
-                    enabled = !isEnhancing,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp)
-                ) {
-                    if (isEnhancing) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(24.dp),
-                            strokeWidth = 2.dp
+            )
+            
+            // Enhance button
+            Button(
+                onClick = {
+                    coroutineScope.launch {
+                        isEnhancing = true
+                        val params = MessageEnhancerService.EnhancementParams(
+                            recipientType = recipientType,
+                            tone = tone,
+                            intent = intent,
+                            originalMessage = originalMessage
                         )
-                    } else {
-                        Text("Enhance with AI")
+                        enhancedMessage = enhancerService.enhanceMessage(params)
+                        isEnhancing = false
+                        showEnhancedMessage = true
                     }
+                },
+                enabled = !isEnhancing,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp)
+            ) {
+                if (isEnhancing) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Text("Enhance with AI")
                 }
-                
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
+            }
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(
+                    onClick = { showSaveStyleDialog = true }
                 ) {
-                    TextButton(
-                        onClick = { showSaveStyleDialog = true }
+                    Icon(
+                        imageVector = Icons.Default.Save,
+                        contentDescription = "Save Style",
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Save Style")
+                }
+            }
+            
+            // Enhanced message display
+            AnimatedVisibility(
+                visible = showEnhancedMessage,
+                enter = expandVertically(),
+                exit = shrinkVertically()
+            ) {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Divider(modifier = Modifier.padding(vertical = 16.dp))
+                    
+                    Text(
+                        text = "Enhanced Message:",
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                    
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        shape = RoundedCornerShape(8.dp)
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Save,
-                            contentDescription = "Save Style",
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text("Save Style")
-                    }
-                }
-                
-                // Enhanced message display
-                AnimatedVisibility(
-                    visible = showEnhancedMessage,
-                    enter = expandVertically(),
-                    exit = shrinkVertically()
-                ) {
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        Divider(modifier = Modifier.padding(vertical = 16.dp))
-                        
                         Text(
-                            text = "Enhanced Message:",
-                            style = MaterialTheme.typography.labelLarge
+                            text = enhancedMessage,
+                            modifier = Modifier.padding(12.dp),
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
-                        
-                        Surface(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 8.dp),
-                            color = MaterialTheme.colorScheme.primaryContainer,
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            Text(
-                                text = enhancedMessage,
-                                modifier = Modifier.padding(12.dp),
-                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                    }
+                    
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Button(
+                            onClick = {
+                                onMessageEnhanced(enhancedMessage)
+                                onDismiss()
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary
                             )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = "Use Enhanced Message",
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Use This")
                         }
                         
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 8.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Button(
+                        Row {
+                            OutlinedButton(
                                 onClick = {
-                                    onMessageEnhanced(enhancedMessage)
-                                    onDismiss()
+                                    coroutineScope.launch {
+                                        isEnhancing = true
+                                        val params = MessageEnhancerService.EnhancementParams(
+                                            recipientType = recipientType,
+                                            tone = tone,
+                                            intent = intent,
+                                            originalMessage = originalMessage
+                                        )
+                                        enhancedMessage = enhancerService.enhanceMessage(params)
+                                        isEnhancing = false
+                                    }
                                 },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.primary
-                                )
+                                enabled = !isEnhancing
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.Check,
-                                    contentDescription = "Use Enhanced Message",
+                                    imageVector = Icons.Default.Refresh,
+                                    contentDescription = "Regenerate",
                                     modifier = Modifier.size(20.dp)
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
-                                Text("Use This")
+                                Text("Regenerate")
                             }
                             
-                            Row {
-                                OutlinedButton(
-                                    onClick = {
-                                        coroutineScope.launch {
-                                            isEnhancing = true
-                                            val params = MessageEnhancerService.EnhancementParams(
-                                                recipientType = recipientType,
-                                                tone = tone,
-                                                intent = intent,
-                                                originalMessage = originalMessage
-                                            )
-                                            enhancedMessage = enhancerService.enhanceMessage(params)
-                                            isEnhancing = false
-                                        }
-                                    },
-                                    enabled = !isEnhancing
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Refresh,
-                                        contentDescription = "Regenerate",
-                                        modifier = Modifier.size(20.dp)
-                                    )
-                                    Spacer(modifier = Modifier.width(4.dp))
-                                    Text("Regenerate")
-                                }
-                                
-                                Spacer(modifier = Modifier.width(8.dp))
-                                
-                                OutlinedButton(onClick = onDismiss) {
-                                    Text("Cancel")
-                                }
+                            Spacer(modifier = Modifier.width(8.dp))
+                            
+                            OutlinedButton(onClick = onDismiss) {
+                                Text("Cancel")
                             }
                         }
                     }

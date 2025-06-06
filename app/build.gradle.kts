@@ -199,6 +199,7 @@ dependencies {
     implementation(libs.patrickgold.jetpref.datastore.model)
     implementation(libs.patrickgold.jetpref.datastore.ui)
     implementation(libs.patrickgold.jetpref.material.ui)
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     implementation(project(":lib:android"))
     implementation(project(":lib:color"))

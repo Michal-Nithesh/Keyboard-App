@@ -22,10 +22,16 @@ import dev.patrickgold.neuboard.lib.devtools.LogTopic
 import dev.patrickgold.neuboard.lib.devtools.flogDebug
 import dev.patrickgold.neuboard.lib.devtools.flogInfo
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 
 /**
  * Service responsible for enhancing messages using AI capabilities.
@@ -55,7 +61,8 @@ class MessageEnhancerService {
      */
     enum class MessageTone {
         FORMAL, INFORMAL, FRIENDLY, RESPECTFUL, FLIRTY, PROFESSIONAL, 
-        APOLOGETIC, ASSERTIVE, ENCOURAGING, NEUTRAL;
+        APOLOGETIC, ASSERTIVE, ENCOURAGING, NEUTRAL,
+        CASUAL, POLITE, FUNNY, SOCIAL_POST, WITTY;
         
         companion object {
             fun fromString(value: String): MessageTone {
@@ -109,6 +116,10 @@ class MessageEnhancerService {
     val savedStyles get() = _savedStyles.value
     
     private val json = Json { prettyPrint = true }
+    private val httpClient = OkHttpClient()
+    // Replace with your real AI API endpoint and key
+    private val aiApiUrl = "https://openrouter.ai/api/v1/chat/completions"
+    private val aiApiKey = "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"
     
     /**
      * Enhances a message using AI based on the provided parameters.
@@ -118,30 +129,26 @@ class MessageEnhancerService {
      */
     suspend fun enhanceMessage(params: EnhancementParams): String {
         return withContext(Dispatchers.IO) {
-            flogInfo(LogTopic.IME) { "Enhancing message with params: ${json.encodeToString(params)}" }
-            
-            // AI enhancement logic would be implemented here.
-            // For now, we're using a simple template-based approach.
-            
+            flogInfo(LogTopic.IME) { "Enhancing message with params: \\${json.encodeToString(params)}" }
             val recipientType = RecipientType.fromString(params.recipientType)
             val tone = MessageTone.fromString(params.tone)
             val intent = MessageIntent.fromString(params.intent)
-            
             enhanceMessageInternal(recipientType, tone, intent, params.originalMessage)
         }
     }
-    
+
     /**
      * Internal implementation of message enhancement.
      */
-    private fun enhanceMessageInternal(
+    private suspend fun enhanceMessageInternal(
         recipientType: RecipientType,
         tone: MessageTone,
         intent: MessageIntent,
         originalMessage: String
     ): String {
         // Simple rule-based enhancement for demonstration purposes
-        val result = when (recipientType) {            RecipientType.MANAGER -> {
+        return when (recipientType) {
+            RecipientType.MANAGER -> {
                 when {
                     intent == MessageIntent.POSITIVE -> "I'm pleased to inform you that $originalMessage"
                     intent == MessageIntent.APPRECIATION -> "I greatly appreciate your understanding that $originalMessage"
@@ -155,33 +162,72 @@ class MessageEnhancerService {
                     MessageTone.INFORMAL -> "Hey! $originalMessage"
                     MessageTone.FRIENDLY -> "Just wanted to let you know, $originalMessage"
                     MessageTone.FLIRTY -> "You know what? $originalMessage 😉"
-                    else -> originalMessage
+                    else -> autocorrectText(originalMessage, tone)
                 }
             }
             RecipientType.LOVER -> {
                 when (tone) {
                     MessageTone.FLIRTY -> "Sweetheart, $originalMessage 💕"
                     MessageTone.FRIENDLY -> "My love, $originalMessage"
-                    else -> "Honey, $originalMessage"
+                    else -> autocorrectText(originalMessage, tone)
                 }
             }
             RecipientType.PROFESSOR -> {
                 when (tone) {
                     MessageTone.FORMAL -> "Dear Professor, $originalMessage"
                     MessageTone.RESPECTFUL -> "I would like to inform you that $originalMessage"
-                    else -> "Professor, $originalMessage"
+                    else -> autocorrectText(originalMessage, tone)
                 }
             }
             else -> {
                 when (tone) {
                     MessageTone.FORMAL -> "I would like to inform you that $originalMessage"
                     MessageTone.PROFESSIONAL -> "Please note that $originalMessage"
-                    else -> originalMessage
+                    else -> autocorrectText(originalMessage, tone)
                 }
             }
         }
+    }
 
-        return result
+    // Real AI-powered autocorrect and tone enhancement
+    private suspend fun autocorrectText(text: String, tone: MessageTone = MessageTone.NEUTRAL): String {
+        return try {
+            val prompt = buildString {
+                append("Rewrite the following message with correct spelling, grammar, and a ")
+                append(tone.name.lowercase().replace('_', ' '))
+                append(" tone. Message: \"")
+                append(text)
+                append("\"")
+            }
+            val jsonBody = JSONObject()
+            jsonBody.put("model", "gpt-3.5-turbo") // Or your preferred model
+            jsonBody.put("messages", listOf(mapOf("role" to "user", "content" to prompt)))
+            val body = jsonBody.toString().toRequestBody("application/json".toMediaTypeOrNull())
+            val request = Request.Builder()
+                .url(aiApiUrl)
+                .addHeader("Authorization", "Bearer $aiApiKey")
+                .addHeader("Content-Type", "application/json")
+                .post(body)
+                .build()
+            val response = httpClient.newCall(request).execute()
+            if (response.isSuccessful) {
+                val responseBody = response.body?.string()
+                if (responseBody != null) {
+                    val json = JSONObject(responseBody)
+                    val choices = json.optJSONArray("choices")
+                    if (choices != null && choices.length() > 0) {
+                        val message = choices.getJSONObject(0).getJSONObject("message")
+                        return message.getString("content").trim()
+                    }
+                }
+            }
+            // Fallback to original text if API fails
+            text
+        } catch (e: Exception) {
+            // Log error and fallback
+            flogDebug(LogTopic.IME) { "AI autocorrect error: \\${e.message}" }
+            text
+        }
     }
     
     /**

@@ -57,7 +57,7 @@ import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.editorInstance
 import dev.patrickgold.neuboard.ime.editor.AbstractEditorInstance
 import dev.patrickgold.neuboard.ime.ai.EnhanceButton
-import dev.patrickgold.neuboard.ime.ai.MessageEnhancementDialog
+import dev.patrickgold.neuboard.ime.ai.MessageEnhancementOverlay
 import dev.patrickgold.neuboard.ime.ai.QuickReplySuggestionsRow
 import dev.patrickgold.neuboard.ime.keyboard.NeuboardImeSizing
 import dev.patrickgold.neuboard.ime.nlp.NlpInlineAutofill
@@ -336,7 +336,7 @@ private fun SmartbarMainRow(modifier: Modifier = Modifier) {
         }
         
         if (aiEnhancementManager.isEnhancementDialogVisible) {
-            MessageEnhancementDialog(
+            MessageEnhancementOverlay(
                 originalMessage = currentMessage,
                 onDismiss = { aiEnhancementManager.hideEnhancementDialog() },
                 onMessageEnhanced = { enhancedMessage: String -> 
@@ -360,6 +360,38 @@ private fun SmartbarMainRow(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .height(NeuboardImeSizing.smartbarHeight),
     ) {
+        // 1. Flip toggle buttons (SharedActionsToggle or ExtendedActionsToggle)
+        if (smartbarLayout == SmartbarLayout.SUGGESTIONS_ACTIONS_SHARED) {
+            SharedActionsToggle()
+        } else if (smartbarLayout == SmartbarLayout.SUGGESTIONS_ACTIONS_EXTENDED) {
+            ExtendedActionsToggle()
+        }
+        // 2. AI button (EnhanceButton)
+        val aiEnhancementManager by context.aiEnhancementManager()
+        EnhanceButton(
+            onClick = { aiEnhancementManager.showEnhancementDialog() },
+            modifier = Modifier.padding(horizontal = 4.dp)
+        )
+        // 3. Clipboard button
+        QuickActionButton(
+            action = dev.patrickgold.neuboard.ime.smartbar.quickaction.QuickAction.InsertKey(dev.patrickgold.neuboard.ime.text.keyboard.TextKeyData.IME_UI_MODE_CLIPBOARD),
+            evaluator = keyboardManager.activeSmartbarEvaluator.value,
+        )
+        // 4. Emoji button
+        QuickActionButton(
+            action = dev.patrickgold.neuboard.ime.smartbar.quickaction.QuickAction.InsertKey(dev.patrickgold.neuboard.ime.text.keyboard.TextKeyData.IME_UI_MODE_MEDIA),
+            evaluator = keyboardManager.activeSmartbarEvaluator.value,
+        )
+        // 5. Incognito button
+        QuickActionButton(
+            action = dev.patrickgold.neuboard.ime.smartbar.quickaction.QuickAction.InsertKey(dev.patrickgold.neuboard.ime.text.keyboard.TextKeyData.TOGGLE_INCOGNITO_MODE),
+            evaluator = keyboardManager.activeSmartbarEvaluator.value,
+        )
+        // 6. Settings button
+        QuickActionButton(
+            action = dev.patrickgold.neuboard.ime.smartbar.quickaction.QuickAction.InsertKey(dev.patrickgold.neuboard.ime.text.keyboard.TextKeyData.SETTINGS),
+            evaluator = keyboardManager.activeSmartbarEvaluator.value,
+        )
         when (smartbarLayout) {
             SmartbarLayout.SUGGESTIONS_ONLY -> {
                 if (shouldShowInlineSuggestionsUi) {
@@ -368,7 +400,6 @@ private fun SmartbarMainRow(modifier: Modifier = Modifier) {
                     CandidatesRow()
                 }
             }
-
             SmartbarLayout.ACTIONS_ONLY -> {
                 if (shouldShowInlineSuggestionsUi) {
                     InlineSuggestionsUi(inlineSuggestions)
@@ -376,29 +407,13 @@ private fun SmartbarMainRow(modifier: Modifier = Modifier) {
                     QuickActionsRow(NeuboardImeUi.SmartbarSharedActionsRow.elementName)
                 }
             }
-
             SmartbarLayout.SUGGESTIONS_ACTIONS_SHARED -> {
-                if (!flipToggles) {
-                    SharedActionsToggle()
-                    CenterContent()
-                    StickyAction()
-                } else {
-                    StickyAction()
-                    CenterContent()
-                    SharedActionsToggle()
-                }
+                CenterContent()
+                StickyAction()
             }
-
             SmartbarLayout.SUGGESTIONS_ACTIONS_EXTENDED -> {
-                if (!flipToggles) {
-                    ExtendedActionsToggle()
-                    CenterContent()
-                    StickyAction()
-                } else {
-                    StickyAction()
-                    CenterContent()
-                    ExtendedActionsToggle()
-                }
+                CenterContent()
+                StickyAction()
             }
         }
     }

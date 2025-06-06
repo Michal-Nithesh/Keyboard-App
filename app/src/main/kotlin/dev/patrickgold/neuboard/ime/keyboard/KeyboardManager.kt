@@ -755,6 +755,12 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
             KeyCode.VIEW_PHONE2 -> activeState.keyboardMode = KeyboardMode.PHONE2
             KeyCode.VIEW_SYMBOLS -> activeState.keyboardMode = KeyboardMode.SYMBOLS
             KeyCode.VIEW_SYMBOLS2 -> activeState.keyboardMode = KeyboardMode.SYMBOLS2
+            KeyCode.IME_UI_MODE_CLIPBOARD -> {
+                activeState.imeUiMode = ImeUiMode.CLIPBOARD
+            }
+            KeyCode.IME_UI_MODE_MEDIA -> {
+                activeState.imeUiMode = ImeUiMode.MEDIA
+            }
             else -> {
                 if (activeState.imeUiMode == ImeUiMode.MEDIA) {
                     nlpManager.getAutoCommitCandidate()?.let { commitCandidate(it) }
@@ -847,8 +853,15 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
                 handleEnter()
                 return true
             }
+            KeyEvent.KEYCODE_BACK -> {
+                if (activeState.imeUiMode == ImeUiMode.MEDIA) {
+                    activeState.imeUiMode = ImeUiMode.TEXT
+                    return true
+                }
+            }
             else -> return false
         }
+        return false
     }
 
     inner class KeyboardManagerResources {
