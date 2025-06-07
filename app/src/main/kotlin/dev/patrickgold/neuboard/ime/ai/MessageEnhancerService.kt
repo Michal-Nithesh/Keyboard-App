@@ -418,11 +418,59 @@ class MessageEnhancerService {
             // Try to use the AI API first for better quality enhancements
             val aiEnhancements = try {
                 val prompt = buildString {
-                    append("Generate 4 different versions of this message: \"$originalMessage\"\n\n")
-                    append("1. A more formal version\n")
-                    append("2. A friendlier version with appropriate emoji\n")
-                    append("3. A more concise version\n")
-                    append("4. A version with improved grammar and spelling\n\n")
+                    // Create a tone-specific prompt based on the preferred tone
+                    when (preferredTone) {
+                        MessageTone.FORMAL -> {
+                            append("Generate 4 different formal, professional versions of this message: \"$originalMessage\"\n\n")
+                            append("1. A polite, business-appropriate version\n")
+                            append("2. A respectful version suitable for professional correspondence\n")
+                            append("3. A clear, properly structured formal version\n")
+                            append("4. A concise but formal version\n\n")
+                        }
+                        MessageTone.FRIENDLY -> {
+                            append("Generate 4 different friendly versions of this message: \"$originalMessage\"\n\n")
+                            append("1. A warm, conversational version\n")
+                            append("2. A cheerful version with appropriate emoji\n")
+                            append("3. A casual yet respectful version\n")
+                            append("4. An engaging, personable version\n\n")
+                        }
+                        MessageTone.PROFESSIONAL -> {
+                            append("Generate 4 different professional versions of this message: \"$originalMessage\"\n\n")
+                            append("1. A clear, effective business communication\n")
+                            append("2. A concise, direct professional message\n")
+                            append("3. A version with well-structured, professional language\n")
+                            append("4. A polite but results-oriented version\n\n")
+                        }
+                        MessageTone.WITTY -> {
+                            append("Generate 4 different witty versions of this message: \"$originalMessage\"\n\n")
+                            append("1. A clever, playful version with wordplay\n")
+                            append("2. A humorous version with a light joke\n")
+                            append("3. A version with a witty observation\n")
+                            append("4. A fun, engaging version with personality\n\n")
+                        }
+                        MessageTone.CASUAL -> {
+                            append("Generate 4 different casual versions of this message: \"$originalMessage\"\n\n")
+                            append("1. A relaxed, everyday conversation style\n")
+                            append("2. An informal version with common expressions\n")
+                            append("3. A friendly, laid-back version\n")
+                            append("4. A simple, straightforward version\n\n")
+                        }
+                        MessageTone.ASSERTIVE -> {
+                            append("Generate 4 different assertive versions of this message: \"$originalMessage\"\n\n")
+                            append("1. A confident, direct version\n")
+                            append("2. A clear version that emphasizes action\n")
+                            append("3. A persuasive, impactful version\n")
+                            append("4. A decisive version that conveys authority\n\n")
+                        }
+                        else -> {
+                            append("Generate 4 different versions of this message: \"$originalMessage\"\n\n")
+                            append("1. A more formal version\n")
+                            append("2. A friendlier version with appropriate emoji\n")
+                            append("3. A more concise version\n")
+                            append("4. A version with improved grammar and spelling\n\n")
+                        }
+                    }
+                    
                     append("Format your response as a clean JSON object with keys 'version1', 'version2', 'version3', and 'version4', with the corresponding message versions as values. No explanation text.")
                 }
                 

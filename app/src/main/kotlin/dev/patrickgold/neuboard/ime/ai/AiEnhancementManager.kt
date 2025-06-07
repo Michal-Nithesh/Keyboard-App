@@ -81,9 +81,71 @@ class AiEnhancementManager(
      * Updates the current message.
      * 
      * @param text The current text in the input field.
+     * @param regenerateSuggestions Whether to generate new suggestions immediately
+     * @param isComposing Whether the text is currently being composed (e.g. partially typed)
+     * @param selectionStart The current cursor position start
+     * @param selectionEnd The current cursor position end
      */
-    fun updateCurrentMessage(text: String) {
+    fun updateCurrentMessage(
+        text: String,
+        regenerateSuggestions: Boolean = false,
+        isComposing: Boolean = false,
+        selectionStart: Int = -1,
+        selectionEnd: Int = -1
+    ) {
+        val previousText = _currentMessage.value
         _currentMessage.value = text
+        
+        // Log message updates to help with debugging
+        flogDebug(LogTopic.IME) { "Updating current message from '$previousText' to '$text' (composing: $isComposing, selection: $selectionStart:$selectionEnd)" }
+        
+        // Track if we should update suggestions immediately
+        var shouldUpdateSuggestions = regenerateSuggestions
+        
+        // Check if we're showing keyboard suggestions or if this is a good time to show them
+        if (_showKeyboardSuggestions.value || (text.isNotEmpty() && text.length >= 3 && text != previousText)) {
+            // Consider the change meaningful if any of these conditions are met:
+            val meaningfulChange = 
+                // Text has actually changed
+                text != previousText &&
+                // Either: added/removed multiple characters, or completed a word
+                (text.length - previousText.length >= 2 || 
+                 previousText.length - text.length >= 2 ||
+                 text.contains(" ") && !previousText.contains(" ") ||
+                 text.length == 0 || previousText.length == 0 || // Empty transition
+                 text.endsWith(".") || text.endsWith("!") || text.endsWith("?")) // Completed sentence
+            
+            // If we have text and it's changed meaningfully, update suggestions
+            if (text.isNotEmpty() && (meaningfulChange || !isComposing || 
+                                     // Force update if longer than 5 chars and not updated recently
+                                     (text.length > 5 && _quickReplySuggestions.value.isEmpty()))) {
+                shouldUpdateSuggestions = true
+                
+                // If suggestions are already showing, update them
+                if (_showKeyboardSuggestions.value) {
+                    flogInfo(LogTopic.IME) { "Text updated meaningfully, regenerating suggestions. Text='$text'" }
+                    _quickReplySuggestions.value = emptyList()
+                    generateTextEnhancements(text)
+                }
+                // If suggestions view isn't showing but we have enough context, just prepare suggestions quietly
+                else if (text.length >= 3 && !text.all { it.isWhitespace() }) {
+                    flogInfo(LogTopic.IME) { "Preparing suggestions in background for text='$text'" }
+                    generateTextEnhancements(text)
+                }
+            } else if (text.isEmpty()) {
+                // If text is now empty but we had received messages before
+                if (lastReceivedMessage != null && lastReceivedMessage!!.isNotBlank()) {
+                    flogInfo(LogTopic.IME) { "Text cleared, showing quick replies for received message" }
+                    if (_showKeyboardSuggestions.value) {
+                        generateQuickReplies()
+                    }
+                } else if (_showKeyboardSuggestions.value) {
+                    flogInfo(LogTopic.IME) { "Text cleared, no valid context for suggestions" }
+                    // Hide suggestions since we don't have valid input or received message
+                    _showKeyboardSuggestions.value = false
+                }
+            }
+        }
     }
     
     /**
@@ -114,23 +176,55 @@ class AiEnhancementManager(
             return
         }
         
-        // Handle based on available context
-        if (currentText.isNotEmpty()) {
-            // If we have text input, show enhancement options in keyboard area
-            flogInfo(LogTopic.IME) { "Showing AI enhancement suggestions for current text" }
-            _showKeyboardSuggestions.value = true
+        // Always force show keyboard regardless of context
+        _showKeyboardSuggestions.value = true
+        
+        // Now handle suggestion content based on context
+        if (_quickReplySuggestions.value.isNotEmpty()) {
+            // We already have suggestions to show
+            flogInfo(LogTopic.IME) { "Showing existing AI suggestions (${_quickReplySuggestions.value.size})" }
+            return
+        }
+        
+        // Handle based on available context - check if we have any text content
+        if (currentText.isNotBlank()) {
+            // We have actual text input - generate suggestions immediately
+            flogInfo(LogTopic.IME) { "Generating AI enhancements for current text: '$currentText'" }
             
-            // Generate enhancement suggestions for the current text
-            generateTextEnhancements(currentText)
-        } else if (lastReceivedMessage != null) {
-            // If no text input but we have a received message, show reply suggestions
-            flogInfo(LogTopic.IME) { "Showing AI quick reply suggestions for received message" }
-            _showKeyboardSuggestions.value = true
+            // Immediately start generating enhancements to show
+            try {
+                // First show loading state by setting empty list
+                _quickReplySuggestions.value = emptyList()
+                
+                // Launch enhancement generation without waiting
+                generateTextEnhancements(currentText)
+            } catch (e: Exception) {
+                flogError(LogTopic.IME) { "Error initiating text enhancements: ${e.message}" }
+                // Provide simple fallbacks in case of error
+                _quickReplySuggestions.value = listOf(
+                    currentText.replaceFirstChar { it.uppercase() },
+                    "$currentText!",
+                    "I meant: $currentText"
+                )
+            }
+        } else if (lastReceivedMessage != null && lastReceivedMessage!!.isNotBlank()) {
+            // No current text but we have a received message - show reply suggestions
+            flogInfo(LogTopic.IME) { "Generating quick replies for message: '$lastReceivedMessage'" }
+            
+            // Generate reply suggestions
             generateQuickReplies()
         } else {
-            // If neither, show the dialog as fallback
-            flogInfo(LogTopic.IME) { "No context for AI suggestions, showing enhancement dialog instead" }
-            isEnhancementDialogVisible = true
+            // No valid context - show helpful starter suggestions
+            flogInfo(LogTopic.IME) { "No input text detected, providing starter suggestions" }
+            
+            // Provide starter messages that are helpful in most contexts
+            _quickReplySuggestions.value = listOf(
+                "Hello! How are you?",
+                "I wanted to check in with you",
+                "Thanks for your message",
+                "Can we talk about this later?",
+                "I appreciate your help"
+            )
         }
     }
     
@@ -139,26 +233,91 @@ class AiEnhancementManager(
      * This will create variations of the provided text with different tones and styles.
      * 
      * @param text The text to enhance
+     * @param preferredTone The preferred tone for enhancements (defaults to FRIENDLY)
+     * @param priority Whether to prioritize this request (for immediate user actions)
      */
-    fun generateTextEnhancements(text: String) {
+    fun generateTextEnhancements(
+        text: String,
+        preferredTone: MessageEnhancerService.MessageTone = MessageEnhancerService.MessageTone.FRIENDLY,
+        priority: Boolean = false
+    ) {
+        // Check if there's any text to enhance
         if (text.isBlank()) {
             flogDebug(LogTopic.IME) { "Cannot generate enhancements for empty text" }
+            // Immediately provide fallbacks for blank text if suggestions are being shown
+            if (_showKeyboardSuggestions.value) {
+                _quickReplySuggestions.value = listOf(
+                    "Hello!",
+                    "How are you?",
+                    "Good to hear from you."
+                )
+            }
             return
         }
         
+        // Check if text is too short for meaningful suggestions
+        if (text.length < 2 && !priority) {
+            flogDebug(LogTopic.IME) { "Text too short for meaningful suggestions: '$text'" }
+            if (_showKeyboardSuggestions.value) {
+                // For extremely short text, just provide simple completions
+                _quickReplySuggestions.value = listOf(
+                    "${text}s",
+                    "${text}ed",
+                    "${text}ing"
+                )
+            }
+            return
+        }
+        
+        // Sanitize the input text - remove any concatenated messages or malformed input
+        val sanitizedText = sanitizeMessageText(text)
+        if (sanitizedText != text) {
+            flogInfo(LogTopic.IME) { "Sanitized input text from '$text' to '$sanitizedText'" }
+        }
+        
         launch {
-            flogDebug(LogTopic.IME) { "Generating enhancements for text: $text" }
+            flogInfo(LogTopic.IME) { "Generating enhancements for: '$sanitizedText' with tone: ${preferredTone.name}" }
             
-            // Show loading state (if needed)
-            // We could update UI to show loading here
-            
-            val suggestions = enhancerService.generateQuickEnhancements(
-                originalMessage = text,
-                preferredTone = MessageEnhancerService.MessageTone.FRIENDLY
-            )
-            
-            flogDebug(LogTopic.IME) { "Generated ${suggestions.size} enhancement suggestions" }
-            _quickReplySuggestions.value = suggestions
+            try {
+                // Track if this is a user-visible request that needs immediate feedback
+                if (_showKeyboardSuggestions.value && _quickReplySuggestions.value.isEmpty()) {
+                    // If we're showing keyboard suggestions but have no content, provide simple temporary suggestions
+                    _quickReplySuggestions.value = listOf(
+                        "Enhanced: $sanitizedText",
+                        sanitizedText.replaceFirstChar { it.uppercase() }
+                    )
+                }
+                
+                val suggestions = enhancerService.generateQuickEnhancements(
+                    originalMessage = sanitizedText,
+                    preferredTone = preferredTone
+                )
+                
+                // Handle API response
+                if (suggestions.isEmpty()) {
+                    flogWarning(LogTopic.IME) { "No enhancement suggestions were generated, using fallbacks" }
+                    // Provide some basic fallback suggestions if API fails
+                    val fallbackSuggestions = listOf(
+                        "Enhanced: $sanitizedText",
+                        "Improved: $sanitizedText",
+                        sanitizedText.replaceFirstChar { it.uppercase() },
+                        "$sanitizedText!"  // Add emphasis
+                    )
+                    _quickReplySuggestions.value = fallbackSuggestions
+                } else {
+                    // Only update if we had success and have better suggestions
+                    flogInfo(LogTopic.IME) { "Generated ${suggestions.size} enhancement suggestions" }
+                    _quickReplySuggestions.value = suggestions
+                }
+            } catch (e: Exception) {
+                flogError(LogTopic.IME) { "Error generating enhancements: ${e.message}" }
+                // Provide more varied fallbacks in case of error
+                _quickReplySuggestions.value = listOf(
+                    "Enhanced: $sanitizedText",
+                    sanitizedText.replaceFirstChar { it.uppercase() },
+                    "$sanitizedText!"
+                )
+            }
         }
     }
     
@@ -174,9 +333,15 @@ class AiEnhancementManager(
      * 
      * @param message The received message.
      */
-    fun setLastReceivedMessage(message: String) {
-        lastReceivedMessage = message
-        generateQuickReplies()
+    fun setLastReceivedMessage(message: String?) {
+        // Only update if message is not null and not blank
+        if (message != null && message.isNotBlank()) {
+            lastReceivedMessage = message
+            flogInfo(LogTopic.IME) { "Set last received message and generating quick replies" }
+            generateQuickReplies()
+        } else {
+            flogDebug(LogTopic.IME) { "Ignoring attempt to set blank received message" }
+        }
     }
     
     /**
@@ -185,39 +350,62 @@ class AiEnhancementManager(
      * the previously received message.
      */
     fun generateQuickReplies() {
-        lastReceivedMessage?.let { receivedMessage ->
-            if (receivedMessage.isBlank()) {
-                flogDebug(LogTopic.IME) { "Cannot generate replies for blank message" }
-                return
-            }
+        // Guard against null or blank messages early
+        if (lastReceivedMessage == null || lastReceivedMessage!!.isBlank()) {
+            flogDebug(LogTopic.IME) { "Cannot generate replies for blank or missing message" }
             
-            launch {
-                flogInfo(LogTopic.IME) { "Generating quick replies for received message" }
+            // Provide generic fallback replies
+            _quickReplySuggestions.value = listOf(
+                "Hello!",
+                "Good to hear from you.",
+                "I hope you're doing well."
+            )
+            return
+        }
+
+        val receivedMessage = lastReceivedMessage!!
+        
+        launch {
+            flogInfo(LogTopic.IME) { "Generating quick replies for received message: '$receivedMessage'" }
                 
-                try {
-                    val suggestions = enhancerService.generateQuickReplies(
-                        receivedMessage = receivedMessage,
-                        recipientType = MessageEnhancerService.RecipientType.FRIEND,
-                        preferredTone = MessageEnhancerService.MessageTone.FRIENDLY
-                    )
+            try {
+                // Clear current suggestions to show loading state if UI is observing
+                _quickReplySuggestions.value = emptyList()
+                
+                val suggestions = enhancerService.generateQuickReplies(
+                    receivedMessage = receivedMessage,
+                    recipientType = MessageEnhancerService.RecipientType.FRIEND,
+                    preferredTone = MessageEnhancerService.MessageTone.FRIENDLY
+                )
+                
+                if (suggestions.isNotEmpty()) {
+                    flogInfo(LogTopic.IME) { "Generated ${suggestions.size} quick reply suggestions" }
+                    _quickReplySuggestions.value = suggestions
                     
-                    if (suggestions.isNotEmpty()) {
-                        flogInfo(LogTopic.IME) { "Generated ${suggestions.size} quick reply suggestions" }
-                        _quickReplySuggestions.value = suggestions
-                        
-                        // Show suggestions in keyboard area if they're not already visible
-                        if (!_showKeyboardSuggestions.value && _currentMessage.value.isEmpty()) {
-                            _showQuickReplySuggestions.value = true
-                        }
-                    } else {
-                        flogInfo(LogTopic.IME) { "No quick reply suggestions were generated" }
+                    // Show suggestions in keyboard area if they're not already visible
+                    if (!_showKeyboardSuggestions.value && _currentMessage.value.isEmpty()) {
+                        _showQuickReplySuggestions.value = true
                     }
-                } catch (e: Exception) {
-                    flogInfo(LogTopic.IME) { "Error generating quick replies: ${e.message}" }
+                } else {
+                    flogWarning(LogTopic.IME) { "No quick reply suggestions were generated, using fallbacks" }
+                    // Provide some basic fallbacks
+                    val fallbackReplies = listOf(
+                        "I understand.",
+                        "Thanks for letting me know.",
+                        "Got it."
+                    )
+                    _quickReplySuggestions.value = fallbackReplies
                 }
+            } catch (e: Exception) {
+                flogError(LogTopic.IME) { "Error generating quick replies: ${e.message}" }
+                // Provide fallbacks on error
+                val errorFallbackReplies = listOf(
+                    "I understand.",
+                    "Thanks for letting me know.",
+                    "Got it."
+                )
+                _quickReplySuggestions.value = errorFallbackReplies
             }
-        } ?: run {
-            flogDebug(LogTopic.IME) { "No received message to generate replies for" }
         }
     }
     
@@ -227,5 +415,87 @@ class AiEnhancementManager(
     fun destroy() {
         job.cancelChildren()
         job.cancel()
+    }
+    
+    /**
+     * Sanitize message text to fix potential issues with concatenated messages
+     * This addresses problems like "find my device and get it doneNice to hear from you."
+     * where suggestions may have been accidentally appended to the input text
+     *
+     * @param text The input text to sanitize
+     * @return The sanitized text with issues fixed
+     */
+    private fun sanitizeMessageText(text: String): String {
+        if (text.isBlank()) {
+            return text
+        }
+        
+        // Check for patterns that indicate text concatenation issues
+        val commonSuggestions = listOf(
+            "Nice to hear from you", 
+            "Thanks for letting me know", 
+            "I understand",
+            "Got it",
+            "Hello",
+            "Good to hear",
+            "How are you",
+            "Let me check",
+            "I'll check that out",
+            "Enhanced:",
+            "Improved:"
+        )
+        
+        var cleanedText = text.trim()
+        
+        // First check for badly formed composing text with partial words
+        val composingRegex = "(\\w{2,})(\\w{1})$".toRegex()
+        if (composingRegex.containsMatchIn(cleanedText)) {
+            // This might be composing text - leave it as is
+            return cleanedText
+        }
+        
+        // Look for common phrases that might have been concatenated
+        for (phrase in commonSuggestions) {
+            // Check for mixed case boundaries that indicate concatenation without spaces
+            val firstChar = phrase.firstOrNull()?.uppercase() ?: continue
+            val regex = "([a-z])([${firstChar}]${phrase.substring(1)})".toRegex(RegexOption.IGNORE_CASE)
+            
+            if (cleanedText.contains(regex)) {
+                cleanedText = regex.replace(cleanedText, "$1 $2")
+                flogDebug(LogTopic.IME) { "Fixed concatenation with regex: '$text' → '$cleanedText'" }
+            }
+            
+            // Check for direct concatenation of suggestion phrases
+            val index = cleanedText.indexOf(phrase, ignoreCase = true)
+            if (index > 0 && index < cleanedText.length && !cleanedText[index-1].isWhitespace()) {
+                // Only cut the text if we're confident this is a concatenation issue
+                // Look for case change or punctuation
+                val beforeChar = cleanedText[index-1]
+                val phraseFirstChar = phrase.first()
+                
+                if (beforeChar.isLowerCase() && phraseFirstChar.isUpperCase()) {
+                    cleanedText = cleanedText.substring(0, index).trim()
+                    flogInfo(LogTopic.IME) { "Fixed concatenated message text with case change: '$text' → '$cleanedText'" }
+                    break
+                } else if (beforeChar.isLetterOrDigit() && !phraseFirstChar.isLetterOrDigit()) {
+                    cleanedText = cleanedText.substring(0, index).trim()
+                    flogInfo(LogTopic.IME) { "Fixed concatenated message text with symbol boundary: '$text' → '$cleanedText'" }
+                    break
+                }
+            }
+        }
+        
+        // Check for sentences that have been run together (missing space after punctuation)
+        val punctuationRegex = "([.!?])([A-Z])".toRegex()
+        cleanedText = punctuationRegex.replace(cleanedText) { matchResult ->
+            "${matchResult.groupValues[1]} ${matchResult.groupValues[2]}"
+        }
+        
+        // Avoid empty results due to overzealous cleaning
+        if (cleanedText.isBlank() && text.isNotBlank()) {
+            return text
+        }
+        
+        return cleanedText
     }
 }
