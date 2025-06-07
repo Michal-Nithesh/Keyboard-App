@@ -28,6 +28,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -37,13 +39,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.patrickgold.neuboard.aiEnhancementManager
 import dev.patrickgold.neuboard.ime.keyboard.KeyboardState
 import dev.patrickgold.neuboard.lib.compose.NeuboardDropdownMenu
+import androidx.compose.runtime.collectAsState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -56,17 +61,29 @@ fun EnhanceButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val aiEnhancementManager by context.aiEnhancementManager()
+    // Using the proper collectAsState syntax with an initial value
+    val showSmartbarSuggestions = aiEnhancementManager.showQuickReplySuggestions.collectAsState(initial = false).value
+    val showKeyboardSuggestions = aiEnhancementManager.showKeyboardSuggestions.collectAsState(initial = false).value
+    
+    val isActive = showSmartbarSuggestions || showKeyboardSuggestions
+    
     IconButton(
         onClick = onClick,
         modifier = modifier
             .padding(4.dp)
             .clip(CircleShape)
             .size(40.dp)
+            .background(
+                if (isActive) MaterialTheme.colorScheme.primary.copy(alpha = 0.15f) 
+                else Color.Transparent
+            )
     ) {
         Icon(
             imageVector = Icons.Default.AutoFixHigh,
             contentDescription = "Enhance Message",
-            tint = MaterialTheme.colorScheme.primary
+            tint = if (isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary
         )
     }
 }
@@ -139,12 +156,15 @@ fun MessageEnhancementOverlay(
     var toneDropdownExpanded by remember { mutableStateOf(false) }
     var intentDropdownExpanded by remember { mutableStateOf(false) }
     
+    // Use a Surface component instead of AlertDialog to avoid window token issues
     Surface(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxWidth(0.95f)
             .padding(16.dp),
-        shape = RoundedCornerShape(16.dp),
-        tonalElevation = 8.dp
+        color = MaterialTheme.colorScheme.surface,
+        tonalElevation = 6.dp,
+        shadowElevation = 8.dp,
+        shape = RoundedCornerShape(16.dp)
     ) {
         Column(
             modifier = Modifier
@@ -382,13 +402,38 @@ fun MessageEnhancementOverlay(
         }
     }
     
-    // Save style dialog
+    // Save style dialog - use Surface instead of AlertDialog to avoid window token issues
     if (showSaveStyleDialog) {
-        AlertDialog(
-            onDismissRequest = { showSaveStyleDialog = false },
-            title = { Text("Save Style") },
-            text = {
-                Column {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable(onClick = { showSaveStyleDialog = false })
+                .background(Color.Black.copy(alpha = 0.4f)),
+            contentAlignment = Alignment.Center
+        ) {
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth(0.95f)
+                    .padding(16.dp)
+                    // This prevents the outer Box click from dismissing the dialog
+                    .clickable(onClick = {}), 
+                shape = RoundedCornerShape(16.dp),
+                color = MaterialTheme.colorScheme.surface,
+                tonalElevation = 6.dp,
+                shadowElevation = 8.dp
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    // Title
+                    Text(
+                        text = "Save Style",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    // Content
                     Text("Save current enhancement settings as a style preset")
                     Spacer(modifier = Modifier.height(8.dp))
                     OutlinedTextField(
@@ -398,37 +443,45 @@ fun MessageEnhancementOverlay(
                         placeholder = { Text("e.g., 'Professional Email to Boss'") },
                         modifier = Modifier.fillMaxWidth()
                     )
-                }
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        if (styleName.isNotBlank()) {
-                            val params = MessageEnhancerService.EnhancementParams(
-                                recipientType = recipientType,
-                                tone = tone,
-                                intent = intent
-                            )
-                            val style = MessageEnhancerService.SavedStyle(
-                                name = styleName,
-                                params = params
-                            )
-                            enhancerService.saveStyle(style)
-                            showSaveStyleDialog = false
-                            styleName = ""
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    // Buttons
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        TextButton(onClick = { showSaveStyleDialog = false }) {
+                            Text("Cancel")
                         }
-                    },
-                    enabled = styleName.isNotBlank()
-                ) {
-                    Text("Save")
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showSaveStyleDialog = false }) {
-                    Text("Cancel")
+                        
+                        Spacer(modifier = Modifier.width(8.dp))
+                        
+                        Button(
+                            onClick = {
+                                if (styleName.isNotBlank()) {
+                                    val params = MessageEnhancerService.EnhancementParams(
+                                        recipientType = recipientType,
+                                        tone = tone,
+                                        intent = intent
+                                    )
+                                    val style = MessageEnhancerService.SavedStyle(
+                                        name = styleName,
+                                        params = params
+                                    )
+                                    enhancerService.saveStyle(style)
+                                    showSaveStyleDialog = false
+                                    styleName = ""
+                                }
+                            },
+                            enabled = styleName.isNotBlank()
+                        ) {
+                            Text("Save")
+                        }
+                    }
                 }
             }
-        )
+        }
     }
 }
 

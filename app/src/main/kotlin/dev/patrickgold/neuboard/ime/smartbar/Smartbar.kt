@@ -220,6 +220,8 @@ private fun SmartbarMainRow(modifier: Modifier = Modifier) {
         ) {
             val enterTransition = if (shouldAnimate) HorizontalEnterTransition else NoEnterTransition
             val exitTransition = if (shouldAnimate) HorizontalExitTransition else NoExitTransition
+            val showSuggestions = aiEnhancementManager.showQuickReplySuggestions.collectAsState(initial = false).value
+            
             androidx.compose.animation.AnimatedVisibility(
                 visible = !expanded,
                 enter = enterTransition,
@@ -227,7 +229,7 @@ private fun SmartbarMainRow(modifier: Modifier = Modifier) {
             ) {
                 if (shouldShowInlineSuggestionsUi) {
                     InlineSuggestionsUi(inlineSuggestions)
-                } else if (hasQuickReplies) {
+                } else if (hasQuickReplies && showSuggestions) {
                     QuickReplySuggestionsRow()
                 } else {
                     CandidatesRow()
@@ -366,10 +368,13 @@ private fun SmartbarMainRow(modifier: Modifier = Modifier) {
         } else if (smartbarLayout == SmartbarLayout.SUGGESTIONS_ACTIONS_EXTENDED) {
             ExtendedActionsToggle()
         }
-        // 2. AI button (EnhanceButton)
+        // 2. AI button (EnhanceButton) - Modified to show quick suggestions in the smartbar
         val aiEnhancementManager by context.aiEnhancementManager()
         EnhanceButton(
-            onClick = { aiEnhancementManager.showEnhancementDialog() },
+            onClick = { 
+                // Instead of showing a dialog, toggle suggestions visibility
+                aiEnhancementManager.toggleQuickReplyVisibility()
+            },
             modifier = Modifier.padding(horizontal = 4.dp)
         )
         // 3. Clipboard button

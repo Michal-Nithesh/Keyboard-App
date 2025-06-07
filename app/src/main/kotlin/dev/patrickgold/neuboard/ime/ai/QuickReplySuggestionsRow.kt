@@ -43,6 +43,7 @@ import dev.patrickgold.neuboard.editorInstance
 import dev.patrickgold.neuboard.ime.theme.NeuboardImeUi
 import dev.patrickgold.neuboard.lib.compose.conditional
 import dev.patrickgold.neuboard.lib.compose.florisHorizontalScroll
+import androidx.compose.runtime.collectAsState
 import org.neuboard.lib.snygg.ui.SnyggRow
 import org.neuboard.lib.snygg.ui.SnyggText
 
@@ -52,23 +53,25 @@ fun QuickReplySuggestionsRow(modifier: Modifier = Modifier) {
     val aiEnhancementManager by context.aiEnhancementManager()
     val editorInstance by context.editorInstance()
     
-    val suggestions by aiEnhancementManager.quickReplySuggestions.collectAsState()
-    if (suggestions.isEmpty()) {
+    val suggestions = aiEnhancementManager.quickReplySuggestions.collectAsState(initial = emptyList()).value
+    val showSuggestions = aiEnhancementManager.showQuickReplySuggestions.collectAsState(initial = false).value
+    
+    if (suggestions.isEmpty() || !showSuggestions) {
         return
     }
     
     SnyggRow(
         elementName = NeuboardImeUi.SmartbarCandidatesRow.elementName,
         modifier = modifier
-            .fillMaxSize()
+            .fillMaxWidth() // Use fillMaxWidth instead of fillMaxSize to provide width constraints
             .conditional(suggestions.size > 1) {
+                // Apply a fixed height to avoid the infinity constraint issue
                 florisHorizontalScroll(scrollbarHeight = 2.dp)
             },
         horizontalArrangement = Arrangement.Start,
     ) {
-        // Use a non-scrollable row layout instead of LazyRow to avoid nested scrollables
-        // LazyRow was causing "Horizontally scrollable component was measured with an infinity maximum width constraints" error
-        androidx.compose.foundation.layout.Row(
+        // Fixed width container to avoid infinity constraint issues
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),
@@ -79,8 +82,16 @@ fun QuickReplySuggestionsRow(modifier: Modifier = Modifier) {
                 Surface(
                     modifier = Modifier
                         .fillMaxHeight(0.8f)
-                        .wrapContentWidth()
-                        .clickable { editorInstance.commitText(suggestion) },
+                        .wrapContentWidth() // Keep suggestion width based on content
+                        .clickable { 
+                            try {
+                                editorInstance.commitText(suggestion)
+                                // Hide suggestions after selection
+                                aiEnhancementManager._showQuickReplySuggestions.value = false
+                            } catch (e: Exception) {
+                                // Handle any errors during text commit
+                            }
+                        },
                     shape = RoundedCornerShape(16.dp),
                     color = MaterialTheme.colorScheme.secondaryContainer,
                     tonalElevation = 2.dp
@@ -89,8 +100,7 @@ fun QuickReplySuggestionsRow(modifier: Modifier = Modifier) {
                         elementName = NeuboardImeUi.SmartbarCandidateWord.elementName,
                         text = suggestion,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 12.dp, vertical = 8.dp)
+                            .padding(horizontal = 12.dp, vertical = 8.dp) // Remove fillMaxWidth to prevent constraint issues
                     )
                 }
             }
