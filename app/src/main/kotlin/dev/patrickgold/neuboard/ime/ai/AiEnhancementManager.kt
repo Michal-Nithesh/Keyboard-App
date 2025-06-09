@@ -346,66 +346,66 @@ class AiEnhancementManager(
     
     /**
      * Generates quick reply suggestions based on the last received message.
-     * This method generates responses that would be appropriate replies to 
-     * the previously received message.
+     * This method provides generic responses as the quick replies feature has been removed.
      */
     fun generateQuickReplies() {
-        // Guard against null or blank messages early
-        if (lastReceivedMessage == null || lastReceivedMessage!!.isBlank()) {
-            flogDebug(LogTopic.IME) { "Cannot generate replies for blank or missing message" }
-            
-            // Provide generic fallback replies
-            _quickReplySuggestions.value = listOf(
-                "Hello!",
-                "Good to hear from you.",
-                "I hope you're doing well."
-            )
-            return
-        }
-
-        val receivedMessage = lastReceivedMessage!!
+        // Quick replies feature has been removed - always provide generic responses
+        flogInfo(LogTopic.IME) { "Quick replies feature has been removed, providing generic responses" }
         
-        launch {
-            flogInfo(LogTopic.IME) { "Generating quick replies for received message: '$receivedMessage'" }
+        try {
+            // Provide context-aware generic responses if we have a received message
+            if (lastReceivedMessage != null && lastReceivedMessage!!.isNotBlank()) {
+                val receivedMessage = lastReceivedMessage!!
                 
-            try {
-                // Clear current suggestions to show loading state if UI is observing
-                _quickReplySuggestions.value = emptyList()
+                // Analyze received message content to provide more relevant generic responses
+                val containsQuestion = receivedMessage.contains("?")
+                val isGreeting = receivedMessage.lowercase().contains("hello") || 
+                                  receivedMessage.lowercase().contains("hi ") ||
+                                  receivedMessage.lowercase().contains("hey")
                 
-                val suggestions = enhancerService.generateQuickReplies(
-                    receivedMessage = receivedMessage,
-                    recipientType = MessageEnhancerService.RecipientType.FRIEND,
-                    preferredTone = MessageEnhancerService.MessageTone.FRIENDLY
-                )
-                
-                if (suggestions.isNotEmpty()) {
-                    flogInfo(LogTopic.IME) { "Generated ${suggestions.size} quick reply suggestions" }
-                    _quickReplySuggestions.value = suggestions
-                    
-                    // Show suggestions in keyboard area if they're not already visible
-                    if (!_showKeyboardSuggestions.value && _currentMessage.value.isEmpty()) {
-                        _showQuickReplySuggestions.value = true
-                    }
-                } else {
-                    flogWarning(LogTopic.IME) { "No quick reply suggestions were generated, using fallbacks" }
-                    // Provide some basic fallbacks
-                    val fallbackReplies = listOf(
+                // Select appropriate fallback responses based on message content
+                val fallbackReplies = when {
+                    containsQuestion -> listOf(
+                        "I'll check and get back to you.",
+                        "Let me think about that.",
+                        "That's a good question!"
+                    )
+                    isGreeting -> listOf(
+                        "Hello! How are you?",
+                        "Hi there!",
+                        "Hey, good to hear from you!"
+                    )
+                    else -> listOf(
                         "I understand.",
                         "Thanks for letting me know.",
                         "Got it."
                     )
-                    _quickReplySuggestions.value = fallbackReplies
                 }
-            } catch (e: Exception) {
-                flogError(LogTopic.IME) { "Error generating quick replies: ${e.message}" }
-                // Provide fallbacks on error
-                val errorFallbackReplies = listOf(
-                    "I understand.",
-                    "Thanks for letting me know.",
-                    "Got it."
+                
+                // Set the fallback replies
+                _quickReplySuggestions.value = fallbackReplies
+                
+                // Show suggestions if they're not already visible and input field is empty
+                if (!_showKeyboardSuggestions.value && _currentMessage.value.isEmpty()) {
+                    _showQuickReplySuggestions.value = true
+                }
+            } else {
+                // No received message - provide simple generic responses
+                _quickReplySuggestions.value = listOf(
+                    "Hello!",
+                    "Good to hear from you.",
+                    "I hope you're doing well."
                 )
-                _quickReplySuggestions.value = errorFallbackReplies
             }
+        } catch (e: Exception) {
+            flogError(LogTopic.IME) { "Error generating quick replies: ${e.message}" }
+            // Provide fallbacks on error
+            val errorFallbackReplies = listOf(
+                "I understand.",
+                "Thanks for letting me know.",
+                "Got it."
+            )
+            _quickReplySuggestions.value = errorFallbackReplies
         }
     }
     

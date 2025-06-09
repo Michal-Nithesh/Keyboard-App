@@ -412,13 +412,29 @@ private fun SmartbarMainRow(modifier: Modifier = Modifier) {
                     QuickActionsRow(NeuboardImeUi.SmartbarSharedActionsRow.elementName)
                 }
             }
+            
             SmartbarLayout.SUGGESTIONS_ACTIONS_SHARED -> {
-                CenterContent()
-                StickyAction()
+                if (!flipToggles) {
+                    SharedActionsToggle()
+                    CenterContent()
+                    StickyAction()
+                } else {
+                    StickyAction()
+                    CenterContent()
+                    SharedActionsToggle()
+                }
             }
+
             SmartbarLayout.SUGGESTIONS_ACTIONS_EXTENDED -> {
-                CenterContent()
-                StickyAction()
+                if (!flipToggles) {
+                    ExtendedActionsToggle()
+                    CenterContent()
+                    StickyAction()
+                } else {
+                    StickyAction()
+                    CenterContent()
+                    ExtendedActionsToggle()
+                }
             }
         }
     }

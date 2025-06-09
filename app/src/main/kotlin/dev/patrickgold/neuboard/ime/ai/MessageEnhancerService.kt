@@ -133,7 +133,7 @@ class MessageEnhancerService {
     // OpenRouter API configuration
     private val aiApiUrl = "https://openrouter.ai/api/v1/chat/completions"
     private val aiApiKey = "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"
-    private val defaultModel = "gpt-3.5-turbo" // Can be changed based on needs
+    private val defaultModel = "deepseek/deepseek-chat-v3-0324:free" // Can be changed based on needs
     
     /**
      * Enhances a message using AI based on the provided parameters.
@@ -229,8 +229,16 @@ class MessageEnhancerService {
             flogDebug(LogTopic.IME) { "Sending AI autocorrect prompt: $prompt" }
             
             val jsonBody = JSONObject()
-            jsonBody.put("model", defaultModel) 
-            jsonBody.put("messages", listOf(mapOf("role" to "user", "content" to prompt)))
+            jsonBody.put("model", defaultModel)
+            
+            // Create properly structured messages array with correct format
+            val messagesArray = org.json.JSONArray()
+            val messageObject = JSONObject()
+            messageObject.put("role", "user")
+            messageObject.put("content", prompt)
+            messagesArray.put(messageObject)
+            jsonBody.put("messages", messagesArray)
+            
             jsonBody.put("temperature", 0.7) // Adding temperature for more natural responses
             jsonBody.put("max_tokens", 150) // Limiting response size for faster processing
             
@@ -288,87 +296,51 @@ class MessageEnhancerService {
         }
     }
     
+    // Quick replies feature has been removed
+    
     /**
-     * Generates quick reply suggestions based on a received message.
+     * Placeholder for quick replies generation to maintain compatibility.
+     * The quick replies feature has been removed.
      * 
-     * @param receivedMessage The message to generate replies for.
+     * @param receivedMessage The received message.
      * @param recipientType The type of recipient.
-     * @param preferredTone The preferred tone for the replies.
-     * @return A list of suggested replies.
+     * @param preferredTone The preferred tone for replies.
+     * @return A list of context-aware generic replies.
      */
     suspend fun generateQuickReplies(
-        receivedMessage: String, 
+        receivedMessage: String,
         recipientType: RecipientType = RecipientType.FRIEND,
         preferredTone: MessageTone = MessageTone.FRIENDLY
     ): List<String> {
         return withContext(Dispatchers.IO) {
-            flogDebug(LogTopic.IME) { "Generating quick replies for message: $receivedMessage" }
+            flogInfo(LogTopic.IME) { "Quick replies feature has been removed, generating generic responses" }
             
-            // Simple template-based quick replies for demonstration
-            val lowercaseMessage = receivedMessage.lowercase()
+            // Analyze received message content to provide more relevant generic responses
+            val containsQuestion = receivedMessage.contains("?")
+            val isGreeting = receivedMessage.lowercase().contains("hello") || 
+                             receivedMessage.lowercase().contains("hi ") ||
+                             receivedMessage.lowercase().contains("hey")
             
-            val replies = when {
-                lowercaseMessage.contains("how are you") -> {
-                    listOf(
-                        "I'm doing well, thanks for asking!",
-                        "All good here, how about you?",
-                        "Pretty good, thanks!"
-                    )
-                }
-                lowercaseMessage.contains("meeting") -> {
-                    listOf(
-                        "I'll be there on time.",
-                        "Looking forward to the meeting.",
-                        "Is there anything I should prepare for the meeting?"
-                    )
-                }
-                lowercaseMessage.contains("hello") || lowercaseMessage.contains("hi") -> {
-                    listOf(
-                        "Hello! How are you doing?",
-                        "Hi there! What's up?",
-                        "Hey! How's your day going?"
-                    )
-                }
-                lowercaseMessage.contains("thank") -> {
-                    listOf(
-                        "You're welcome!",
-                        "No problem at all.",
-                        "Happy to help!"
-                    )
-                }
-                lowercaseMessage.endsWith("?") -> {
-                    listOf(
-                        "Let me think about that.",
-                        "That's a good question.",
-                        "I'll get back to you on that."
-                    )
-                }
-                else -> {
-                    listOf(
-                        "Thanks for letting me know.",
-                        "Got it.",
-                        "I understand."
-                    )
-                }
-            }
-            
-            // Adjust based on recipient and tone
-            replies.map { reply ->
-                when (recipientType) {
-                    RecipientType.MANAGER -> {
-                        when (preferredTone) {
-                            MessageTone.FORMAL -> "Dear Manager, $reply"
-                            MessageTone.PROFESSIONAL -> reply
-                            else -> reply
-                        }
-                    }
-                    else -> reply
-                }
+            // Return context-aware generic responses based on message content
+            when {
+                containsQuestion -> listOf(
+                    "I'll check and get back to you.",
+                    "Let me think about that.",
+                    "That's a good question!"
+                )
+                isGreeting -> listOf(
+                    "Hello! How are you?",
+                    "Hi there!",
+                    "Hey, good to hear from you!"
+                )
+                else -> listOf(
+                    "I understand.",
+                    "Thanks for letting me know.",
+                    "Got it."
+                )
             }
         }
     }
-    
-    // First implementation removed to fix duplicate method issue
     
     /**
      * Saves a style preset.
@@ -476,10 +448,19 @@ class MessageEnhancerService {
                 
                 flogDebug(LogTopic.IME) { "AI enhancement prompt: $prompt" }
                 
+                // Create properly formatted JSON request
                 val jsonBody = JSONObject()
                 jsonBody.put("model", defaultModel)
                 jsonBody.put("response_format", JSONObject().put("type", "json_object"))
-                jsonBody.put("messages", listOf(mapOf("role" to "user", "content" to prompt)))
+                
+                // Create properly structured messages array with correct format
+                val messagesArray = org.json.JSONArray()
+                val messageObject = JSONObject()
+                messageObject.put("role", "user")
+                messageObject.put("content", prompt)
+                messagesArray.put(messageObject)
+                jsonBody.put("messages", messagesArray)
+                
                 jsonBody.put("temperature", 0.7) // Control creativity level
                 jsonBody.put("max_tokens", 300) // Reasonable limit for message enhancements
                 

@@ -508,8 +508,14 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
      * Handles a [KeyCode.SHIFT] up event.
      */
     private fun handleShiftUp(data: KeyData) {
-        if (activeState.inputShiftState != InputShiftState.CAPS_LOCK && !inputEventDispatcher.isAnyPressed() &&
-            !inputEventDispatcher.isUninterruptedEventSequence(data)) {
+        // When shift is pressed once, we want to maintain the shifted state even after releasing
+        // Only reset to unshifted if another key is pressed while shift is down,
+        // or if the shift key is in caps lock state.
+        if (activeState.inputShiftState != InputShiftState.CAPS_LOCK && 
+            !inputEventDispatcher.isUninterruptedEventSequence(data) && 
+            !inputEventDispatcher.isConsecutiveDown(data)) {
+            // If we're here, it means another key was pressed while shift was down
+            // So we should reset to unshifted state
             activeState.inputShiftState = InputShiftState.UNSHIFTED
         }
     }
@@ -761,6 +767,9 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
             KeyCode.IME_UI_MODE_MEDIA -> {
                 activeState.imeUiMode = ImeUiMode.MEDIA
             }
+            KeyCode.IME_UI_MODE_TEXT -> {
+                activeState.imeUiMode = ImeUiMode.TEXT
+            }
             else -> {
                 if (activeState.imeUiMode == ImeUiMode.MEDIA) {
                     nlpManager.getAutoCommitCandidate()?.let { commitCandidate(it) }
@@ -798,7 +807,13 @@ class KeyboardManager(context: Context) : InputKeyEventReceiver {
                         }
                     }
                 }
-                if (activeState.inputShiftState != InputShiftState.CAPS_LOCK && !inputEventDispatcher.isPressed(KeyCode.SHIFT)) {
+                // Only reset shift state if we're in SHIFTED_AUTOMATIC mode (auto-capitalization),
+                // or if we're in SHIFTED_MANUAL mode and this is not the shift key itself
+                // (since we want the shift key to stay shifted when tapped once)
+                if (activeState.inputShiftState != InputShiftState.CAPS_LOCK && 
+                    !inputEventDispatcher.isPressed(KeyCode.SHIFT) &&
+                    (activeState.inputShiftState == InputShiftState.SHIFTED_AUTOMATIC || 
+                    (activeState.inputShiftState == InputShiftState.SHIFTED_MANUAL && data.code != KeyCode.SHIFT))) {
                     activeState.inputShiftState = InputShiftState.UNSHIFTED
                 }
             }
