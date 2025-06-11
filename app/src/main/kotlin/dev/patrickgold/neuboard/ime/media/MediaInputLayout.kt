@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Backspace
+import androidx.compose.material.icons.outlined.EmojiEmotions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
@@ -91,6 +92,7 @@ fun MediaInputLayout(
                     .fillMaxWidth()
                     .height(NeuboardImeSizing.keyboardRowBaseHeight * 0.8f),
             ) {
+                // Emoji/Recent button (left)
                 KeyboardLikeButton(
                     elementName = NeuboardImeUi.MediaBottomRowButton.elementName,
                     inputEventDispatcher = keyboardManager.inputEventDispatcher,
@@ -102,7 +104,23 @@ fun MediaInputLayout(
                         fontWeight = FontWeight.Bold,
                     )
                 }
-                Spacer(modifier = Modifier.weight(1f))
+                // Space bar (center, expanded)
+                Spacer(modifier = Modifier.weight(1.5f))
+                KeyboardLikeButton(
+                    elementName = NeuboardImeUi.MediaBottomRowButton.elementName,
+                    inputEventDispatcher = keyboardManager.inputEventDispatcher,
+                    keyData = TextKeyData.SPACE,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .weight(3f),
+                ) {
+                    Text(
+                        text = " ", // visually a space bar
+                        fontWeight = FontWeight.Normal,
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1.5f))
+                // Backspace button (right)
                 KeyboardLikeButton(
                     elementName = NeuboardImeUi.MediaBottomRowButton.elementName,
                     inputEventDispatcher = keyboardManager.inputEventDispatcher,
@@ -146,6 +164,9 @@ internal fun KeyboardLikeButton(
                     }
                     val press = PressInteraction.Press(down.position)
                     interactionSource.tryEmit(press)
+                    if (keyData == TextKeyData.DELETE) {
+                        android.util.Log.d("KeyboardLikeButton", "Backspace pressed")
+                    }
                     inputEventDispatcher.sendDown(keyData)
                     inputFeedbackController.keyPress(keyData)
                     val up = waitForUpOrCancellation()

@@ -35,6 +35,7 @@ import dev.patrickgold.neuboard.R
 import dev.patrickgold.neuboard.aiEnhancementManager
 import dev.patrickgold.neuboard.app.neuboardPreferenceModel
 import dev.patrickgold.neuboard.editorInstance
+import dev.patrickgold.neuboard.ime.ai.AiSuggestionsKeyboardView
 import dev.patrickgold.neuboard.ime.smartbar.IncognitoDisplayMode
 import dev.patrickgold.neuboard.ime.smartbar.InlineSuggestionsStyleCache
 import dev.patrickgold.neuboard.ime.smartbar.Smartbar
@@ -77,20 +78,29 @@ fun TextInputLayout(
             if (state.isActionsOverflowVisible) {
                 QuickActionsOverflowPanel()
             } else {
-                Box {
-                    val incognitoDisplayMode by prefs.keyboard.incognitoDisplayMode.observeAsState()
-                    val showIncognitoIcon = evaluator.state.isIncognitoMode &&
-                        incognitoDisplayMode == IncognitoDisplayMode.DISPLAY_BEHIND_KEYBOARD
-                    if (showIncognitoIcon) {
-                        SnyggIcon(
-                            NeuboardImeUi.IncognitoModeIndicator.elementName,
-                            modifier = Modifier
-                                .matchParentSize()
-                                .align(Alignment.Center),
-                            painter = painterResource(R.drawable.ic_incognito),
-                        )
+                // Show AI suggestions or normal keyboard
+                val showSuggestions = aiEnhancementManager.showKeyboardSuggestions.collectAsState(initial = false).value
+                
+                if (showSuggestions) {
+                    // Show AI suggestions in the keyboard area
+                    AiSuggestionsKeyboardView()
+                } else {
+                    // Show the normal keyboard
+                    Box {
+                        val incognitoDisplayMode by prefs.keyboard.incognitoDisplayMode.observeAsState()
+                        val showIncognitoIcon = evaluator.state.isIncognitoMode &&
+                            incognitoDisplayMode == IncognitoDisplayMode.DISPLAY_BEHIND_KEYBOARD
+                        if (showIncognitoIcon) {
+                            SnyggIcon(
+                                NeuboardImeUi.IncognitoModeIndicator.elementName,
+                                modifier = Modifier
+                                    .matchParentSize()
+                                    .align(Alignment.Center),
+                                painter = painterResource(R.drawable.ic_incognito),
+                            )
+                        }
+                        TextKeyboardLayout(evaluator = evaluator)
                     }
-                    TextKeyboardLayout(evaluator = evaluator)
                 }
             }
         }
